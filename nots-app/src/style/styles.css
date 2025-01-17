@@ -1,0 +1,147 @@
+body{
+
+  /* font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; */
+  font-family: 'Times New Roman', Times, serif;
+  font-size: large;
+  margin: 0;
+  padding: 0;
+}
+.layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+nav {
+  background-color: #333;
+  color: white;
+  padding: 10px;
+  text-align: center;
+}
+
+header {
+  background-color: #f4f4f4;
+  padding: 20px;
+  text-align: center;
+}
+
+.content-container {
+  display: flex;
+  flex-direction: row; /* تأكد من أن العناصر تظهر بجانب بعض */
+  flex-grow: 1; /* تأكد أن container يأخذ المساحة المتبقية */
+}
+
+/* aside {
+  width: 200px;
+  background-color: #ddd;
+  padding: 15px;
+  flex-shrink: 0; */
+   /* منع الانكماش لجعل العمود الجانبي ثابت العرض */
+/* } */
+
+.main-content {
+  flex-grow: 1; /* يجعل main يملأ المساحة المتبقية */
+  padding: 15px;
+  background-color: #f4f4f4;
+  height: 100%; /* ضمان ملء الارتفاع الكامل */
+  overflow-y: auto; /* في حال وجود محتوى أطول من الارتفاع */
+}
+
+footer {
+  background-color: #333;
+  color: white;
+  text-align: center;
+  padding: 10px;
+}
+
+ul {
+  display: flex;
+  padding: 0%;
+}
+
+li{
+   padding: 10px;
+
+   list-style: none;
+
+}
+li a{
+  text-decoration: none;
+  color: #f4f4f4;
+}
+
+li:hover{
+  background-color: #ddd;
+  color: #333;
+
+}
+li a:hover{
+  color: #333;
+}
+/* تنسيقات الاستجابة للشاشات الصغيرة */
+@media (max-width: 768px) {
+  .content-container {
+    flex-direction: column; /* في الشاشات الصغيرة، العناصر تظهر عموديًا */
+  }
+
+  /* aside {
+    width: 100%; عرض كامل للـ aside في الشاشات الصغيرة
+    text-align: center;
+    padding: 10px;
+  } */
+
+  .main-content {
+    padding: 15px;
+  }
+
+  ul{
+    /* display: block; */
+    flex-direction: column;
+
+
+
+  }
+
+  ul li a {
+    padding: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  header, nav, footer {
+    font-size: 0.9em;
+  }
+
+  ul li a {
+    padding: 8px;
+    font-size: 0.9em;
+  }
+}
+
+
+.logout-btn {
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.logout-btn:hover {
+  background-color: #e60000;
+}
+
+
+/* Dark Mode */
+body.dark-theme {
+  background-color: #121212;
+  color: #ffffff;
+}
+
+/* Light Mode */
+body {
+  background-color: #ffffff;
+  color: #000000;
+  
+}
