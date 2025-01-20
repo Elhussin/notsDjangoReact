@@ -10,6 +10,52 @@ import {
   Alert,
 } from "@mui/material";
 
+
+
+const View = (data) => {
+  if (!data || Object.keys(data).length === 0) {
+    return <p>لا توجد بيانات لعرضها</p>;
+  }
+
+  return (
+    <>
+      <div>
+        <h1>عرض البيانات</h1>
+        <div>
+          <h2>المعلومات العامة</h2>
+          <p><strong>Document ID:</strong> {data.documentId}</p>
+          <p><strong>Full Name:</strong> {data.fullName}</p>
+          <p><strong>Nationality:</strong> {data.nationality}</p>
+          <p><strong>Document Type:</strong> {data.documentType}</p>
+          <p><strong>Gender:</strong> {data.gender}</p>
+        </div>
+        <div>
+          <h2>خطط التأمين</h2>
+          {data.insurancePlans.map((plan, index) => (
+            <div key={index} style={{ marginBottom: "20px" }}>
+              <p><strong>Member Card ID:</strong> {plan.memberCardId}</p>
+              <p><strong>Policy Number:</strong> {plan.policyNumber}</p>
+              <p><strong>Expiry Date:</strong> {new Date(plan.expiryDate).toLocaleDateString()}</p>
+              <p><strong>Is Primary:</strong> {plan.isPrimary === "true" ? "Yes" : "No"}</p>
+              <p><strong>Relation with Subscriber:</strong> {plan.relationWithSubscriber}</p>
+              <p><strong>Coverage Type:</strong> {plan.coverageType}</p>
+              <p><strong>Patient Share:</strong> {plan.patientShare}%</p>
+              <p><strong>Max Limit:</strong> {plan.maxLimit}</p>
+              <p><strong>Issue Date:</strong> {new Date(plan.issueDate).toLocaleDateString()}</p>
+              <p><strong>Network ID:</strong> {plan.networkId}</p>
+              <p><strong>Sponsor Number:</strong> {plan.sponsorNumber}</p>
+              <p><strong>Policy Class Name:</strong> {plan.policyClassName}</p>
+              <p><strong>Policy Holder:</strong> {plan.policyHolder}</p>
+              <p><strong>Payer Nphies ID:</strong> {plan.payerNphiesId}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </>
+  );
+};
+
+
 /**
  * RegisterForm Component
  * Handles user registration with input validation and feedback.
@@ -26,6 +72,7 @@ const CchiBeneficiary = () => {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false); // Loading state
   const navigate = useNavigate();
+  const [responseDate , setresponseDate]= useState([]);
 
   /**
    * Handle input changes.
@@ -51,8 +98,10 @@ const CchiBeneficiary = () => {
       // API call to register the user
       const response = await cchi_get_beneficiary(formData);
       setMessage("CCHI get data successfully!");
-      console.log(response)
-      <view response={response} />
+      console.log(response);
+      setresponseDate(response)
+
+
       // setTimeout(() => {
       //   navigate("/login"); // Redirect to login page
       // }, 3000); // 3-second delay
@@ -64,6 +113,7 @@ const CchiBeneficiary = () => {
   };
 
   return (
+    <>
     <Box
       sx={{
         maxWidth: 400,
@@ -149,46 +199,11 @@ const CchiBeneficiary = () => {
           )}
         </Box>
       </form>
+
     </Box>
+    <View {...responseDate} />
+</>
   );
 };
 
 export default CchiBeneficiary;
-
-
-
-const view=(data)=>{
-  return
- ( <div>
-  <h1>عرض البيانات</h1>
-  <div>
-    <h2>المعلومات العامة</h2>
-    <p><strong>Document ID:</strong> {data.documentId}</p>
-    <p><strong>Full Name:</strong> {data.fullName}</p>
-    <p><strong>Nationality:</strong> {data.nationality}</p>
-    <p><strong>Document Type:</strong> {data.documentType}</p>
-    <p><strong>Gender:</strong> {data.gender}</p>
-  </div>
-  <div>
-    <h2>خطط التأمين</h2>
-    {data.insurancePlans.map((plan, index) => (
-      <div key={index} style={{ marginBottom: "20px" }}>
-        <p><strong>Member Card ID:</strong> {plan.memberCardId}</p>
-        <p><strong>Policy Number:</strong> {plan.policyNumber}</p>
-        <p><strong>Expiry Date:</strong> {new Date(plan.expiryDate).toLocaleDateString()}</p>
-        <p><strong>Is Primary:</strong> {plan.isPrimary === "true" ? "Yes" : "No"}</p>
-        <p><strong>Relation with Subscriber:</strong> {plan.relationWithSubscriber}</p>
-        <p><strong>Coverage Type:</strong> {plan.coverageType}</p>
-        <p><strong>Patient Share:</strong> {plan.patientShare}%</p>
-        <p><strong>Max Limit:</strong> {plan.maxLimit}</p>
-        <p><strong>Issue Date:</strong> {new Date(plan.issueDate).toLocaleDateString()}</p>
-        <p><strong>Network ID:</strong> {plan.networkId}</p>
-        <p><strong>Sponsor Number:</strong> {plan.sponsorNumber}</p>
-        <p><strong>Policy Class Name:</strong> {plan.policyClassName}</p>
-        <p><strong>Policy Holder:</strong> {plan.policyHolder}</p>
-        <p><strong>Payer Nphies ID:</strong> {plan.payerNphiesId}</p>
-      </div>
-    ))}
-  </div>
-</div>)
-}
