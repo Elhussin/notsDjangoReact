@@ -25,7 +25,7 @@ export const login = async (credentials) => {
  */
 export const addUser  = async (data) => {
   try {
-    const response = await API.post('/users/', data);
+    const response = await API.post('api/users/', data);
     return response.data;
   } catch (error) {
     if (error.response) {
