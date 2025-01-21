@@ -26,9 +26,9 @@ import Order from "./components/Order";
 import ProtectedRoute from "./components/ProtectedRoute";
 import RegisterForm from "./components/RegisterForm";
 import { useUser } from "./components/UserContext"; // استخدام الـ Context لإدارة بيانات المستخدم
-
+import Elgipelty from "./components/Elgipelty";
 import CchiBeneficiary from "./components/CchiBeneficiary";
-
+import FormElgipelty from "./components/FormElgipelty";
 // layout
 import Layout from "./layout/Layout";
 // style
@@ -119,8 +119,10 @@ const App = () => {
           <Route path="Brands" element={<BrandsManager />} />
           <Route path="register" element={<RegisterForm />} />
           <Route path="category" element={<CategoryManager />} />
-          <Route path="product" element={<ProductManager />} />
+          <Route path="product" element={<ProductManager />} /> 
           <Route path ="CchiBeneficiary" element={<CchiBeneficiary/>}/>
+          <Route path ="elgipelty" element={<Elgipelty/>}/>
+          <Route path ="Felgipelty" element={<FormElgipelty/>}/>
         </Route>
       </Routes>
     </BrowserRouter>
