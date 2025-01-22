@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import {useEffect } from "react";
 
 const CCHIDetails = ({ data }) => {
     const navigate = useNavigate();

@@ -48,7 +48,10 @@ const RegisterForm = () => {
     try {
       // API call to register the user
       const response = await addUser(formData);
-      setMessage("User registered successfully!");
+      if(response){
+        setMessage("User registered successfully!");
+      }
+
       setTimeout(() => {
         navigate("/login"); // Redirect to login page
       }, 3000); // 3-second delay

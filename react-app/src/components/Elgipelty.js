@@ -143,6 +143,8 @@ const Elgipelty = () => {
         "destinationId": "-1"
       }
 
+    console.log(body)
+
 
 
   

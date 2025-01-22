@@ -1,6 +1,6 @@
 import React from 'react';
-import {logoutUser, getUsers} from '../Api/api'; // استدعاء دوال من api.js
-import { useNavigate } from 'react-router-dom';
+// import {logoutUser, getUsers} from '../Api/api'; // استدعاء دوال من api.js
+// import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
   // const navigate = useNavigate();

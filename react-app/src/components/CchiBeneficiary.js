@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { cchi_get_beneficiary } from "../Api/wassel"; // API function for user registration
-import { useNavigate } from "react-router-dom";
 import CCHIDetails from "./CCHIDetails";
 import { waseelUsers } from "../data/data" // Dummy data for users
 
@@ -30,7 +29,6 @@ const CchiBeneficiary = () => {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const navigate = useNavigate();
   const [responseDate, setResponseDate] = useState(null);
 
   const handleChange = (e) => {
