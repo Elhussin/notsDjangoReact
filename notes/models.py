@@ -8,22 +8,27 @@ class Branch(models.Model):
     location = models.CharField(max_length=255)
     start_date = models.DateTimeField(auto_now_add=True)
     phone = models.CharField(max_length=255)
+    email = models.EmailField(null=True, blank=True)
+    is_active = models.BooleanField(default=True)
 
     def __str__(self):
-        return f"{self.name} {self.location}"
+        return f"{self.name} - {self.location}"
 
 class BranchManager(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="branch_managers")
-    branch = models.ForeignKey(Branch, on_delete=models.CASCADE, related_name="branch_name")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="managed_branches")
+    branch = models.ForeignKey(Branch, on_delete=models.CASCADE, related_name="managers")
     assigned_at = models.DateTimeField(auto_now_add=True)
-    status=models.BooleanField(default= True)
-    # منع تعيين نفس المدير لاكثر من فرع 
+    status = models.BooleanField(default=True)
+    notes = models.TextField(null=True, blank=True)
+
     class Meta:
         constraints = [
             models.UniqueConstraint(fields=['user'], name='unique_user_per_branch')
         ]
+
     def __str__(self):
         return f"{self.user.username} - {self.branch.name}"
+    
 
 class Order(models.Model):
     STATUS_CHOICES = [
@@ -38,8 +43,10 @@ class Order(models.Model):
     ]
 
     order_number = models.CharField(max_length=20, unique=True)
-    branch = models.ForeignKey(Branch, on_delete=models.CASCADE, related_name="branch")
+    branch = models.ForeignKey(Branch, on_delete=models.CASCADE, related_name="orders")
+    customer = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name="orders")
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending_shop')
+    total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     details = models.TextField(blank=True, null=True)
@@ -48,103 +55,30 @@ class Order(models.Model):
         return f"{self.order_number} - {self.status}"
 
 
-from django.db import models
 
 class Company(models.Model):
-    """
-    Model to represent company data in the system.
-    Includes essential details such as name, address, contact, and company type.
-    """
-
-    # Choices for the type of company
     COMPANY_TYPE_CHOICES = [
-        ('client', 'Client'),       # A customer or client
-        ('agent', 'Agent'),         # A representative or agent
-        ('supplier', 'Supplier'),   # A supplier or insurance provider
+        ('client', 'Client'),
+        ('agent', 'Agent'),
+        ('supplier', 'Supplier'),
     ]
 
-    name = models.CharField(
-        max_length=255,
-        verbose_name="Company Name",
-        help_text="The official name of the company."
-    )
-    address = models.TextField(
-        verbose_name="Company Address",
-        help_text="The physical or mailing address of the company."
-    )
-    contact_number = models.CharField(
-        max_length=15,
-        verbose_name="Contact Number",
-        help_text="The primary phone number to contact the company."
-    )
-    email = models.EmailField(
-        verbose_name="Email Address",
-        help_text="The company's email address.",
-        null=True,
-        blank=True
-    )
-    website = models.URLField(
-        verbose_name="Website",
-        help_text="The company's official website URL.",
-        null=True,
-        blank=True
-    )
-    logo = models.ImageField(
-        upload_to='company_logos/',
-        verbose_name="Company Logo",
-        help_text="Upload the company's logo (optional).",
-        null=True,
-        blank=True
-    )
-    description = models.TextField(
-        verbose_name="Description",
-        help_text="A brief description of the company (optional).",
-        null=True,
-        blank=True
-    )
-    registration_number = models.CharField(
-        max_length=50,
-        verbose_name="Registration Number",
-        help_text="The company's official registration number (optional).",
-        null=True,
-        blank=True
-    )
-    tax_number = models.CharField(
-        max_length=50,
-        verbose_name="Tax Number",
-        help_text="The company's tax identification number (optional).",
-        null=True,
-        blank=True
-    )
-    company_type = models.CharField(
-        max_length=10,
-        choices=COMPANY_TYPE_CHOICES,
-        verbose_name="Company Type",
-        help_text="The type of the company (e.g., Client, Agent, Supplier)."
-    )
-    created_at = models.DateTimeField(
-        auto_now_add=True,
-        verbose_name="Created At",
-        help_text="The date and time when the record was created."
-    )
-    updated_at = models.DateTimeField(
-        auto_now=True,
-        verbose_name="Updated At",
-        help_text="The date and time when the record was last updated."
-    )
+    name = models.CharField(max_length=255)
+    address = models.TextField()
+    contact_number = models.CharField(max_length=15)
+    email = models.EmailField(null=True, blank=True)
+    website = models.URLField(null=True, blank=True)
+    logo = models.ImageField(upload_to='company_logos/', null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
+    registration_number = models.CharField(max_length=50, null=True, blank=True)
+    tax_number = models.CharField(max_length=50, null=True, blank=True)
+    company_type = models.CharField(max_length=10, choices=COMPANY_TYPE_CHOICES)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        """
-        String representation of the model.
-        Returns the name of the company.
-        """
-        return self.name
-
-    class Meta:
-        verbose_name = "Company"
-        verbose_name_plural = "Companies"
-        ordering = ['name']  # Sort companies alphabetically by name
-
+        return f"{self.name} - {self.company_type}"
 
 
 class Factory(models.Model):
@@ -251,38 +185,32 @@ class TechnicalSpecification(models.Model):
     class Meta:
         verbose_name = "Technical Specification"
         verbose_name_plural = "Technical Specifications"
+ 
+ 
         
-
-
-
-
-            
-    
 class Product(models.Model):
-    name = models.CharField(max_length=255, verbose_name="Product Name")
-    description = models.TextField(verbose_name="Description")
-    price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Price")
-    category = models.ForeignKey('Category', on_delete=models.CASCADE, related_name='products', verbose_name="Category")
-    image = models.ImageField(upload_to='products/', blank=True, null=True, verbose_name="Product Image")
-    colors = models.ManyToManyField(Color, related_name='products', verbose_name="Colors")
-    sizes = models.ManyToManyField(Size, related_name='products', verbose_name="Sizes")
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Date Added")
-    updated_at = models.DateTimeField(auto_now=True, verbose_name="Last Updated")
-    # additional_details = models.ManyToManyField(AdditionalDetail, related_name='products', verbose_name="Additional Details")
-    # ratings = models.ManyToManyField(Rating, related_name='products', verbose_name="Ratings")
-    # reviews = models.ManyToManyField(Review, related_name='products', verbose_name="Reviews")
+    name = models.CharField(max_length=255)
+    slug = models.SlugField(unique=True, null=True, blank=True)
+    description = models.TextField()
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    category = models.ForeignKey('Category', on_delete=models.CASCADE, related_name='products')
+    image = models.ImageField(upload_to='products/', blank=True, null=True)
+    colors = models.ManyToManyField(Color, related_name='products')
+    sizes = models.ManyToManyField(Size, related_name='products')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     stock_quantity = models.IntegerField()
     sku = models.CharField(max_length=50, unique=True)
     barcode = models.CharField(max_length=50, unique=True, null=True, blank=True)
     product_condition = models.CharField(max_length=50, choices=[('new', 'New'), ('used', 'Used')], default='new')
     brand = models.ForeignKey('Brand', on_delete=models.CASCADE, related_name='products')
+    is_featured = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
 
-    class Meta:
-        verbose_name = "Product"
-        verbose_name_plural = "Products"
+
+
 
 class AdditionalDetail(models.Model):
     product = models.ForeignKey('Product', on_delete=models.CASCADE, related_name='additional_details', verbose_name="Product")
@@ -305,12 +233,6 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
-# class Brand(models.Model):
-#     name = models.CharField(max_length=255, unique=True)
-#     created_at = models.DateTimeField(auto_now_add=True)
-
-#     def __str__(self):
-#         return self.name
 
 class ProductImage(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images')
@@ -380,3 +302,79 @@ class Subscription(models.Model):
     class Meta:
         verbose_name = "Subscription"
         verbose_name_plural = "Subscriptions"
+
+
+class Customer(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="customer")
+    phone = models.CharField(max_length=15)
+    address = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.user.username
+
+
+class Shipping(models.Model):
+    order = models.OneToOneField(Order, on_delete=models.CASCADE, related_name="shipping")
+    address = models.TextField()
+    shipping_method = models.CharField(max_length=50, choices=[('standard', 'Standard'), ('express', 'Express')])
+    shipping_date = models.DateTimeField(null=True, blank=True)
+    is_delivered = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"Shipping for {self.order.order_number}"
+    
+class Invoice(models.Model):
+    invoice_number = models.CharField(max_length=50, unique=True)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="invoices")
+    issue_date = models.DateTimeField(auto_now_add=True)
+    due_date = models.DateTimeField()
+    total_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    is_paid = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"Invoice {self.invoice_number} for Order {self.order.order_number}"
+    
+class Payment(models.Model):
+    invoice = models.ForeignKey(Invoice, on_delete=models.CASCADE, related_name="payments")
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    payment_method = models.CharField(max_length=50, choices=[('cash', 'Cash'), ('card', 'Card')])
+    payment_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Payment of {self.amount} for Invoice {self.invoice.invoice_number}"
+
+class Inventory(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="inventory")
+    quantity = models.IntegerField()
+    movement_type = models.CharField(max_length=50, choices=[('in', 'In'), ('out', 'Out')])
+    movement_date = models.DateTimeField(auto_now_add=True)
+    notes = models.TextField(null=True, blank=True)
+
+    def __str__(self):
+        return f"Inventory movement for {self.product.name}"
+    
+class Tax(models.Model):
+    name = models.CharField(max_length=100)
+    rate = models.DecimalField(max_digits=5, decimal_places=2)
+    description = models.TextField(null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.name} ({self.rate}%)"
+    
+    
+class Discount(models.Model):
+    DISCOUNT_TYPES = [
+        ('percentage', 'Percentage'),
+        ('fixed', 'Fixed Amount'),
+    ]
+
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="discounts")
+    discount_type = models.CharField(max_length=20, choices=DISCOUNT_TYPES)
+    value = models.DecimalField(max_digits=10, decimal_places=2)
+    start_date = models.DateField()
+    end_date = models.DateField()
+
+    def __str__(self):
+        return f"Discount for {self.product.name}"

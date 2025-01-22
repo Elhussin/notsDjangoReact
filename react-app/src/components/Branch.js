@@ -15,7 +15,7 @@ const Branch = () => {
     const [formData, setFormData] = useState({ name: '', location: '', phone: '' }); // State for form data
     const [editMode, setEditMode] = useState(false); // State to toggle edit mode
     const [currentBranchId, setCurrentBranchId] = useState(null); // State to track branch being edited
-
+ 
     // Fetch branches when component mounts
     useEffect(() => {
         const fetchData = async () => {

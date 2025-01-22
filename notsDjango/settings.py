@@ -46,7 +46,12 @@ INSTALLED_APPS = [
     'notes',
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
-    'waseel'
+    'waseel',
+    'accounting',
+    'crm',
+    'hrm',
+    'reporting',
+
 ]
 
 
