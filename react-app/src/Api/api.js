@@ -10,7 +10,7 @@ import { secureRequest } from './axiosConfig';
  */
 export const login = async (credentials) => {
   try {
-    const response = await API.post('api/token/', credentials);
+    const response = await API.post('token/', credentials);
     return response.data;
   } catch (error) {
     throw error.response ? error.response.data : new Error('An error occurred');
@@ -25,7 +25,7 @@ export const login = async (credentials) => {
  */
 export const addUser  = async (data) => {
   try {
-    const response = await API.post('api/users/', data);
+    const response = await API.post('users/', data);
     return response.data;
   } catch (error) {
     if (error.response) {

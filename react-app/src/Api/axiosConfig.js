@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 
 // Create an API instance using Axios for interacting with the backend API
 export const API = axios.create({
-    baseURL: 'http://127.0.0.1:8000/', // Base URL for all API requests
+    baseURL: 'http://127.0.0.1:8000/api/', // Base URL for all API requests
 });
 
 // Add interceptors to include the access token in every request header if available
@@ -63,7 +63,7 @@ export const refreshToken = async () => {
     console.log("Attempting token refresh with:", refresh);
     try {
         // Send a POST request to refresh the access token
-        const response = await API.post("api/token/refresh/", { refresh });
+        const response = await API.post("token/refresh/", { refresh });
         const { access } = response.data;
 
         // Decode the token to extract the expiration time
@@ -92,10 +92,8 @@ export const ensureTokenValidity = async () => {
 
 
 // Perform secure API requests with token validation and refresh mechanism
-export const secureRequest = async (method, url, data = null, app='api/') => {
-    console.log("data",data)
-    url=app+url
-    // const navigate= useNavigate
+export const secureRequest = async (method, url, data = null) => {
+
     try {
         await ensureTokenValidity(); // Ensure the token is valid
         const response = await API[method](url, data); // Make the API request with the given method and URL

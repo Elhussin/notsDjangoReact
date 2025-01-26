@@ -28,6 +28,11 @@ import { useUser } from "./components/UserContext"; // استخدام الـ Con
 import Elgipelty from "./components/Elgipelty";
 import CchiBeneficiary from "./components/CchiBeneficiary";
 import FormElgipelty from "./components/FormElgipelty";
+
+import CustomerList from './components/crm/CustomerList';
+import InteractionList from './components/crm/InteractionList';
+import ComplaintList from './components/crm/ComplaintList';
+
 // layout
 import Layout from "./layout/Layout";
 // style
@@ -122,6 +127,9 @@ const App = () => {
           <Route path ="CchiBeneficiary" element={<CchiBeneficiary/>}/>
           <Route path ="elgipelty" element={<Elgipelty/>}/>
           <Route path ="Felgipelty" element={<FormElgipelty/>}/>
+          <Route path="CustomerList" element={<CustomerList />} />
+          <Route path="InteractionList" element={<InteractionList />} />
+          <Route path ="ComplaintList" element={<ComplaintList/>}/>
         </Route>
       </Routes>
     </BrowserRouter>
