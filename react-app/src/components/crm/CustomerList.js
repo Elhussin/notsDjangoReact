@@ -1,17 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import { getCustomer } from '../../Api/crmApi';
 
 const CustomerList = () => {
     const [customers, setCustomers] = useState([]);
 
+    // Fetch branches when component mounts
     useEffect(() => {
-        axios.get('http://127.0.0.1:8000/api/customers/')
-            .then(response => {
-                setCustomers(response.data);
-            })
-            .catch(error => {
-                console.error("There was an error fetching the customers!", error);
-            });
+        const fetchData = async () => {
+            try {
+                const data = await getCustomer();
+                console.log('Customers:', data);
+                setCustomers(data);
+            } catch (error) {
+                console.error('Error fetching branches:', error);
+            }
+        };
+        fetchData();
     }, []);
 
     return (

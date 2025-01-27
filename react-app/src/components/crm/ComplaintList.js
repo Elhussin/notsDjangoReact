@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import { getComplaints } from '../../Api/crmApi';
 
 const ComplaintList = () => {
     const [complaints, setComplaints] = useState([]);
 
     useEffect(() => {
-        axios.get('http://127.0.0.1:8000/api/complaints/')
-            .then(response => {
-                setComplaints(response.data);
-            })
-            .catch(error => {
-                console.error("There was an error fetching the complaints!", error);
-            });
+        const fetchData = async () => {
+            try {
+                const data = await getComplaints();
+               
+                setComplaints(data);
+            } catch (error) {
+                console.error('Error fetching branches:', error);
+            }
+        };
+        fetchData();
     }, []);
 
     return (
@@ -20,7 +23,7 @@ const ComplaintList = () => {
             <ul>
                 {complaints.map(complaint => (
                     <li key={complaint.id}>
-                        {complaint.customer.user.username} - {complaint.description} ({complaint.status})
+                        {complaint.customer} - {complaint.description} ({complaint.status})
                     </li>
                 ))}
             </ul>

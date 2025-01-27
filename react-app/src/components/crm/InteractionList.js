@@ -1,19 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import { getinteractions } from '../../Api/crmApi';
 
 const InteractionList = () => {
     const [interactions, setInteractions] = useState([]);
 
-    useEffect(() => {
-        axios.get('http://127.0.0.1:8000/api/interactions/')
-            .then(response => {
-                setInteractions(response.data);
-            })
-            .catch(error => {
-                console.error("There was an error fetching the interactions!", error);
-            });
-    }, []);
-
+       useEffect(() => {
+           const fetchData = async () => {
+               try {
+                   const data = await getinteractions();
+                   console.log('Customers:', data);
+                   setInteractions(data);
+               } catch (error) {
+                   console.error('Error fetching branches:', error);
+               }
+           };
+           fetchData();
+       }, []);
     return (
         <div>
             <h1>Interactions</h1>
