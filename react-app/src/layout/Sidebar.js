@@ -53,38 +53,29 @@ const Sidebar = () => {
       >
         {/* List of sidebar links */}
         <List>
-          <ListItem button onClick={toggleSidebar}>
-            <Link to="/" style={{ textDecoration: 'none' }}>
-              <ListItemText primary="Home" />
-            </Link>
+          <ListItem component={Link} to="/" button onClick={toggleSidebar} style={{ textDecoration: 'none' }}>
+            <ListItemText primary="Home" />
           </ListItem>
 
-          <ListItem button onClick={toggleSidebar}>
-            <Link to="/about" style={{ textDecoration: 'none' }}>
-              <ListItemText primary="About" />
-            </Link>
+          <ListItem component={Link} to="/about" button onClick={toggleSidebar} style={{ textDecoration: 'none' }}>
+            <ListItemText primary="About" />
           </ListItem>
 
           <Divider />
 
-          <ListItem button onClick={toggleSidebar}>
-            <Link to="/dashboard" style={{ textDecoration: 'none' }}>
-              <ListItemText primary="Dashboard" />
-            </Link>
+          <ListItem component={Link} to="/dashboard" button onClick={toggleSidebar} style={{ textDecoration: 'none' }}>
+            <ListItemText primary="Dashboard" />
           </ListItem>
 
-          <ListItem button onClick={toggleSidebar}>
-            <Link to="/branch" style={{ textDecoration: 'none' }}>
-              <ListItemText primary="Branches" />
-            </Link>
+          <ListItem component={Link} to="/branch" button onClick={toggleSidebar} style={{ textDecoration: 'none' }}>
+            <ListItemText primary="Branches" />
           </ListItem>
 
-          <ListItem button onClick={toggleSidebar}>
-            <Link to="/orderlist" style={{ textDecoration: 'none' }}>
-              <ListItemText primary="Order List" />
-            </Link>
+          <ListItem component={Link} to="/orderlist" button onClick={toggleSidebar} style={{ textDecoration: 'none' }}>
+            <ListItemText primary="Order List" />
           </ListItem>
         </List>
+
       </Drawer>
     </>
   );

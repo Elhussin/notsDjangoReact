@@ -1,13 +1,12 @@
 // react
-import { BrowserRouter, Routes, Route } from "react-router-dom";
 import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-// components
+// MAin components
 import About from "./components/About";
 import UserManag from "./components/UserManag";
 import Branch from "./components/Branch"; 
-// import BranchManagerList from "./archiv/archiv/BranchManagerList"; 
 import BranchManager from "./components/BranchManager"; 
 import Contact from "./components/Contact";
 import Dashboard from "./components/Dashboard";
@@ -19,7 +18,6 @@ import CategoryManager from './components/CategoryManager';
 import ProductManager from './components/ProductManager';
 import LoginForm from "./components/LoginForm";
 import Logout from "./components/Logout";
-// import Mesage from "./components/Message";
 import NoPage from "./components/NoPage";
 import Order from "./components/Order";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -29,14 +27,15 @@ import Elgipelty from "./components/Elgipelty";
 import CchiBeneficiary from "./components/CchiBeneficiary";
 import FormElgipelty from "./components/FormElgipelty";
 
+// CRM components
 import CustomerList from './components/crm/CustomerList';
 import InteractionList from './components/crm/InteractionList';
 import ComplaintList from './components/crm/ComplaintList';
 
 // layout
 import Layout from "./layout/Layout";
+
 // style
-// import "./style/styles.css";
 import "./style/RegisterForm.css";
 
 const theme = createTheme({
@@ -60,7 +59,7 @@ const App = () => {
 
   return (
     <ThemeProvider theme={theme}>
-    <BrowserRouter future={{ v7_startTransition: true }}>
+    <Router future={{ v7_startTransition: true }}>
       {/* <BrowserRouter> */}
       <Routes>
         <Route path="/" element={<Layout />}>
@@ -98,26 +97,11 @@ const App = () => {
               </ProtectedRoute>
             }
           />
-
-          {/* مسار مدير الفرع محمي بدور "manager" */}
-          {/* <Route
-            path="/branch"
-            element={
-              <ProtectedRoute
-                isAuthenticated={isAuthenticated}
-                requiredRole="manager"
-                userRole={userRole}
-              >
-                <Branch />
-              </ProtectedRoute>
-            }
-          /> */}
           <Route path="users" element={<UserManag />} />
           <Route path="branch" element={<Branch />} />
           <Route path="Logout" element={<Logout />} />
           <Route path="login" element={<LoginForm />} />
           <Route path="branchmanager" element={<BranchManager/>} />
-          {/* <Route path="branchmanager" element={<BranchManagerList/>} /> */}
           <Route path="companies" element={<CompaniesManager />} />
           <Route path="Factories" element={<FactoriesManager />} />
           <Route path="Brands" element={<BrandsManager />} />
@@ -132,7 +116,7 @@ const App = () => {
           <Route path ="ComplaintList" element={<ComplaintList/>}/>
         </Route>
       </Routes>
-    </BrowserRouter>
+    </Router>
     </ThemeProvider>
   );
 };

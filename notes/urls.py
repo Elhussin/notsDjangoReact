@@ -1,7 +1,7 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-# from .views import CustomTokenObtainPairView
+from django.shortcuts import render
 
 from .views import (
     index,
@@ -16,7 +16,7 @@ from .views import (
     FactoryViewSet,
     ProductViewSet, CategoryViewSet, BrandViewSet,
     TechnicalSpecificationViewSet,
-    ProductViewSet, AdditionalDetailViewSet, RatingViewSet, ReviewViewSet
+    ProductViewSet, AdditionalDetailViewSet, RatingViewSet, ReviewViewSet,UserDetailView
 )
 
 
@@ -37,14 +37,14 @@ router.register(r'ratings', RatingViewSet)
 router.register(r'reviews', ReviewViewSet)
 
 
-
-# تسجيل جميع المسارات
 urlpatterns = [
-    path('', index, name='index'),  # الصفحة الرئيسية (تقديم واجهة الموقع الأساسية)
+    # المسارات الخاصة بالـ API أولًا
     path('api/', include(router.urls)),  # تسجيل المسارات الخاصة بـ ViewSets في الراوتر
-    # path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
-
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-   
+    path('api/user/', UserDetailView.as_view(), name='user_detail'),
+
+    # إعادة توجيه كل المسارات الأخرى إلى صفحة React
+    path('', lambda request: render(request, 'index.html')),
+    path('<path:path>', lambda request, path: render(request, 'index.html')),
 ]

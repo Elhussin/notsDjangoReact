@@ -45,6 +45,15 @@ export const addUser  = async (data) => {
  */
 export const getUsers = () => secureRequest('get', 'users/');
 
+
+/**
+ * Retrieves details of a specific user. He has active session
+ * @returns {Promise<Object[]>} - The list of users.
+ */
+export const getUsersByToken = () => secureRequest('get', 'user/');
+
+
+
 /**
  * Retrieves details of a specific user.
  * @param {number|string} userId - The ID of the user.

@@ -38,6 +38,7 @@ def set_auth_cookies(response, access_token, refresh_token):
 # عرض الصفحة الرئيسية
 def index(request):
     return render(request, 'index.html')
+from django.shortcuts import render
 
 
 # تسجيل الدخول باستخدام الكوكيز
@@ -100,6 +101,13 @@ class UserSessionCheckView(APIView):
         })
 
 
+class UserDetailView(APIView):
+    permission_classes = [IsAuthenticated]  # تأكد أن المستخدم مسجل الدخول
+
+    def get(self, request):
+        user = request.user  # استرجاع المستخدم الحالي من التوكن
+        serializer = UserSerializer(user)
+        return Response(serializer.data)  # إرجاع بيانات المستخدم
 
 
 class UserViewSet(viewsets.ModelViewSet):
