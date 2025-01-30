@@ -20,11 +20,10 @@ from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView 
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('notes.urls')),
-    path('waseel/', include('waseel.urls')),  # إضافة مسارات التطبيق الجديد
-    path('crm/', include('crm.urls')),
-# المسار الافتراضي
+    path('api/waseel/', include('waseel.urls')),  # إضافة مسارات التطبيق الجديد
+    path('api/crm/', include('crm.urls')),  
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-

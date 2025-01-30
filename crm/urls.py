@@ -8,5 +8,5 @@ router.register(r'interactions', InteractionViewSet)
 router.register(r'complaints', ComplaintViewSet)
 
 urlpatterns = [
-    path('api/', include(router.urls)),
+    path('', include(router.urls)),
 ]
