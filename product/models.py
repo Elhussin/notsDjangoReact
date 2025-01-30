@@ -1,4 +1,5 @@
 from django.db import models
+from simple_history.models import HistoricalRecords
 
 # Create your models here.
 from django.db import models
@@ -12,11 +13,23 @@ class Category(models.Model):
         return self.name
     
 class Brand(models.Model):
-    name = models.CharField(max_length=100, unique=True)
-    description = models.TextField(blank=True)
-
+    name = models.CharField(max_length=100, unique=True, verbose_name="Brand Name")
+    description = models.TextField(blank=True, verbose_name="Description")
+    logo = models.ImageField(upload_to='brands/logos/', blank=True, verbose_name="Brand Logo")
+    is_active = models.BooleanField(default=True, verbose_name="Is Active")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Created At")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="Updated At")
+    history = HistoricalRecords()
+    class Meta:
+        verbose_name = "Brand"
+        # verbose_name_plural = "Brands"
+        ordering = ["-created_at"]
+        
     def __str__(self):
         return self.name
+    
+# pip install django-simple-history
+
 
 class Product(models.Model):
     # المعلومات الأساسية
@@ -56,17 +69,39 @@ class ProductImage(models.Model):
     def __str__(self):
         return f"Image for {self.product.name}"
     
-class ProductVariant(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='variants')
-    color = models.CharField(max_length=50, blank=True)
-    size = models.CharField(max_length=50, blank=True)
-    weight = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
-    material = models.CharField(max_length=100, blank=True)
+# class ProductVariant(models.Model):
+#     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='variants')
+#     color = models.CharField(max_length=50, blank=True)
+#     size = models.CharField(max_length=50, blank=True)
+#     weight = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+#     material = models.CharField(max_length=100, blank=True)
+    
+#     def __str__(self):
+#         return f"{self.product.name} - {self.color} - {self.size}"
+class Attribute(models.Model):
+    name = models.CharField(max_length=100, unique=True)
     
     def __str__(self):
-        return f"{self.product.name} - {self.color} - {self.size}"
+        return self.name
     
+class AttributeValue(models.Model):
+    attribute = models.ForeignKey(Attribute, on_delete=models.CASCADE, related_name='values')
+    value = models.CharField(max_length=100, unique=True)
     
+    def __str__(self):
+        return f"{self.attribute.name} - {self.value}"
+    
+
+class ProductVariant(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='variants')
+    sku = models.CharField(max_length=50, unique=True)  # مثل: TSHIRT-RED-XL
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    stock_quantity = models.IntegerField(default=0)
+    attributes = models.ManyToManyField(AttributeValue)  # الربط مع الخصائص
+    
+    def __str__(self):
+        return f"{self.product.name} - {self.sku}"
+   
 
 class Warranty(models.Model):
     product = models.OneToOneField(Product, on_delete=models.CASCADE, related_name='warranty')
@@ -114,19 +149,7 @@ class ProductSpecification(models.Model):
         return f"{self.key} - {self.value}"
     
     
-class ProductAttribute(models.Model):
-    name = models.CharField(max_length=100, unique=True)
-    
-    def __str__(self):
-        return self.name
-    
-class ProductAttributeValue(models.Model):
-    attribute = models.ForeignKey(ProductAttribute, on_delete=models.CASCADE, related_name='values')
-    value = models.CharField(max_length=100)
-    
-    def __str__(self):
-        return f"{self.attribute.name} - {self.value}"
-    
+
 class Discount(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='discounts')
     discount = models.DecimalField(max_digits=5, decimal_places=2)

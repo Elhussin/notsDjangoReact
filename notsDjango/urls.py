@@ -25,6 +25,7 @@ urlpatterns = [
     path('', include('notes.urls')),
     path('waseel/', include('waseel.urls')),  # إضافة مسارات التطبيق الجديد
     path('crm/', include('crm.urls')),
+    path('product/', include('product.urls')),
 # المسار الافتراضي
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

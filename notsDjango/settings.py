@@ -51,6 +51,8 @@ INSTALLED_APPS = [
     'crm',
     'hrm',
     'reporting',
+    'product' ,
+    'simple_history',
 
 ]
 
@@ -74,6 +76,7 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'simple_history.middleware.HistoryRequestMiddleware',
 
 
 
