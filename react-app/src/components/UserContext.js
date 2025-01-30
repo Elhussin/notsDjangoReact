@@ -40,7 +40,23 @@ export const UserProvider = ({ children }) => {
     const fetchData = async () => {
         try {
             const userData = await getUsersByToken();
-            setUser(userData); // حفظ المستخدم في الـ context
+            let userRole = "user";
+            if (userData.staff && userData.superuser) {
+              userRole = "admin";
+            } else if (userData.staff && !userData.superuser) {
+              userRole = "staff";
+            } else if (!userData.staff && userData.superuser) {
+              userRole = "manager";
+            }
+
+            setUser({
+              username: userData.username,
+              email: userData.email,
+              userRole,
+              id: userData.id,
+            });
+
+            // setUser(userData); // حفظ المستخدم في الـ context
             console.log("UserProvider Initialized:", userData);
         } catch (error) {
             // toast.error('Error fetching data!');
