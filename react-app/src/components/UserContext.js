@@ -1,92 +1,62 @@
-// import React, { createContext, useContext, useState } from "react";
-
-// // إنشاء Context
-// const UserContext = createContext(null);
-
-// // مزود (Provider) لتمرير بيانات المستخدم
-// export const UserProvider = ({ children }) => {
-//   const [user, setUser] = useState(null);
-//   console.log("UserProvider Initialized:", user);
-//   return (
-//     <UserContext.Provider value={{ user, setUser }}>
-//       {children}
-//     </UserContext.Provider>
-//   );
-// };
-
-// // دالة مخصصة للوصول إلى الـ Context
-// export const useUser = () => {
-//   const context = useContext(UserContext);
-
-//   if (!context) {
-//     console.error("useUser called outside of UserProvider!");
-//     throw new Error("useUser must be used within a UserProvider");
-//   }
-
-//   return context;
-// };
-
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState, useEffect, memo } from "react";
 import { getUsersByToken } from "../Api/api"; // Import the login API function
-// import { ToastContainer, toast } from 'react-toastify';
-// import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 const UserContext = createContext(null);
 
-export const UserProvider = ({ children }) => {
+export const UserProvider = memo(({ children }) => {
   const [user, setUser] = useState(null);
-
 
   useEffect(() => {
     const fetchData = async () => {
-        try {
-            const userData = await getUsersByToken();
-            let userRole = "user";
-            if (userData.staff && userData.superuser) {
-              userRole = "admin";
-            } else if (userData.staff && !userData.superuser) {
-              userRole = "staff";
-            } else if (!userData.staff && userData.superuser) {
-              userRole = "manager";
-            }
-
-            setUser({
-              username: userData.username,
-              email: userData.email,
-              userRole,
-              id: userData.id,
-            });
-
-            // setUser(userData); // حفظ المستخدم في الـ context
-            console.log("UserProvider Initialized:", userData);
-        } catch (error) {
-            // toast.error('Error fetching data!');
-            console.error(error);
+      try {
+        const token = localStorage.getItem("access_token");
+        if (!token) {
+          console.warn("No access token found.");
+          return;
         }
+
+        const userData = await getUsersByToken();
+        console.log("User data:", userData);
+        let userRole = "user";
+        if (userData.staff && userData.superuser) {
+          userRole = "admin";
+        } else if (userData.staff && !userData.superuser) {
+          userRole = "staff";
+        } else if (!userData.staff && userData.superuser) {
+          userRole = "manager";
+        }
+
+        setUser({
+          username: userData.username,
+          email: userData.email,
+          userRole,
+          id: userData.id,
+        });
+
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+        toast.error("Failed to fetch user data. Please try again later.");
+      }
     };
+
     fetchData();
-}, []);
-
-  // جلب بيانات المستخدم عند تحميل الصفحة
-
-  // دالة تسجيل الخروج
-  const handleLogout = () => {
-    localStorage.removeItem("access_token");
-    localStorage.removeItem("refresh_token");
-    setUser(null);
-  };
+  }, []);
 
   return (
-    <UserContext.Provider value={{ user, setUser, handleLogout }}>
+    <UserContext.Provider value={{ user, setUser }}>
       {children}
     </UserContext.Provider>
   );
-};
+});
 
-// دالة مخصصة لاستخدام السياق
 export const useUser = () => {
   const context = useContext(UserContext);
   if (!context) {
-    throw new Error("useUser must be used within a UserProvider");
+    throw new Error(
+      "useUser must be used within a UserProvider. Make sure you wrap your app with <UserProvider>."
+    );
   }
   return context;
 };

@@ -17,7 +17,6 @@ import BrandsManager from './components/BrandsManager';
 import CategoryManager from './components/CategoryManager';
 import ProductManager from './components/ProductManager';
 import LoginForm from "./components/LoginForm";
-import Logout from "./components/Logout";
 import NoPage from "./components/NoPage";
 import Order from "./components/Order";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -59,65 +58,50 @@ const App = () => {
 
   return (
     <ThemeProvider theme={theme}>
-    <Router future={{ v7_startTransition: true }}>
-      {/* <BrowserRouter> */}
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<Home />} />
-          <Route path="Contact" element={<Contact />} />
-          <Route path="About" element={<About />} />
-          <Route path="*" element={<NoPage />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/OrderList" element={<Order />} />
-          {/* مسار الطلبات محمي */}
-          <Route
-            path="OrderList"
-            element={
-              <ProtectedRoute
-                isAuthenticated={isAuthenticated}
-                requiredRole="staff"
-                userRole={userRole}
-              >
-                <Order />
-              </ProtectedRoute>
-            }
-          />
-          {/* مسار الطلبات محمي */}
-          <Route
-            path="admin"
-            element={
-              <ProtectedRoute
-                isAuthenticated={isAuthenticated}
-                requiredRole="admin"
-                userRole={userRole}
-              >
-                <UserManag />
-                <Order />
-                <Branch />
-              </ProtectedRoute>
-            }
-          />
-          <Route path="users" element={<UserManag />} />
-          <Route path="branch" element={<Branch />} />
-          <Route path="Logout" element={<Logout />} />
-          <Route path="login" element={<LoginForm />} />
-          <Route path="branchmanager" element={<BranchManager/>} />
-          <Route path="companies" element={<CompaniesManager />} />
-          <Route path="Factories" element={<FactoriesManager />} />
-          <Route path="Brands" element={<BrandsManager />} />
-          <Route path="register" element={<RegisterForm />} />
-          <Route path="category" element={<CategoryManager />} />
-          <Route path="product" element={<ProductManager />} /> 
-          <Route path ="CchiBeneficiary" element={<CchiBeneficiary/>}/>
-          <Route path ="elgipelty" element={<Elgipelty/>}/>
-          <Route path ="Felgipelty" element={<FormElgipelty/>}/>
-          <Route path="CustomerList" element={<CustomerList />} />
-          <Route path="InteractionList" element={<InteractionList />} />
-          <Route path ="ComplaintList" element={<ComplaintList/>}/>
-        </Route>
-      </Routes>
-    </Router>
+      <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            {/* Public Routes */}
+            <Route index element={<Home />} />
+            <Route path="Contact" element={<Contact />} />
+            <Route path="About" element={<About />} />
+            <Route path="login" element={<LoginForm />} />
+            <Route path="register" element={<RegisterForm />} />
+            <Route path="*" element={<NoPage />} />
+
+            {/* Protected Routes */}
+            <Route path="dashboard" element={<Dashboard />} />
+            <Route
+              path="admin"
+              element={
+                <ProtectedRoute
+                  isAuthenticated={isAuthenticated}
+                  requiredRole="admin"
+                  userRole={userRole}
+                >
+                  <Order />
+                </ProtectedRoute>
+              }
+            />
+            <Route path="users" element={<UserManag />} />
+            <Route path="branch" element={<Branch />} />
+            <Route path="branchmanager" element={<BranchManager />} />
+            <Route path="companies" element={<CompaniesManager />} />
+            <Route path="Factories" element={<FactoriesManager />} />
+            <Route path="Brands" element={<BrandsManager />} />
+            <Route path="category" element={<CategoryManager />} />
+            <Route path="product" element={<ProductManager />} />
+            <Route path="CchiBeneficiary" element={<CchiBeneficiary />} />
+            <Route path="elgipelty" element={<Elgipelty />} />
+            <Route path="Felgipelty" element={<FormElgipelty />} />
+            <Route path="CustomerList" element={<CustomerList />} />
+            <Route path="InteractionList" element={<InteractionList />} />
+            <Route path="ComplaintList" element={<ComplaintList />} />
+          </Route>
+        </Routes>
+      </Router>
     </ThemeProvider>
+
   );
 };
 

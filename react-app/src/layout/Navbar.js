@@ -63,9 +63,9 @@ const Navbar = () => {
                   </Button>
                 </>
               )}
-              <Button color="inherit">
-                <Logout />
-              </Button>
+                <div> <Logout /></div>
+               
+   
             </>
           ) : (
             <>

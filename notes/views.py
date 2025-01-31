@@ -8,13 +8,16 @@ from django.contrib.auth import authenticate
 from django.shortcuts import render
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework_simplejwt.exceptions import InvalidToken
-from .models import Branch, BranchManager, Order, Company, Factory, Product, Category, Brand, ProductImage, Discount, Review,TechnicalSpecification
+from .models import Branch, BranchManager, Order, Company, Factory, Product, Category, Brand, AdditionalDetail, Rating, Review, ProductImage, Discount, Review,TechnicalSpecification
 from .serializers import (UserSerializer, BranchSerializer, BranchManagerSerializer, OrderSerializer, 
  TechnicalSpecificationSerializer,
     CompanySerializer,FactorySerializer, ProductSerializer, CategorySerializer, BrandSerializer,
     ProductImageSerializer, DiscountSerializer, ReviewSerializer)
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
+
+
+from .serializers import ProductSerializer, AdditionalDetailSerializer, RatingSerializer, ReviewSerializer
 
 
 def set_auth_cookies(response, access_token, refresh_token):
@@ -40,7 +43,6 @@ def index(request):
     return render(request, 'index.html')
 from django.shortcuts import render
 
-
 # تسجيل الدخول باستخدام الكوكيز
 class LoginView(APIView):
     permission_classes = [AllowAny]  # السماح لأي مستخدم باستخدام هذه الواجهة
@@ -57,7 +59,6 @@ class LoginView(APIView):
             return set_auth_cookies(response, access, refresh)
         else:
             return Response({"error": "Invalid credentials"}, status=401)
-
 
 # تجديد التوكن باستخدام refresh_token
 class RefreshTokenView(APIView):
@@ -100,15 +101,14 @@ class UserSessionCheckView(APIView):
             }
         })
 
-
-class UserDetailView(APIView):
+class UserDetailView(viewsets.ViewSet):
     permission_classes = [IsAuthenticated]  # تأكد أن المستخدم مسجل الدخول
 
     def get(self, request):
         user = request.user  # استرجاع المستخدم الحالي من التوكن
         serializer = UserSerializer(user)
+        print(serializer.data)
         return Response(serializer.data)  # إرجاع بيانات المستخدم
-
 
 class UserViewSet(viewsets.ModelViewSet):
     """
@@ -129,9 +129,6 @@ class UserViewSet(viewsets.ModelViewSet):
         return super().get_permissions()
         # return [IsAuthenticated()]
 
-
-
-# ViewSet للفروع
 class BranchViewSet(viewsets.ModelViewSet):
     queryset = Branch.objects.all()
     serializer_class = BranchSerializer
@@ -142,24 +139,16 @@ class BranchViewSet(viewsets.ModelViewSet):
             return [AllowAny()]
         return [permissions.IsAuthenticated()]
 
-
-# ViewSet لمديري الفروع
 class BranchManagerViewSet(viewsets.ModelViewSet):
     queryset = BranchManager.objects.all()
     serializer_class = BranchManagerSerializer
     authentication_classes = [JWTAuthentication]
 
-
-# ViewSet للطلبات
 class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
     authentication_classes = [JWTAuthentication]
 
-# curl -X POST http://localhost:8000/api/branches/ \
-# -H "Content-Type: application/json" \
-# -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMyNzEzMDc4LCJpYXQiOjE3MzI2NTMwNzgsImp0aSI6IjdhNTk2MmRmNzQ3MjQwYmM4NmY4NDE5M2JkMjQ3MWJiIiwidXNlcl9pZCI6NH0.vyJC9zGfIglWv0VJA4g2bZcF6JZZ2ErP7984Oey5LPM" \
-# -d '{"name": "Branch 1", "location": "City 1" ,"phone":"2222"}'
 class CompanyViewSet(viewsets.ModelViewSet):
     """
     ViewSet for the Company model.
@@ -193,13 +182,9 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
 
         return token
     
-
-
 class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
     
-
-
 class FactoryViewSet(viewsets.ModelViewSet):
     """
     ViewSet for handling CRUD operations for the Factory model.
@@ -237,13 +222,6 @@ class TechnicalSpecificationViewSet(viewsets.ModelViewSet):
     queryset = TechnicalSpecification.objects.all()
     serializer_class = TechnicalSpecificationSerializer
 
-
-
-
-from rest_framework import viewsets
-from .models import Product, AdditionalDetail, Rating, Review
-from .serializers import ProductSerializer, AdditionalDetailSerializer, RatingSerializer, ReviewSerializer
-
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
@@ -259,131 +237,3 @@ class RatingViewSet(viewsets.ModelViewSet):
 class ReviewViewSet(viewsets.ModelViewSet):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
-
-
-
-
-
-
-
-
-
-# from django.db import models
-# from django.apps import apps
-
-# def create_model(name, fields=None, app_label='', module='', options=None, admin_opts=None):
-#     """
-#     Dynamically creates a Django model.
-
-#     Parameters:
-#     - name (str): Name of the model.
-#     - fields (dict): A dictionary where keys are field names and values are Django field instances.
-#     - app_label (str): The app where the model belongs (optional for standalone usage).
-#     - module (str): Module name (usually `__name__`).
-#     - options (dict): Additional model options, such as verbose_name (optional).
-#     - admin_opts (dict): Admin configuration options (optional).
-
-#     Returns:
-#     - A Django model class.
-#     """
-#     # Default values for fields
-#     fields = fields or {}
-#     options = options or {}
-
-#     # Add a default primary key field
-#     fields['__module__'] = module
-#     if 'id' not in fields:
-#         fields['id'] = models.AutoField(primary_key=True)
-
-#     # Define Meta options
-#     if options:
-#         class Meta:
-#             pass
-#         for key, value in options.items():
-#             setattr(Meta, key, value)
-#         fields['Meta'] = Meta
-
-#     # Create the model class
-#     model = type(name, (models.Model,), fields)
-
-#     # Add to the app registry
-#     if app_label:
-#         model._meta.app_label = app_label
-#         apps.register_model(app_label, model)
-
-#     # Register model in admin if admin_opts is provided
-#     if admin_opts:
-#         from django.contrib import admin
-#         class ModelAdmin(admin.ModelAdmin):
-#             pass
-#         for key, value in admin_opts.items():
-#             setattr(ModelAdmin, key, value)
-#         admin.site.register(model, ModelAdmin)
-
-#     return model
-
-
-
-# # Example usage
-# new_model = create_model(
-#     name="DynamicModel",
-#     fields={
-#         "name": models.CharField(max_length=255),
-#         "created_at": models.DateTimeField(auto_now_add=True),
-#         "is_active": models.BooleanField(default=True),
-#     },
-#     app_label="myapp",  # Replace 'myapp' with your app name
-#     module=__name__,
-#     options={
-#         "verbose_name": "Dynamic Model",
-#         "verbose_name_plural": "Dynamic Models",
-#     },
-#     admin_opts={
-#         "list_display": ("name", "created_at", "is_active"),
-#         "search_fields": ("name",),
-#     }
-# )
-
-# from django.db import models
-# from django.http import JsonResponse
-# from django.core.management import call_command
-
-# def create_dynamic_model(request):
-#     if request.method == "POST":
-#         data = request.json  # الحصول على بيانات الموديل من الطلب
-#         model_name = data["model_name"]
-#         fields = data["fields"]
-
-#         # إنشاء الحقول
-#         attributes = {}
-#         for field in fields:
-#             field_type = getattr(models, field["type"])
-#             attributes[field["name"]] = field_type(**{k: v for k, v in field.items() if k != "name" and k != "type"})
-        
-#         # إنشاء الموديل الديناميكي
-#         new_model = type(model_name, (models.Model,), attributes)
-        
-#         # تسجيل الموديل الجديد
-#         new_model._meta.app_label = 'my_app'  # استبدل بـ اسم تطبيقك
-#         models.ModelBase.__new__(models.ModelBase, model_name, (models.Model,), attributes)
-
-#         # إجراء الهجرات لتحديث قاعدة البيانات
-#         call_command("makemigrations", "my_app")
-#         call_command("migrate", "my_app")
-
-#         return JsonResponse({"message": f"Model '{model_name}' created successfully!"})
-
-# from rest_framework.viewsets import ModelViewSet
-# from rest_framework import serializers
-
-# def dynamic_viewset(model):
-#     class DynamicSerializer(serializers.ModelSerializer):
-#         class Meta:
-#             model = model
-#             fields = "__all__"
-
-#     class DynamicViewSet(ModelViewSet):
-#         queryset = model.objects.all()
-#         serializer_class = DynamicSerializer
-
-#     return DynamicViewSet

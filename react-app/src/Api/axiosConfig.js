@@ -60,7 +60,7 @@ export const refreshToken = async () => {
         console.error("Refresh token not found");
         throw new Error("Refresh token not found");
     }
-    console.log("Attempting token refresh with:", refresh);
+
     try {
         // Send a POST request to refresh the access token
         const response = await API.post("token/refresh/", { refresh });
@@ -72,8 +72,6 @@ export const refreshToken = async () => {
         // Update the access token and its expiration time in localStorage
         localStorage.setItem("access_token", access);
         localStorage.setItem("exp_token", decodedToken.exp);
-
-        console.log("Token refreshed successfully");
         return access; // Return the new access token
     } catch (error) {
         console.error("Failed to refresh token:", error);
@@ -84,10 +82,8 @@ export const refreshToken = async () => {
 // Ensure the token is valid, and refresh it if expired
 export const ensureTokenValidity = async () => {
     if (isTokenExpired()) {
-        console.log("Token expired, refreshing...");
         return await refreshToken();
     }
-    console.log("Token is valid");
 };
 
 

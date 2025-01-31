@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {
   Drawer,
   List,
-  ListItem,
+  ListItemButton, // استخدم ListItemButton بدلاً من ListItem
   ListItemText,
   Divider,
   IconButton,
@@ -11,17 +11,9 @@ import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import { Link } from 'react-router-dom';
 
-/**
- * Sidebar component with toggle functionality using Material-UI Drawer.
- * Allows users to open or close the sidebar dynamically.
- */
 const Sidebar = () => {
-  // State to manage the sidebar's open/close status
   const [isOpen, setIsOpen] = useState(true);
 
-  /**
-   * Toggles the sidebar's open/close state.
-   */
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
   };
@@ -53,29 +45,23 @@ const Sidebar = () => {
       >
         {/* List of sidebar links */}
         <List>
-          <ListItem component={Link} to="/" button onClick={toggleSidebar} style={{ textDecoration: 'none' }}>
+          <ListItemButton component={Link} to="/" onClick={toggleSidebar}>
             <ListItemText primary="Home" />
-          </ListItem>
-
-          <ListItem component={Link} to="/about" button onClick={toggleSidebar} style={{ textDecoration: 'none' }}>
+          </ListItemButton>
+          <ListItemButton component={Link} to="/about" onClick={toggleSidebar}>
             <ListItemText primary="About" />
-          </ListItem>
-
+          </ListItemButton>
           <Divider />
-
-          <ListItem component={Link} to="/dashboard" button onClick={toggleSidebar} style={{ textDecoration: 'none' }}>
+          <ListItemButton component={Link} to="/dashboard" onClick={toggleSidebar}>
             <ListItemText primary="Dashboard" />
-          </ListItem>
-
-          <ListItem component={Link} to="/branch" button onClick={toggleSidebar} style={{ textDecoration: 'none' }}>
+          </ListItemButton>
+          <ListItemButton component={Link} to="/branch" onClick={toggleSidebar}>
             <ListItemText primary="Branches" />
-          </ListItem>
-
-          <ListItem component={Link} to="/orderlist" button onClick={toggleSidebar} style={{ textDecoration: 'none' }}>
+          </ListItemButton>
+          <ListItemButton component={Link} to="/orderlist" onClick={toggleSidebar}>
             <ListItemText primary="Order List" />
-          </ListItem>
+          </ListItemButton>
         </List>
-
       </Drawer>
     </>
   );

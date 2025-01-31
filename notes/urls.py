@@ -35,16 +35,9 @@ router.register(r'technical-specifications', TechnicalSpecificationViewSet, base
 router.register(r'additional-details', AdditionalDetailViewSet)
 router.register(r'ratings', RatingViewSet)
 router.register(r'reviews', ReviewViewSet)
-
+router.register(r'user', UserDetailView, basename='user')  # تحديد basename
 
 urlpatterns = [
-    # المسارات الخاصة بالـ API أولًا
-    path('api/', include(router.urls)),  # تسجيل المسارات الخاصة بـ ViewSets في الراوتر
-    path('api/token/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('api/user/', UserDetailView.as_view(), name='user_detail'),
+    path('', include(router.urls)),  # تسجيل المسارات الخاصة بـ ViewSets في الراوتر
 
-    # إعادة توجيه كل المسارات الأخرى إلى صفحة React
-    path('', lambda request: render(request, 'index.html')),
-    path('<path:path>', lambda request, path: render(request, 'index.html')),
 ]
