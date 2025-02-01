@@ -54,31 +54,64 @@ const isTokenExpired = () => {
 
 
 // Function to refresh the access token using the refresh token
+// export const refreshToken = async () => {
+//     const refresh = localStorage.getItem("refresh_token"); // Retrieve the refresh token from localStorage
+//     if (!refresh) {
+//         console.error("Refresh token not found");
+//         throw new Error("Refresh token not found");
+//     }
+//     console.log("Refresh Token:", localStorage.getItem("refresh_token"));
+//     try {
+//         // Send a POST request to refresh the access token
+//         const response = await API.post("token/refresh/", { refresh });
+//         const { access } = response.data;
+
+//         // Decode the token to extract the expiration time
+//         const decodedToken = jwtDecode(access);
+
+//         // Update the access token and its expiration time in localStorage
+//         localStorage.setItem("access_token", access);
+//         localStorage.setItem("exp_token", decodedToken.exp);
+//         return access; // Return the new access token
+//     } catch (error) {
+//         console.error("Failed to refresh token:", error);
+//         throw error; // Throw the error for further handling
+//     }
+// };
 export const refreshToken = async () => {
-    const refresh = localStorage.getItem("refresh_token"); // Retrieve the refresh token from localStorage
+    const refresh = localStorage.getItem("refresh_token");
     if (!refresh) {
         console.error("Refresh token not found");
         throw new Error("Refresh token not found");
     }
 
     try {
-        // Send a POST request to refresh the access token
-        const response = await API.post("token/refresh/", { refresh });
-        const { access } = response.data;
+        const response = await API.post("api/token/refresh/", { refresh }, {
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
 
-        // Decode the token to extract the expiration time
+        console.log("Response Data:", response.data);
+
+        const { access } = response.data;
         const decodedToken = jwtDecode(access);
 
-        // Update the access token and its expiration time in localStorage
         localStorage.setItem("access_token", access);
         localStorage.setItem("exp_token", decodedToken.exp);
-        return access; // Return the new access token
+
+        console.log("Access Token Updated:", access);
+        return access;
     } catch (error) {
-        console.error("Failed to refresh token:", error);
-        throw error; // Throw the error for further handling
+        if (error.response && error.response.status === 401) {
+            console.error("Refresh token expired. Redirecting to login...");
+            window.location.href = "/login";
+        } else {
+            console.error("Failed to refresh token:", error);
+            throw error;
+        }
     }
 };
-
 // Ensure the token is valid, and refresh it if expired
 export const ensureTokenValidity = async () => {
     if (isTokenExpired()) {

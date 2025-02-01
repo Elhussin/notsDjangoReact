@@ -101,14 +101,25 @@ class UserSessionCheckView(APIView):
             }
         })
 
-class UserDetailView(viewsets.ViewSet):
-    permission_classes = [IsAuthenticated]  # تأكد أن المستخدم مسجل الدخول
+# class UserDetailView(viewsets.ViewSet):
+#     permission_classes = [IsAuthenticated]  # تأكد أن المستخدم مسجل الدخول
 
-    def get(self, request):
+#     def get(self, request):
+#         user = request.user  # استرجاع المستخدم الحالي من التوكن
+#         serializer = UserSerializer(user)
+#         print(serializer.data)
+#         return Response(serializer.data)  # إرجاع بيانات المستخدم
+
+class UserDetailView(viewsets.ViewSet):
+    permission_classes = [permissions.IsAuthenticated]  # تأكد أن المستخدم مسجل الدخول
+
+    def retrieve(self, request, pk=None):
         user = request.user  # استرجاع المستخدم الحالي من التوكن
         serializer = UserSerializer(user)
         print(serializer.data)
         return Response(serializer.data)  # إرجاع بيانات المستخدم
+    
+    
 
 class UserViewSet(viewsets.ModelViewSet):
     """
