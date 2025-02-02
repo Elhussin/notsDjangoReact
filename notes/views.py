@@ -101,15 +101,6 @@ class UserSessionCheckView(APIView):
             }
         })
 
-# class UserDetailView(viewsets.ViewSet):
-#     permission_classes = [IsAuthenticated]  # تأكد أن المستخدم مسجل الدخول
-
-#     def get(self, request):
-#         user = request.user  # استرجاع المستخدم الحالي من التوكن
-#         serializer = UserSerializer(user)
-#         print(serializer.data)
-#         return Response(serializer.data)  # إرجاع بيانات المستخدم
-
 class UserDetailView(viewsets.ViewSet):
     permission_classes = [permissions.IsAuthenticated]  # تأكد أن المستخدم مسجل الدخول
 
@@ -118,8 +109,6 @@ class UserDetailView(viewsets.ViewSet):
         serializer = UserSerializer(user)
         print(serializer.data)
         return Response(serializer.data)  # إرجاع بيانات المستخدم
-    
-    
 
 class UserViewSet(viewsets.ModelViewSet):
     """
@@ -233,9 +222,9 @@ class TechnicalSpecificationViewSet(viewsets.ModelViewSet):
     queryset = TechnicalSpecification.objects.all()
     serializer_class = TechnicalSpecificationSerializer
 
-class ProductViewSet(viewsets.ModelViewSet):
-    queryset = Product.objects.all()
-    serializer_class = ProductSerializer
+# class ProductViewSet(viewsets.ModelViewSet):
+#     queryset = Product.objects.all()
+#     serializer_class = ProductSerializer
 
 class AdditionalDetailViewSet(viewsets.ModelViewSet):
     queryset = AdditionalDetail.objects.all()
