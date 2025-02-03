@@ -1,17 +1,12 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-from django.shortcuts import render
 
 from .views import (
     index,
-    LoginView,
-    RefreshTokenView,
-    UserSessionCheckView,
     UserViewSet,
     BranchViewSet,
     BranchManagerViewSet,
-    OrderViewSet,CustomTokenObtainPairView,
+    OrderViewSet,
     CompanyViewSet,
     FactoryViewSet,
     ProductViewSet, CategoryViewSet, BrandViewSet,
@@ -32,9 +27,9 @@ router.register(r'brands', BrandViewSet, basename='brands')
 router.register(r'products', ProductViewSet, basename='products')
 router.register(r'categories', CategoryViewSet, basename='categories')
 router.register(r'technical-specifications', TechnicalSpecificationViewSet, basename="TechnicalSpecificationViewSet")
-router.register(r'additional-details', AdditionalDetailViewSet)
-router.register(r'ratings', RatingViewSet)
-router.register(r'reviews', ReviewViewSet)
+router.register(r'additional-details', AdditionalDetailViewSet,basename='additional-details')
+router.register(r'ratings', RatingViewSet , basename='ratings')
+router.register(r'reviews', ReviewViewSet , basename='reviews')
 router.register(r'user', UserDetailView, basename='user')  # تحديد basename
 
 urlpatterns = [

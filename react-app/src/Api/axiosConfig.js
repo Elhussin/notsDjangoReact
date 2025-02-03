@@ -86,7 +86,7 @@ export const refreshToken = async () => {
     }
 
     try {
-        const response = await API.post("api/token/refresh/", { refresh }, {
+        const response = await API.post("token/refresh/", { refresh }, {
             headers: {
                 "Content-Type": "application/json",
             },
