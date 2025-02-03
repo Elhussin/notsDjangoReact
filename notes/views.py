@@ -15,6 +15,9 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+def index(request):
+    return render(request, 'index.html')
+
 class BaseViewSet(viewsets.ModelViewSet):
     authentication_classes = [JWTAuthentication]
 
@@ -51,10 +54,15 @@ class LoginView(APIView):
 class UserDetailView(BaseViewSet):
     serializer_class = UserSerializer
 
+    def get_queryset(self):
+        # استرجاع المستخدم الحالي فقط
+        return User.objects.filter(id=self.request.user.id).only('id', 'username', 'email', 'is_superuser', 'last_name', 'first_name', 'is_staff', 'is_active')
+
     def retrieve(self, request, pk=None):
-        user = request.user
+        user = request.user  # استرجاع المستخدم الحالي من التوكن
         serializer = self.serializer_class(user)
         return Response(serializer.data)
+    
 
 class UserViewSet(DynamicModelViewSet):
     model = User

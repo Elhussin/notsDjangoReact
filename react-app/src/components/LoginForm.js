@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { login } from "../Api/api"; // Import the login API function
+import { login,getUsersByToken } from "../Api/api"; // Import the login API function
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import {jwtDecode} from "jwt-decode"; // Correct import for jwtDecode
@@ -46,22 +46,26 @@ const LoginForm = () => {
           // Check token expiry
           const currentTime = Math.floor(Date.now() / 1000);
           if (decodedToken.exp > currentTime) {
+            const Data = await getUsersByToken();
+            const userData=Data[0];
+            console.log("User data Login:", userData);
             // Determine user role based on token claims
             let userRole = "user";
-            if (decodedToken.staff && decodedToken.superuser) {
+            if (userData.staff && userData.superuser) {
               userRole = "admin";
-            } else if (decodedToken.staff && !decodedToken.superuser) {
+            } else if (userData.staff && !userData.superuser) {
               userRole = "staff";
-            } else if (!decodedToken.staff && decodedToken.superuser) {
+            } else if (!userData.staff && userData.superuser) {
               userRole = "manager";
             }
 
+
             // Set user data in context
             setUser({
-              username: decodedToken.username,
-              email: decodedToken.email,
-              userRole,
-              id: decodedToken.id,
+              username: userData.username,
+              email: userData.email,
+              'userRole':userRole,
+              id: userData.id,
             });
           } else {
             toast.error("Token expired. Please login again.");

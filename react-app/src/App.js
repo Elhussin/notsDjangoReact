@@ -25,6 +25,7 @@ import { useUser } from "./components/UserContext"; // استخدام الـ Con
 import Elgipelty from "./components/Elgipelty";
 import CchiBeneficiary from "./components/CchiBeneficiary";
 import FormElgipelty from "./components/FormElgipelty";
+import { UserProvider } from "./components/UserContext";
 
 // CRM components
 import CustomerList from './components/crm/CustomerList';
@@ -54,9 +55,11 @@ const App = () => {
   let userRole = "user";
   if (user) {
     userRole = user.userRole;
+    console.log("User Role APP:", userRole);
   }
 
   return (
+    <UserProvider>
     <ThemeProvider theme={theme}>
       <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         <Routes>
@@ -101,7 +104,7 @@ const App = () => {
         </Routes>
       </Router>
     </ThemeProvider>
-
+    </UserProvider>
   );
 };
 

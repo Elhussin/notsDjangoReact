@@ -53,6 +53,7 @@ const Dashboard = () => {
     { title: 'Customer List', path: '/CustomerList', icon: <FormIcon /> },
     { title: 'Interaction List', path: '/InteractionList', icon: <FormIcon /> },
     { title: 'Complaint List', path: '/ComplaintList', icon: <LogoutIcon /> },
+    { title: 'USERS ADMIN', path: '/users', icon: <ContactIcon /> },
 
   ];
 

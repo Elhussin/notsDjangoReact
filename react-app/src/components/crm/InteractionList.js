@@ -22,7 +22,7 @@ const InteractionList = () => {
             <ul>
                 {interactions.map(interaction => (
                     <li key={interaction.id}>
-                        {interaction.interaction_type} with {interaction.customer.user.username} - {interaction.notes}
+                        {interaction.interaction_type} with {interaction.customer} - {interaction.notes}
                     </li>
                 ))}
             </ul>

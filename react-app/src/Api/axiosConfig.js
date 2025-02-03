@@ -126,7 +126,9 @@ export const secureRequest = async (method, url, data = null) => {
     try {
         await ensureTokenValidity(); // Ensure the token is valid
         const response = await API[method](url, data); // Make the API request with the given method and URL
+        console.log("Response Data:", response.data);
         return response.data; // Return the response data
+   
     } catch (error) {
         if (error.response) {
             // Errors returned from the server
