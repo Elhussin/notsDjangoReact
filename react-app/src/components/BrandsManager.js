@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, memo } from "react";
 import {
   Button,
   TextField,
@@ -29,7 +29,8 @@ import { deleteBrand, updateBrand, createBrand, getBrands } from "../Api/api";
  * - Display a list of existing brands
  * - Notify users about actions via Snackbar
  */
-const BrandsManager = () => {
+const BrandsManager = memo(function BrandsManager() {
+
   const [brands, setBrands] = useState([]); // Holds the list of brands
   const [form, setForm] = useState({
     id: null,
@@ -274,6 +275,7 @@ const BrandsManager = () => {
                   <CardMedia
                     component="img"
                     height="140"
+                    loading="lazy"
                     image={brand.logo}
                     alt={`${brand.name} Logo`}
                   />
@@ -310,6 +312,6 @@ const BrandsManager = () => {
       </Snackbar>
     </Box>
   );
-};
+});
 
 export default BrandsManager;

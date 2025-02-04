@@ -1,16 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, memo } from 'react';
 import { Box, Button, TextField, Typography, List, ListItem, ListItemText, IconButton } from '@mui/material';
 import { getBranches, addBranch, updateBranch, deleteBranch } from '../Api/api';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { QueryClient, QueryClientProvider, useQuery } from 'react-query';
 
+const queryClient = new QueryClient();
 /**
  * Branch Component
  * 
  * This component manages a list of branches, including creating, updating, and deleting branches.
  * It uses Material-UI for styling and provides a user-friendly interface.
- */
-const Branch = () => {
+*/
+const Branch = memo(function Branch() {
+
     const [branches, setBranches] = useState([]); // State to hold branches
     const [formData, setFormData] = useState({ name: '', location: '', phone: '' }); // State for form data
     const [editMode, setEditMode] = useState(false); // State to toggle edit mode
@@ -142,6 +145,6 @@ const Branch = () => {
             </List>
         </Box>
     );
-};
+});
 
 export default Branch;

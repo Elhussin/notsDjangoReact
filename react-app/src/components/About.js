@@ -1,8 +1,8 @@
-import React from 'react';
 import Button from '@mui/material/Button';
 import { Link } from "react-router-dom";
+import React, { memo } from 'react';
+const About = memo(function About() {
 
-const About = () => {
   return (
     <div style={{ padding: '20px', textAlign: 'center' }}>
       {/* Main Heading */}
@@ -28,6 +28,6 @@ const About = () => {
       
     </div>
   );
-}
+});
 
 export default About;

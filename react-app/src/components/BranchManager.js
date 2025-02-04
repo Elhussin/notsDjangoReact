@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, memo } from 'react';
 import {
   Button,
   Select,
@@ -31,7 +31,8 @@ import SearchFilter from './SearchFilter';
  * Manages the CRUD operations for branch managers, including assigning managers to branches,
  * updating their details, and displaying the list of managers.
  */
-const BranchManager = () => {
+const BranchManager = memo(function BranchManager() {
+
   // State to hold data and control component behavior
   const [branchManagers, setBranchManagers] = useState([]); // All branch managers
   const [filteredManagers, setFilteredManagers] = useState([]); // Filtered list of managers for display
@@ -267,6 +268,6 @@ const BranchManager = () => {
       </Snackbar>
     </Box>
   );
-};
+});
 
 export default BranchManager;
