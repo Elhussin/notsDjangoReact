@@ -2,7 +2,6 @@ import React, { createContext, useContext, useState, useEffect, memo, useMemo} f
 import { getUsersByToken } from "../Api/api"; // Import the login API function
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import {jwtDecode} from "jwt-decode"; // Correct import for jwtDecode
 const UserContext = createContext(null);
 const roleMapping = {
   "staff_superuser": "admin",
@@ -13,30 +12,29 @@ const roleMapping = {
 
 export const UserProvider = memo(({ children }) => {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        setLoading(true);
         const token = localStorage.getItem("access_token");
         if (!token) {
           console.warn("No access token found.");
           return;
         }
-        
-        // Verify token expiration
-        const decodedToken = jwtDecode(token);
-        if (decodedToken.exp * 1000 < Date.now()) {
-          console.warn("Token expired.");
-          return;
-        }
+
         const Data = await getUsersByToken();
         const userData=Data[0];
-        const userRoleKey = `${userData.staff ? "staff" : ""}_${userData.superuser ? "superuser" : ""}` || "none";
-        const userRole = roleMapping[userRoleKey] || "user";
+        // تحديد المفتاح بدقة
+        const userRoleKey = userData.is_staff // ← التصحيح هنا
+        ? userData.is_superuser // ← التصحيح هنا
+          ? "staff_superuser"
+          : "staff_only"
+        : userData.is_superuser // ← التصحيح هنا
+        ? "superuser_only"
+        : "none";
 
+        // الحصول على الدور أو "user" كمؤقت
+        const userRole = roleMapping[userRoleKey] || "user";
 
         setUser({
           username: userData.username,
@@ -47,7 +45,6 @@ export const UserProvider = memo(({ children }) => {
 
       }catch (error) {
           console.error("Error fetching user data:", error);
-          setError(error);
           toast.error("Failed to fetch user data. Please try again later.");
           if (error.response && error.response.status === 401) {
             toast.error("Session expired. Please log in again.");
@@ -55,9 +52,7 @@ export const UserProvider = memo(({ children }) => {
             toast.error("Failed to fetch user data. Please try again later.");
           }
         }
-      finally {
-          setLoading(false);
-        }
+
     };
 
     fetchData();

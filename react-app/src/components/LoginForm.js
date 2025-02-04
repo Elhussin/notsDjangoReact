@@ -6,6 +6,13 @@ import {jwtDecode} from "jwt-decode"; // Correct import for jwtDecode
 import { useUser } from "./UserContext"; // Use context for managing user data
 import { Button, TextField, CircularProgress } from "@mui/material";
 
+const roleMapping = {
+  "staff_superuser": "admin",
+  "staff_only": "staff",
+  "superuser_only": "manager",
+  "none": "user",
+};
+
 /**
  * LoginForm Component
  * Handles user login by submitting credentials and managing authentication state.
@@ -33,7 +40,6 @@ const LoginForm = () => {
 
       // Show success toast
       toast.success("Login successful!");
-
       if (response.access) {
         try {
           // Decode JWT token to extract user data
@@ -42,31 +48,31 @@ const LoginForm = () => {
           // Store tokens in localStorage
           localStorage.setItem("access_token", response.access);
           localStorage.setItem("refresh_token", response.refresh);
+          localStorage.setItem("exp_token", decodedToken.exp);
 
           // Check token expiry
           const currentTime = Math.floor(Date.now() / 1000);
           if (decodedToken.exp > currentTime) {
             const Data = await getUsersByToken();
             const userData=Data[0];
-            console.log("User data Login:", userData);
-            // Determine user role based on token claims
-            let userRole = "user";
-            if (userData.staff && userData.superuser) {
-              userRole = "admin";
-            } else if (userData.staff && !userData.superuser) {
-              userRole = "staff";
-            } else if (!userData.staff && userData.superuser) {
-              userRole = "manager";
-            }
+            const userRoleKey = userData.is_staff 
+              ? userData.is_superuser 
+                ? "staff_superuser"
+                : "staff_only"
+              : userData.is_superuser 
+              ? "superuser_only"
+              : "none";            
+            const userRole = roleMapping[userRoleKey] || "user";
 
-
-            // Set user data in context
+            console.log("User Date:", userData);
+            console.log("User Role:", userRole);
             setUser({
               username: userData.username,
               email: userData.email,
-              'userRole':userRole,
+              userRole,
               id: userData.id,
             });
+
           } else {
             toast.error("Token expired. Please login again.");
           }

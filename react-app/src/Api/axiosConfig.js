@@ -1,111 +1,78 @@
-import axios from 'axios';
+import axios from "axios";
 import { jwtDecode } from "jwt-decode"; // Ensure the correct import for JWT decoding
 import { toast } from "react-toastify";
 
 // Create an API instance using Axios for interacting with the backend API
 export const API = axios.create({
-    baseURL: 'http://127.0.0.1:8000/api/', // Base URL for all API requests
+    baseURL: "http://127.0.0.1:8000/api/", // Base URL for all API requests
 });
 
 // Add interceptors to include the access token in every request header if available
 API.interceptors.request.use((config) => {
-    const token = localStorage.getItem('access_token'); // Retrieve the access token from localStorage
+    const token = localStorage.getItem("access_token"); // Retrieve the access token from localStorage
     if (token) {
         config.headers.Authorization = `Bearer ${token}`; // Attach the token to the Authorization header
     }
     return config; // Return the updated config
 });
 
-
 API.interceptors.response.use(
-    
     (response) => response, // Pass through successful responses
     (error) => {
         if (error.response && error.response.status === 401) {
             console.error("Unauthorized - redirecting to login");
-            // Unauthorized error, possibly token expired
-            toast.warn("Session expired. Redirecting to login.",{
-                onClose: () => {
-                    // Redirect to login page with Redirect to login page
-                    window.location.href="/login"
-                },
-                autoClose: 3000,
-            });
-
+            toast.warn("Session expired. Redirecting to login.");
+            localStorage.removeItem("access_token");
+            localStorage.removeItem("refresh_token");
+            localStorage.removeItem("exp_token");
+            window.location.href = "/login";
         }
         return Promise.reject(error); // Pass the error further
     }
 );
 
-
 const TOKEN_EXPIRY_BUFFER = 5 * 60; // Buffer of 5 minutes in seconds
 
 // Function to check if the access token has expired
 const isTokenExpired = () => {
-    const exp = localStorage.getItem('exp_token'); // Retrieve the token expiration time from localStorage
-    
+    const exp = localStorage.getItem("exp_token"); // Retrieve the token expiration time from localStorage
+
     if (exp) {
         const currentTime = Math.floor(Date.now() / 1000); // Get the current time in seconds
-        return currentTime > (exp - TOKEN_EXPIRY_BUFFER); // Check if token will expire soon and Return true if the token is expired
+        return currentTime > exp - TOKEN_EXPIRY_BUFFER; // Check if token will expire soon and Return true if the token is expired
     }
     return true; // If no expiration time is available, assume the token is expired
 };
 
-
-
-// Function to refresh the access token using the refresh token
-// export const refreshToken = async () => {
-//     const refresh = localStorage.getItem("refresh_token"); // Retrieve the refresh token from localStorage
-//     if (!refresh) {
-//         console.error("Refresh token not found");
-//         throw new Error("Refresh token not found");
-//     }
-//     console.log("Refresh Token:", localStorage.getItem("refresh_token"));
-//     try {
-//         // Send a POST request to refresh the access token
-//         const response = await API.post("token/refresh/", { refresh });
-//         const { access } = response.data;
-
-//         // Decode the token to extract the expiration time
-//         const decodedToken = jwtDecode(access);
-
-//         // Update the access token and its expiration time in localStorage
-//         localStorage.setItem("access_token", access);
-//         localStorage.setItem("exp_token", decodedToken.exp);
-//         return access; // Return the new access token
-//     } catch (error) {
-//         console.error("Failed to refresh token:", error);
-//         throw error; // Throw the error for further handling
-//     }
-// };
-export const refreshToken = async () => {
+export const RefreshToken = async () => {
     const refresh = localStorage.getItem("refresh_token");
     if (!refresh) {
         console.error("Refresh token not found");
+        window.location.href = "/login"; // Redirect to login page
         throw new Error("Refresh token not found");
     }
-
     try {
-        const response = await API.post("token/refresh/", { refresh }, {
-            headers: {
-                "Content-Type": "application/json",
-            },
-        });
-
-        console.log("Response Data:", response.data);
-
+        const response = await API.post(
+            "token/refresh/",
+            { refresh },
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }
+        );
         const { access } = response.data;
         const decodedToken = jwtDecode(access);
-
         localStorage.setItem("access_token", access);
         localStorage.setItem("exp_token", decodedToken.exp);
-
-        console.log("Access Token Updated:", access);
         return access;
     } catch (error) {
         if (error.response && error.response.status === 401) {
             console.error("Refresh token expired. Redirecting to login...");
-            window.location.href = "/login";
+            localStorage.removeItem("access_token");
+            localStorage.removeItem("refresh_token");
+            localStorage.removeItem("exp_token");
+            window.location.href = "/login"; // Redirect to login page
         } else {
             console.error("Failed to refresh token:", error);
             throw error;
@@ -115,38 +82,22 @@ export const refreshToken = async () => {
 // Ensure the token is valid, and refresh it if expired
 export const ensureTokenValidity = async () => {
     if (isTokenExpired()) {
-        return await refreshToken();
+        return await RefreshToken();
     }
 };
 
-
-// Perform secure API requests with token validation and refresh mechanism
-export const secureRequest = async (method, url, data = null) => {
-
+export const SecureRequest = async (method, url, data = null) => {
     try {
         await ensureTokenValidity(); // Ensure the token is valid
-        const response = await API[method](url, data); // Make the API request with the given method and URL
-        console.log("Response Data:", response.data);
+        const response = await API[method](url, data); // Make the API request
         return response.data; // Return the response data
-   
     } catch (error) {
-        if (error.response) {
-            // Errors returned from the server
-            console.error(`Server responded with error: ${error.response.status}`, error.response.data);
-            if (error.response.status === 401) {
-                // Unauthorized error, possibly token expired
-                toast.warn("Session expired. Please log in again.",{
-                    
-                    onClose: () => {
-                        window.location.href='/login'
-
-                    },
-                    autoClose: 3000,
-
-                });
-
-
-            }
+        if (error.response && error.response.status === 401) {
+            console.error("Session expired. Redirecting to login...");
+            localStorage.removeItem("access_token");
+            localStorage.removeItem("refresh_token");
+            localStorage.removeItem("exp_token");
+            window.location.href = "/login"; // Redirect to login page
         } else if (error.request) {
             // Errors due to network issues
             console.error("No response from the server:", error.request);

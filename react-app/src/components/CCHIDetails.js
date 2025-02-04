@@ -5,7 +5,7 @@ import {useEffect } from "react";
 const CCHIDetails = ({ data }) => {
     const navigate = useNavigate();
     useEffect(() => {
-        console.log(data); // افحص بنية البيانات
+        // console.log(data); // افحص بنية البيانات
       }, [data]);
 
   const handleNavigate = (insurancePlansIndex) => {

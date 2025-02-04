@@ -9,7 +9,6 @@ const CustomerList = () => {
         const fetchData = async () => {
             try {
                 const data = await getCustomer();
-                console.log('Customers:', data);
                 setCustomers(data);
             } catch (error) {
                 console.error('Error fetching branches:', error);

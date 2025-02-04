@@ -60,7 +60,6 @@ const CchiBeneficiary = () => {
       const response = await cchi_get_beneficiary(formData);
       setMessage("CCHI get data successfully!");
       setResponseDate(response);
-      console.log(response);
     } catch (err) {
       setError(err?.response?.data?.detail || "CCHI get data failed. Please try again.");
     } finally {

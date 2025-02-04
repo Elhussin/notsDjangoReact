@@ -9,7 +9,6 @@ import 'react-toastify/dist/ReactToastify.css';
 const Order = () => {
     const [orders, setOrders] = useState([]);
     const [branches, setBranches] = useState([]);
-    // const [formData, setFormData] = useState({ orderNumber: '', status: '', branch: '', details: '' });
     const [formData, setFormData] = useState({ order_number: '', status: '', branch_id: '', details: '' });
     const [editMode, setEditMode] = useState(false);
     const [currentOrderId, setCurrentOrderId] = useState(null);

@@ -143,11 +143,6 @@ const Elgipelty = () => {
         "destinationId": "-1"
       }
 
-    console.log(body)
-
-
-
-  
     const handleInputChange = (e) => {
       const { name, value, type, checked } = e.target;
       setFormData({

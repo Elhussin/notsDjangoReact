@@ -11,7 +11,6 @@ import { Box, TextField } from '@mui/material';
  * @param {Function} onFilter - Callback to return filtered data.
  */
 const SearchFilter = ({ data, searchFields, onFilter }) => {
-    console.log("filetr",data)
   const [query, setQuery] = useState('');
 
   useEffect(() => {

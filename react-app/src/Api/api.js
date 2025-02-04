@@ -1,6 +1,6 @@
 // Import custom API configuration and secure request helper functions
-import { API } from './axiosConfig';
-import { secureRequest } from './axiosConfig';
+import { API } from './AxiosConfig';
+import { SecureRequest } from './AxiosConfig';
 
 /**
  * Authenticates a user and retrieves an access token.
@@ -43,14 +43,14 @@ export const addUser  = async (data) => {
  * Retrieves the list of all users.
  * @returns {Promise<Object[]>} - The list of users.
  */
-export const getUsers = () => secureRequest('get', 'users/');
+export const getUsers = () => SecureRequest('get', 'users/');
 
 
 /**
  * Retrieves details of a specific user. He has active session
  * @returns {Promise<Object[]>} - The list of users.
  */
-export const getUsersByToken = () => secureRequest('get', 'user/');
+export const getUsersByToken = () => SecureRequest('get', 'user/');
 
 
 
@@ -59,14 +59,14 @@ export const getUsersByToken = () => secureRequest('get', 'user/');
  * @param {number|string} userId - The ID of the user.
  * @returns {Promise<Object>} - The user details.
  */
-export const getUser = (userId) => secureRequest('get', `users/${userId}/`);
+export const getUser = (userId) => SecureRequest('get', `users/${userId}/`);
 
 /**
  * Adds a new user.
  * @param {Object} userData - The data for the new user.
  * @returns {Promise<Object>} - The created user data.
  */
-// export const addUser = (userData) => secureRequest('post', 'users/', userData);
+// export const addUser = (userData) => SecureRequest('post', 'users/', userData);
 
 /**
  * Updates an existing user.
@@ -75,27 +75,27 @@ export const getUser = (userId) => secureRequest('get', `users/${userId}/`);
  * @returns {Promise<Object>} - The updated user data.
  */
 export const updateUser = (userId, userData) =>
-  secureRequest('put', `users/${userId}/`, userData);
+  SecureRequest('put', `users/${userId}/`, userData);
 
 /**
  * Deletes a user by ID.
  * @param {number|string} userId - The ID of the user.
  * @returns {Promise<void>} - A promise indicating the success of the operation.
  */
-export const deleteUser = (userId) => secureRequest('delete', `users/${userId}/`);
+export const deleteUser = (userId) => SecureRequest('delete', `users/${userId}/`);
 
 /**
  * Retrieves the list of all branches.
  * @returns {Promise<Object[]>} - The list of branches.
  */
-export const getBranches = () => secureRequest('get', 'branches/');
+export const getBranches = () => SecureRequest('get', 'branches/');
 
 /**
  * Adds a new branch.
  * @param {Object} data - The branch data.
  * @returns {Promise<Object>} - The created branch data.
  */
-export const addBranch = (data) => secureRequest('post', 'branches/', data);
+export const addBranch = (data) => SecureRequest('post', 'branches/', data);
 
 /**
  * Updates an existing branch.
@@ -104,27 +104,27 @@ export const addBranch = (data) => secureRequest('post', 'branches/', data);
  * @returns {Promise<Object>} - The updated branch data.
  */
 export const updateBranch = (id, data) =>
-  secureRequest('put', `branches/${id}/`, data);
+  SecureRequest('put', `branches/${id}/`, data);
 
 /**
  * Deletes a branch by ID.
  * @param {number|string} id - The ID of the branch.
  * @returns {Promise<void>} - A promise indicating the success of the operation.
  */
-export const deleteBranch = (id) => secureRequest('delete', `branches/${id}/`);
+export const deleteBranch = (id) => SecureRequest('delete', `branches/${id}/`);
 
 /**
  * Retrieves the list of all orders.
  * @returns {Promise<Object[]>} - The list of orders.
  */
-export const getOrders = () => secureRequest('get', 'orders/');
+export const getOrders = () => SecureRequest('get', 'orders/');
 
 /**
  * Creates a new order.
  * @param {Object} data - The order data.
  * @returns {Promise<Object>} - The created order data.
  */
-export const addOrder = (data) => secureRequest('post', 'orders/', data);
+export const addOrder = (data) => SecureRequest('post', 'orders/', data);
 
 /**
  * Updates an existing order.
@@ -133,20 +133,20 @@ export const addOrder = (data) => secureRequest('post', 'orders/', data);
  * @returns {Promise<Object>} - The updated order data.
  */
 export const updateOrder = (id, data) =>
-  secureRequest('put', `orders/${id}/`, data);
+  SecureRequest('put', `orders/${id}/`, data);
 
 /**
  * Deletes an order by ID.
  * @param {number|string} id - The ID of the order.
  * @returns {Promise<void>} - A promise indicating the success of the operation.
  */
-export const deleteOrder = (id) => secureRequest('delete', `orders/${id}/`);
+export const deleteOrder = (id) => SecureRequest('delete', `orders/${id}/`);
 
 /**
  * Retrieves the list of all branch managers.
  * @returns {Promise<Object[]>} - The list of branch managers.
  */
-export const getBranchManagers = () => secureRequest('get', 'branch_managers/');
+export const getBranchManagers = () => SecureRequest('get', 'branch_managers/');
 
 /**
  * Creates a new branch manager.
@@ -154,7 +154,7 @@ export const getBranchManagers = () => secureRequest('get', 'branch_managers/');
  * @returns {Promise<Object>} - The created branch manager data.
  */
 export const createBranchManager = (data) =>
-  secureRequest('post', 'branch_managers/', data);
+  SecureRequest('post', 'branch_managers/', data);
 
 /**
  * Updates an existing branch manager.
@@ -163,7 +163,7 @@ export const createBranchManager = (data) =>
  * @returns {Promise<Object>} - The updated branch manager data.
  */
 export const updateBranchManager = (id, data) =>
-  secureRequest('put', `branch_managers/${id}/`, data);
+  SecureRequest('put', `branch_managers/${id}/`, data);
 
 /**
  * Deletes a branch manager by ID.
@@ -171,13 +171,13 @@ export const updateBranchManager = (id, data) =>
  * @returns {Promise<void>} - A promise indicating the success of the operation.
  */
 export const deleteBranchManager = (id) =>
-  secureRequest('delete', `branch_managers/${id}/`);
+  SecureRequest('delete', `branch_managers/${id}/`);
 
 /**
  * Retrieves the list of all companies.
  * @returns {Promise<Object[]>} - The list of companies.
  */
-export const getCompanies = () => secureRequest('get', 'companies/');
+export const getCompanies = () => SecureRequest('get', 'companies/');
 
 /**
  * Creates a new company.
@@ -185,7 +185,7 @@ export const getCompanies = () => secureRequest('get', 'companies/');
  * @returns {Promise<Object>} - The created company data.
  */
 export const createCompany = (data) =>
-  secureRequest('post', 'companies/', data);
+  SecureRequest('post', 'companies/', data);
 
 /**
  * Updates an existing company.
@@ -194,7 +194,7 @@ export const createCompany = (data) =>
  * @returns {Promise<Object>} - The updated company data.
  */
 export const updateCompany = (id, data) =>
-  secureRequest('put', `companies/${id}/`, data);
+  SecureRequest('put', `companies/${id}/`, data);
 
 /**
  * Deletes a company by ID.
@@ -202,13 +202,13 @@ export const updateCompany = (id, data) =>
  * @returns {Promise<void>} - A promise indicating the success of the operation.
  */
 export const deleteCompany = (id) =>
-  secureRequest('delete', `companies/${id}/`);
+  SecureRequest('delete', `companies/${id}/`);
 
 /**
  * Retrieves the list of all factories.
  * @returns {Promise<Object[]>} - The list of factories.
  */
-export const getFactories = () => secureRequest('get', 'factories/');
+export const getFactories = () => SecureRequest('get', 'factories/');
 
 /**
  * Creates a new factory.
@@ -216,7 +216,7 @@ export const getFactories = () => secureRequest('get', 'factories/');
  * @returns {Promise<Object>} - The created factory data.
  */
 export const createFactory = (data) =>
-  secureRequest('post', 'factories/', data);
+  SecureRequest('post', 'factories/', data);
 
 /**
  * Updates an existing factory.
@@ -225,7 +225,7 @@ export const createFactory = (data) =>
  * @returns {Promise<Object>} - The updated factory data.
  */
 export const updateFactory = (id, data) =>
-  secureRequest('put', `factories/${id}/`, data);
+  SecureRequest('put', `factories/${id}/`, data);
 
 /**
  * Deletes a factory by ID.
@@ -233,14 +233,14 @@ export const updateFactory = (id, data) =>
  * @returns {Promise<void>} - A promise indicating the success of the operation.
  */
 export const deleteFactory = (id) =>
-  secureRequest('delete', `factories/${id}/`);
+  SecureRequest('delete', `factories/${id}/`);
 
 
 /**
  * Retrieves the list of all brands.
  * @returns {Promise<Object[]>} - The list of brands.
  */
-export const getBrands = () => secureRequest('get', 'brands/');
+export const getBrands = () => SecureRequest('get', 'brands/');
 
 /**
  * Creates a new brand.
@@ -248,7 +248,7 @@ export const getBrands = () => secureRequest('get', 'brands/');
  * @returns {Promise<Object>} - The created brand data.
  */
 export const createBrand = (data) =>
-  secureRequest('post', 'brands/', data);
+  SecureRequest('post', 'brands/', data);
 
 /**
  * Updates an existing brand.
@@ -257,7 +257,7 @@ export const createBrand = (data) =>
  * @returns {Promise<Object>} - The updated brand data.
  */
 export const updateBrand = (id, data) =>
-  secureRequest('put', `brands/${id}/`, data);
+  SecureRequest('put', `brands/${id}/`, data);
 
 /**
  * Deletes a brand by ID.
@@ -265,7 +265,7 @@ export const updateBrand = (id, data) =>
  * @returns {Promise<void>} - A promise indicating the success of the operation.
  */
 export const deleteBrand = (id) =>
-  secureRequest('delete', `brands/${id}/`);
+  SecureRequest('delete', `brands/${id}/`);
 
 
 
@@ -273,7 +273,7 @@ export const deleteBrand = (id) =>
  * Retrieves the list of all categories.
  * @returns {Promise<Object[]>} - The list of categories.
  */
-export const getCategories = () => secureRequest('get', 'categories/');
+export const getCategories = () => SecureRequest('get', 'categories/');
 
 /**
  * Creates a new category.
@@ -281,7 +281,7 @@ export const getCategories = () => secureRequest('get', 'categories/');
  * @returns {Promise<Object>} - The created category data.
  */
 export const createCategory = (data) =>
-  secureRequest('post', 'categories/', data);
+  SecureRequest('post', 'categories/', data);
 
 /**
  * Updates an existing category.
@@ -290,7 +290,7 @@ export const createCategory = (data) =>
  * @returns {Promise<Object>} - The updated category data.
  */
 export const updateCategory = (id, data) =>
-  secureRequest('put', `categories/${id}/`, data);
+  SecureRequest('put', `categories/${id}/`, data);
 
 /**
  * Deletes a category by ID.
@@ -298,14 +298,14 @@ export const updateCategory = (id, data) =>
  * @returns {Promise<void>} - A promise indicating the success of the operation.
  */
 export const deleteCategory = (id) =>
-  secureRequest('delete', `categories/${id}/`);
+  SecureRequest('delete', `categories/${id}/`);
 
 
 /**
  * Retrieves the list of all products.
  * @returns {Promise<Object[]>} - The list of products.
  */
-export const getProducts = () => secureRequest('get', 'products/');
+export const getProducts = () => SecureRequest('get', 'products/');
 
 /**
  * Creates a new product.
@@ -313,7 +313,7 @@ export const getProducts = () => secureRequest('get', 'products/');
  * @returns {Promise<Object>} - The created product data.
  */
 export const createProduct = (data) =>
-  secureRequest('post', 'products/', data);
+  SecureRequest('post', 'products/', data);
 
 /**
  * Updates an existing product.
@@ -322,7 +322,7 @@ export const createProduct = (data) =>
  * @returns {Promise<Object>} - The updated product data.
  */
 export const updateProduct = (id, data) =>
-  secureRequest('put', `products/${id}/`, data);
+  SecureRequest('put', `products/${id}/`, data);
 
 /**
  * Deletes a product by ID.
@@ -330,6 +330,6 @@ export const updateProduct = (id, data) =>
  * @returns {Promise<void>} - A promise indicating the success of the operation.
  */
 export const deleteProduct = (id) =>
-  secureRequest('delete', `products/${id}/`);
+  SecureRequest('delete', `products/${id}/`);
 
 

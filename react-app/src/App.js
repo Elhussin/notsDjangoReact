@@ -2,6 +2,7 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+// const LazyComponent = React.lazy(() => import('./LazyComponent'));
 
 // MAin components
 import About from "./components/About";
@@ -26,8 +27,6 @@ import Elgipelty from "./components/Elgipelty";
 import CchiBeneficiary from "./components/CchiBeneficiary";
 import FormElgipelty from "./components/FormElgipelty";
 import { UserProvider } from "./components/UserContext";
-
-// CRM components
 import CustomerList from './components/crm/CustomerList';
 import InteractionList from './components/crm/InteractionList';
 import ComplaintList from './components/crm/ComplaintList';
@@ -55,7 +54,6 @@ const App = () => {
   let userRole = "user";
   if (user) {
     userRole = user.userRole;
-    console.log("User Role APP:", userRole);
   }
 
   return (
