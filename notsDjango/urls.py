@@ -17,7 +17,7 @@ urlpatterns = [
     path('api/waseel/', include('waseel.urls')),  # إضافة مسارات التطبيق الجديد
     path('api/crm/', include('crm.urls')),  
     path('product/', include('product.urls')),
-        # إعادة توجيه كل المسارات الأخرى إلى صفحة React
+    path('api/accounting/', include('accounting.urls')),
     path('', lambda request: render(request, 'index.html')),
     path('<path:path>', lambda request, path: render(request, 'index.html')),
 # المسار الافتراضي

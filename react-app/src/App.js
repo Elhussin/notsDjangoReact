@@ -29,7 +29,14 @@ import FormElgipelty from "./components/FormElgipelty";
 import CustomerList from './components/crm/CustomerList';
 import InteractionList from './components/crm/InteractionList';
 import ComplaintList from './components/crm/ComplaintList';
-
+import AccountList from './components/account/AccountList';
+import CreateAccount from './components/account/CreateAccount';
+import TaxList from './components/account/TaxList';
+import CreateTax from './components/account/CreateTax';
+import CategoryList from './components/account/CategoryList';
+import CreateCategory from './components/account/CreateCategory';
+import TransactionList from './components/account/TransactionList';
+import CreateTransaction from './components/account/CreateTransaction';
 // layout
 import Layout from "./layout/Layout";
 
@@ -97,6 +104,15 @@ const App = () => {
             <Route path="CustomerList" element={<CustomerList />} />
             <Route path="InteractionList" element={<InteractionList />} />
             <Route path="ComplaintList" element={<ComplaintList />} />
+            <Route path="AccountList" element={<AccountList />} />
+            <Route path="CreateAccount" element={<CreateAccount />} />
+            <Route path="TaxList" element={<TaxList />} />
+            <Route path="CreateTax" element={<CreateTax />} />
+            <Route path="CategoryList" element={<CategoryList />} />
+            <Route path="CreateCategory" element={<CreateCategory />} />
+            <Route path="TransactionList" element={<TransactionList />} />
+            <Route path="CreateTransaction" element={<CreateTransaction />} />
+
           </Route>
         </Routes>
       </Router>

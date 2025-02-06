@@ -1,0 +1,59 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Run Django Server",
+            "type": "shell",
+            "command": "python manage.py runserver",
+            "problemMatcher": []
+        },
+        {
+            "label": "Apply Migrations",
+            "type": "shell",
+            "command": "python manage.py migrate",
+            "problemMatcher": []
+        },
+        {
+            "label": "Create Migrations",
+            "type": "shell",
+            "command": "python manage.py makemigrations",
+            "problemMatcher": []
+        },
+        {
+            "label": "Create Super User",
+            "type": "shell",
+            "command": "python manage.py createsuperuser",
+            "problemMatcher": []
+        },
+        {
+            "label": "Run Django Shell",
+            "type": "shell",
+            "command": "python manage.py shell",
+            "problemMatcher": []
+        },
+        {
+            "label": "Run Django Tests",
+            "type": "shell",
+            "command": "python manage.py test",
+            "problemMatcher": []
+        },
+        {
+            "label": "Run Django Tests with Coverage",
+            "type": "shell",
+            "command": "coverage run --source='.' manage.py test",
+            "problemMatcher": []
+        },
+        {
+            "label": "Run Django Tests with Coverage and Generate Report",
+            "type": "shell",
+            "command": "coverage run --source='.' manage.py test && coverage html",
+            "problemMatcher": []
+        },
+        {
+            "label": "Run Django Server with Uvicorn",
+            "type": "shell",
+            "command": "uvicorn notsDjango.asgi:application --host 127.0.0.1 --port 8000 --reload",
+            "problemMatcher": []
+        }
+    ]
+}
