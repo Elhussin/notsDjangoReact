@@ -234,6 +234,7 @@ class Category(models.Model):
         return self.name
 
 
+
 class ProductImage(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images')
     image_url = models.URLField(max_length=255)
@@ -242,18 +243,6 @@ class ProductImage(models.Model):
 
     def __str__(self):
         return f"Image for {self.product.name}"
-    
-class Discount(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='discounts')
-    discount_percentage = models.DecimalField(max_digits=5, decimal_places=2)
-    discounted_price = models.DecimalField(max_digits=10, decimal_places=2)
-    start_date = models.DateField()
-    end_date = models.DateField()
-
-    def __str__(self):
-        return f"Discount for {self.product.name}"
-
-
 
 # موديل التقييمات
 class Rating(models.Model):
@@ -372,9 +361,12 @@ class Discount(models.Model):
 
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="discounts")
     discount_type = models.CharField(max_length=20, choices=DISCOUNT_TYPES)
+    discount_percentage = models.DecimalField(max_digits=5, decimal_places=2)
+    discounted_price = models.DecimalField(max_digits=10, decimal_places=2)
     value = models.DecimalField(max_digits=10, decimal_places=2)
     start_date = models.DateField()
     end_date = models.DateField()
 
     def __str__(self):
         return f"Discount for {self.product.name}"
+    
