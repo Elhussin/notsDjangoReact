@@ -7,7 +7,7 @@ const Elgipelty = () => {
     const location = useLocation();
     const { data, insurancePlansIndex } = location.state;
     console.log("data",data)
-    const insurancePlans= JSON.stringify(data.insurancePlans[insurancePlansIndex], null, 2);
+    // const insurancePlans= JSON.stringify(data.insurancePlans[insurancePlansIndex], null, 2);
 
     const [formData, setFormData] = useState({
       isNewBorn: false,
@@ -50,98 +50,98 @@ const Elgipelty = () => {
       destinationId: "",
     });
 
-    const body={
-        "isNewBorn": false,
-        "beneficiary": {
-            "name": data.fullName || null,
-            "documentId": data.documentId || null,
-            "documentType":  data.documentType || null,
-            "firstName": null,
-            "secondName": null,
-            "thirdName": null,
-            "familyName": null,
-            "fullName": data.fullName || null,
-            // "dob": "1995-11-01T03:00:00.000+0300",
-            "gender":  data.gender || null,
-            "nationality": data.nationality || null,
-            "contactNumber": null,
-            "email": null,
-            "emergencyPhoneNumber": null,
-            "bloodGroup": null,
-            "fileId": null,
-            "eHealthId": null,
-            "residencyType": null,
-            // "maritalStatus": "M",
-            // "religion": null,
-            // "occupation": "business",
-            "preferredLanguage": null,
-            "addressLine": null,
-            "streetLine": null,
-            "city": null,
-            "state": null,
-            "country": null,
-            "postalCode": null,
-            "isNewBorn": null,
-            "plans": [
-                {
-                    "planId": "82991",
-                    "payerId": insurancePlans.payerId,
-                    "payerName": "Insurance Company Testing Payer",
-                    "memberCardId": insurancePlans.memberCardId,
-                    "policyNumber": insurancePlans.policyNumber,
-                    "payerNphiesId": insurancePlans.payerNphiesId,
-                    "tpaNphiesId": "-1",
-                    "expiryDate": insurancePlans.expiryDate,
-                    "relationWithSubscriber": insurancePlans.relationWithSubscriber,
-                    "coverageType": insurancePlans.coverageType,
-                    "patientShare": insurancePlans.patientShare,
-                    "maxLimit": insurancePlans.maxLimit,
-                    "coverageClassList": [
-                        {
-                            "type": "plan",
-                            "value": "A",
-                            "name": null
-                        }
-                    ],
-                    "policyHolder": insurancePlans.policyHolder,
-                    "primary": insurancePlans.isPrimary
-                }
-            ],
-            "isEligibilityDone": true
-        },
-        "subscriber": null,
-        "insurancePlan": {
-            "planId": "82991",
-            "payerId": "INS-FHIR",
-            "payerName": "Insurance Company Testing Payer",
-            "memberCardId": insurancePlans.memberCardId,
-            "policyNumber": insurancePlans.policyNumber,
-            "payerNphiesId": insurancePlans.payerNphiesId,
-            "tpaNphiesId": "-1",
-            "expiryDate": insurancePlans.expiryDate,
-            "relationWithSubscriber": insurancePlans.relationWithSubscriber,
-            "coverageType": insurancePlans.coverageType,
-            "patientShare": insurancePlans.patientShare,
-            "maxLimit": insurancePlans.maxLimit,
-            "coverageClassList": [
-                {
-                    "type": "plan",
-                    "value": "A",
-                    "name": null
-                }
-            ],
-            "policyHolder": insurancePlans.policyHolder,
-            "primary": insurancePlans.isPrimary
-        },
-        "serviceDate": "2024-10-01",
-        "toDate": null,
-        "benefits": true,
-        "discovery": false,
-        "validation": true,
-        "transfer": false,
-        "isEmergency": false,
-        "destinationId": "-1"
-      }
+    // const body={
+    //     "isNewBorn": false,
+    //     "beneficiary": {
+    //         "name": data.fullName || null,
+    //         "documentId": data.documentId || null,
+    //         "documentType":  data.documentType || null,
+    //         "firstName": null,
+    //         "secondName": null,
+    //         "thirdName": null,
+    //         "familyName": null,
+    //         "fullName": data.fullName || null,
+    //         // "dob": "1995-11-01T03:00:00.000+0300",
+    //         "gender":  data.gender || null,
+    //         "nationality": data.nationality || null,
+    //         "contactNumber": null,
+    //         "email": null,
+    //         "emergencyPhoneNumber": null,
+    //         "bloodGroup": null,
+    //         "fileId": null,
+    //         "eHealthId": null,
+    //         "residencyType": null,
+    //         // "maritalStatus": "M",
+    //         // "religion": null,
+    //         // "occupation": "business",
+    //         "preferredLanguage": null,
+    //         "addressLine": null,
+    //         "streetLine": null,
+    //         "city": null,
+    //         "state": null,
+    //         "country": null,
+    //         "postalCode": null,
+    //         "isNewBorn": null,
+    //         "plans": [
+    //             {
+    //                 "planId": "82991",
+    //                 "payerId": insurancePlans.payerId,
+    //                 "payerName": "Insurance Company Testing Payer",
+    //                 "memberCardId": insurancePlans.memberCardId,
+    //                 "policyNumber": insurancePlans.policyNumber,
+    //                 "payerNphiesId": insurancePlans.payerNphiesId,
+    //                 "tpaNphiesId": "-1",
+    //                 "expiryDate": insurancePlans.expiryDate,
+    //                 "relationWithSubscriber": insurancePlans.relationWithSubscriber,
+    //                 "coverageType": insurancePlans.coverageType,
+    //                 "patientShare": insurancePlans.patientShare,
+    //                 "maxLimit": insurancePlans.maxLimit,
+    //                 "coverageClassList": [
+    //                     {
+    //                         "type": "plan",
+    //                         "value": "A",
+    //                         "name": null
+    //                     }
+    //                 ],
+    //                 "policyHolder": insurancePlans.policyHolder,
+    //                 "primary": insurancePlans.isPrimary
+    //             }
+    //         ],
+    //         "isEligibilityDone": true
+    //     },
+    //     "subscriber": null,
+    //     "insurancePlan": {
+    //         "planId": "82991",
+    //         "payerId": "INS-FHIR",
+    //         "payerName": "Insurance Company Testing Payer",
+    //         "memberCardId": insurancePlans.memberCardId,
+    //         "policyNumber": insurancePlans.policyNumber,
+    //         "payerNphiesId": insurancePlans.payerNphiesId,
+    //         "tpaNphiesId": "-1",
+    //         "expiryDate": insurancePlans.expiryDate,
+    //         "relationWithSubscriber": insurancePlans.relationWithSubscriber,
+    //         "coverageType": insurancePlans.coverageType,
+    //         "patientShare": insurancePlans.patientShare,
+    //         "maxLimit": insurancePlans.maxLimit,
+    //         "coverageClassList": [
+    //             {
+    //                 "type": "plan",
+    //                 "value": "A",
+    //                 "name": null
+    //             }
+    //         ],
+    //         "policyHolder": insurancePlans.policyHolder,
+    //         "primary": insurancePlans.isPrimary
+    //     },
+    //     "serviceDate": "2024-10-01",
+    //     "toDate": null,
+    //     "benefits": true,
+    //     "discovery": false,
+    //     "validation": true,
+    //     "transfer": false,
+    //     "isEmergency": false,
+    //     "destinationId": "-1"
+    //   }
 
     const handleInputChange = (e) => {
       const { name, value, type, checked } = e.target;

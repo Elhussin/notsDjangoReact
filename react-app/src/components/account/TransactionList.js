@@ -1,6 +1,7 @@
 // src/components/TransactionList.js
 import React, { useEffect, useState } from 'react';
-import { getTransactions, deleteTransaction } from '../api/transactionApi';
+import { getTransactions, deleteTransaction } from '../../Api/account';
+
 
 const TransactionList = () => {
     const [transactions, setTransactions] = useState([]);

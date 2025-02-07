@@ -44,20 +44,25 @@ const items = [
   { title: 'Elgipelty', path: '/elgipelty', icon: <FormIcon /> },
   { title: 'Elgipelty Form', path: '/Felgipelty', icon: <FormIcon /> },
   { title: 'Logout', path: '/Logout', icon: <LogoutIcon /> },
-  { title: 'Customer List', path: '/CustomerList', icon: <FormIcon /> },
-  { title: 'Interaction List', path: '/InteractionList', icon: <FormIcon /> },
-  { title: 'Complaint List', path: '/ComplaintList', icon: <LogoutIcon /> },
   { title: 'USERS ADMIN', path: '/users', icon: <ContactIcon /> },
-  { title: 'Create Account', path: '/CreateAccount', icon: <FormIcon /> },
   { title: 'Account List', path: '/AccountList', icon: <FormIcon /> },
-  { title: 'Tax List', path: '/TaxList', icon: <FormIcon /> },
-  { title: 'Create Tax', path: '/CreateTax', icon: <FormIcon /> },
   { title: 'Category List', path: '/CategoryList', icon: <FormIcon /> },
+  { title: 'Create Account', path: '/CreateAccount', icon: <FormIcon /> },
   { title: 'Create Category', path: '/CreateCategory', icon: <FormIcon /> },
-  { title: 'Transaction List', path: '/TransactionList', icon: <FormIcon /> },
+  { title: 'Create Tax', path: '/CreateTax', icon: <FormIcon /> },
   { title: 'Create Transaction', path: '/CreateTransaction', icon: <FormIcon /> },
-
+  { title: 'Tax List', path: '/TaxList', icon: <FormIcon /> },
+  { title: 'Transaction List', path: '/TransactionList', icon: <FormIcon /> },
+  { title: 'Complaint List', path: '/ComplaintList', icon: <LogoutIcon /> },
+  { title: 'Campaign List', path: '/CampaignList', icon: <FormIcon />,},
+  { title: 'Customer List', path: '/CustomerList', icon: <FormIcon /> },
+  {title: 'Document List', path: '/DocumentList', icon: <FormIcon />,},
+  { title: 'Interaction List', path: '/InteractionList', icon: <FormIcon /> },
+  {title: 'Opportunity List', path: '/OpportunityList', icon: <FormIcon />,},
+  {title: 'Task List', path: '/TaskList', icon: <FormIcon />,},
+  {title: 'Team List', path: '/TeamList', icon: <FormIcon />,},
 ];
+
 
 const Dashboard = memo(function Dashboard() {
 

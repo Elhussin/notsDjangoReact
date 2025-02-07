@@ -1,6 +1,6 @@
 // src/components/CreateTax.js
 import React, { useState } from 'react';
-import { createTax } from '../api/taxApi';
+import {  createTax} from '../../Api/account';
 
 const CreateTax = ({ onTaxCreated }) => {
     const [formData, setFormData] = useState({

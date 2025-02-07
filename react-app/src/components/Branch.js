@@ -3,9 +3,7 @@ import { Box, Button, TextField, Typography, List, ListItem, ListItemText, IconB
 import { getBranches, addBranch, updateBranch, deleteBranch } from '../Api/api';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { QueryClient, QueryClientProvider, useQuery } from 'react-query';
 
-const queryClient = new QueryClient();
 /**
  * Branch Component
  * 

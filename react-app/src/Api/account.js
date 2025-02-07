@@ -1,4 +1,4 @@
-import SecureRequest from './AxiosConfig';
+import {SecureRequest} from './AxiosConfig';
 
 const EXE_URL = 'accounting/accounts/';
 const TAXES_URL = 'accounting/taxes/';
@@ -23,16 +23,16 @@ export const deleteAccount = (id) => SecureRequest('delete', `${EXE_URL}${id}/`)
 // Taxes
 export const getTaxes = (id) => SecureRequest('get', `${TAXES_URL}${id}/`);
 export const getTaxess = () => SecureRequest('get', TAXES_URL);
-export const createTaxes = (data) => SecureRequest('post', TAXES_URL, data);
+export const createTax = (data) => SecureRequest('post', TAXES_URL, data);
 export const updateTaxes = (id, data) => SecureRequest('put', `${TAXES_URL}${id}/`, data);
-export const deleteTaxes = (id) => SecureRequest('delete', `${TAXES_URL}${id}/`);
+export const deleteTax = (id) => SecureRequest('delete', `${TAXES_URL}${id}/`);
 
 // categories
 export const getCategory = (id) => SecureRequest('get', `${categories}${id}/`);
 export const getCategories = () => SecureRequest('get', categories);
-export const createCategories = (data) => SecureRequest('post', categories, data);
+export const createCategory = (data) => SecureRequest('post', categories, data);
 export const updateCategories = (id, data) => SecureRequest('put', `${categories}${id}/`, data);
-export const deleteCategories = (id) => SecureRequest('delete', `${categories}${id}/`);
+export const deleteCategory = (id) => SecureRequest('delete', `${categories}${id}/`);
 
 //transactions
 export const getTransactions = () => SecureRequest('get', TRANSACTIONS_URL);

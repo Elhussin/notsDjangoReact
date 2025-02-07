@@ -5,7 +5,7 @@ import {
   createDocument,
   updateDocument,
   deleteDocument,
-} from '../api/transactionApi';
+} from '../../Api/crm.js';
 
 const DOCUMENTS_URL = 'crm/documents/';
 

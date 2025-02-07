@@ -26,9 +26,15 @@ import { useUser } from "./components/UserContext"; // استخدام الـ Con
 import Elgipelty from "./components/Elgipelty";
 import CchiBeneficiary from "./components/CchiBeneficiary";
 import FormElgipelty from "./components/FormElgipelty";
+
 import CustomerList from './components/crm/CustomerList';
 import InteractionList from './components/crm/InteractionList';
 import ComplaintList from './components/crm/ComplaintList';
+import OpportunityList from './components/crm/OpportunityList';
+import TaskList from './components/crm/TaskList';
+import CampaignList from './components/crm/CampaignList';
+import TeamList from './components/crm/TeamList';
+import DocumentList from './components/crm/DocumentList';
 import AccountList from './components/account/AccountList';
 import CreateAccount from './components/account/CreateAccount';
 import TaxList from './components/account/TaxList';
@@ -37,6 +43,9 @@ import CategoryList from './components/account/CategoryList';
 import CreateCategory from './components/account/CreateCategory';
 import TransactionList from './components/account/TransactionList';
 import CreateTransaction from './components/account/CreateTransaction';
+
+
+
 // layout
 import Layout from "./layout/Layout";
 
@@ -112,6 +121,12 @@ const App = () => {
             <Route path="CreateCategory" element={<CreateCategory />} />
             <Route path="TransactionList" element={<TransactionList />} />
             <Route path="CreateTransaction" element={<CreateTransaction />} />
+            <Route path="OpportunityList" element={<OpportunityList />} />
+            <Route path="TaskList" element={<TaskList />} />
+            <Route path="CampaignList" element={<CampaignList />} />
+            <Route path="TeamList" element={<TeamList />} />
+            <Route path="DocumentList" element={<DocumentList />} />
+
 
           </Route>
         </Routes>
