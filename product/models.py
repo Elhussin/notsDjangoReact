@@ -69,15 +69,6 @@ class ProductImage(models.Model):
     def __str__(self):
         return f"Image for {self.product.name}"
     
-# class ProductVariant(models.Model):
-#     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='variants')
-#     color = models.CharField(max_length=50, blank=True)
-#     size = models.CharField(max_length=50, blank=True)
-#     weight = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
-#     material = models.CharField(max_length=100, blank=True)
-    
-#     def __str__(self):
-#         return f"{self.product.name} - {self.color} - {self.size}"
 class Attribute(models.Model):
     name = models.CharField(max_length=100, unique=True)
     

@@ -37,8 +37,10 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework_simplejwt",
     "rest_framework_simplejwt.token_blacklist",
+    "django_admin_listfilter_dropdown",
     "simple_history",
     "corsheaders",
+    'djmoney',
     "notes",
     "waseel",
     "accounting",
@@ -47,6 +49,8 @@ INSTALLED_APPS = [
     "reporting",
     "product",
 ]
+
+
 
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
@@ -143,6 +147,8 @@ SIMPLE_JWT = {
 EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 
+# إعدادات العملات
+CURRENCY_CHOICES = [('USD', 'USD'), ('EUR', 'EUR'), ('SAR', 'SAR')]
 
 # Security Settings
 # SESSION_COOKIE_SECURE = True

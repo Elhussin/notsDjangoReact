@@ -6,6 +6,7 @@ class AccountSerializer(serializers.ModelSerializer):
     user = serializers.HiddenField(  # أو PrimaryKeyRelatedField(read_only=True)
         default=serializers.CurrentUserDefault()
     )
+
     balance = serializers.DecimalField(
         max_digits=10,
         decimal_places=2,
