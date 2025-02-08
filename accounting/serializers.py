@@ -3,16 +3,20 @@ from .models import Account, Transaction, Tax, Category
 
 # Serializer لنموذج Account
 class AccountSerializer(serializers.ModelSerializer):
+    user = serializers.HiddenField(  # أو PrimaryKeyRelatedField(read_only=True)
+        default=serializers.CurrentUserDefault()
+    )
     balance = serializers.DecimalField(
         max_digits=10,
         decimal_places=2,
         read_only=True
     )
-
+    currency = serializers.ChoiceField(choices=Account.CURRENCIES)
     class Meta:
         model = Account
-        fields = ['id', 'name', 'currency', 'balance', 'created_at', 'updated_at']
+        fields = ['id', 'user', 'name', 'currency', 'balance', 'created_at', 'updated_at']
         read_only_fields = ['id', 'created_at', 'updated_at']
+        
 
 # Serializer لنموذج Tax
 class TaxSerializer(serializers.ModelSerializer):

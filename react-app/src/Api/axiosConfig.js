@@ -90,6 +90,7 @@ export const SecureRequest = async (method, url, data = null) => {
     try {
         await ensureTokenValidity(); // Ensure the token is valid
         const response = await API[method](url, data); // Make the API request
+        console.log("Response:", response.data); // Log the response data
         return response.data; // Return the response data
     } catch (error) {
         if (error.response && error.response.status === 401) {

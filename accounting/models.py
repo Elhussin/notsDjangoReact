@@ -33,7 +33,7 @@ class Tax(models.Model):
         return f"{self.name} ({self.rate}%)"
 
 class Category(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
     description = models.TextField(null=True, blank=True)
 
     def __str__(self):

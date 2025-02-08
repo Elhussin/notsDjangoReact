@@ -7,7 +7,6 @@ import {
   deleteDocument,
 } from '../../Api/crm.js';
 
-const DOCUMENTS_URL = 'crm/documents/';
 
 const DocumentList = () => {
   const [documents, setDocuments] = useState([]);
