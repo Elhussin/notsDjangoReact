@@ -37,31 +37,22 @@
 #     extra = 1
 
 # # تسجيل النموذج Account
-# @admin.register(Account)
-# class AccountAdmin(admin.ModelAdmin):
-#     list_display = ('name', 'balance', 'created_at', 'updated_at')
-#     search_fields = ('name',)
-#     list_filter = ('created_at', 'updated_at')
-#     readonly_fields = ('balance', 'created_at', 'updated_at')
-#     inlines = [TransactionInline]
 
-#     def balance(self, obj):
-#         return obj.balance  # استدعاء الخاصية balance من النموذج
     
     
 from django.contrib import admin
 from django.db.models import F
 # from django_admin_listfilter_dropdown.filters import DateRangeFilter
-from .models import Currency, FinancialPeriod, Account, Tax, Category, Transaction
+from .models import  FinancialPeriod, Account, Tax, Category, Transaction
 from django_admin_listfilter_dropdown.filters import DropdownFilter
 from django.contrib.admin import DateFieldListFilter
 
-@admin.register(Currency)
-class CurrencyAdmin(admin.ModelAdmin):
-    list_display = ('code', 'name', 'exchange_rate', 'is_active')
-    list_editable = ('exchange_rate', 'is_active')
-    search_fields = ('code', 'name')
-    ordering = ('code',)
+# @admin.register(Currency)
+# class CurrencyAdmin(admin.ModelAdmin):
+#     list_display = ('code', 'name', 'exchange_rate', 'is_active')
+#     list_editable = ('exchange_rate', 'is_active')
+#     search_fields = ('code', 'name')
+#     ordering = ('code',)
 
 @admin.register(FinancialPeriod)
 class FinancialPeriodAdmin(admin.ModelAdmin):
@@ -73,17 +64,30 @@ class FinancialPeriodAdmin(admin.ModelAdmin):
         from django.utils.timezone import now
         return (obj.end_date - now().date()).days
     days_remaining.short_description = 'أيام متبقية'
+# class TransactionInline(admin.TabularInline):
+#     model = Transaction
+#     extra = 1
 
 @admin.register(Account)
 class AccountAdmin(admin.ModelAdmin):
-    list_display = ('name', 'user', 'balance_display', 'base_currency', 'created_at')
-    search_fields = ('name', 'user__username')
-    list_select_related = ('user', 'base_currency')
-    autocomplete_fields = ('user', 'base_currency')
+    list_display = ('name', 'balance', 'created_at', 'updated_at')
+    search_fields = ('name',)
+    list_filter = ('created_at', 'updated_at')
+    readonly_fields = ('balance', 'created_at', 'updated_at')
+    # inlines = [TransactionInline]
+
+    def balance(self, obj):
+        return obj.balance  # استدعاء الخاصية balance من النموذج
+# @admin.register(Account)
+# class AccountAdmin(admin.ModelAdmin):
+#     list_display = ('name', 'user', 'base_currency', 'created_at')
+#     search_fields = ('name', 'user__username')
+#     list_select_related = ('user', 'base_currency')
+#     autocomplete_fields = ('user', 'base_currency')
     
-    def balance_display(self, obj):
-        return f"{obj.balance.amount} {obj.balance.currency}"
-    balance_display.short_description = 'الرصيد'
+    # def balance_display(self, obj):
+    #     return f"{obj.balance.amount} {obj.balance.currency}"
+    # balance_display.short_description = 'الرصيد'
 
 @admin.register(Tax)
 class TaxAdmin(admin.ModelAdmin):
@@ -107,20 +111,16 @@ class CategoryAdmin(admin.ModelAdmin):
         return "▸" * level
     hierarchy_level.short_description = 'مستوى التصنيف'
 
+
 @admin.register(Transaction)
 class TransactionAdmin(admin.ModelAdmin):
     list_display = ('date', 'account', 'amount_display', 'transaction_type', 'period', 'category')
-    # list_filter = (
-    #     'transaction_type',
-    #     ('date', DateRangeFilter),
-    #     'period',
-    #     'category'
-    # )
+
     list_filter = (
-    ('date_field_name', DateFieldListFilter),  # استخدام الفلتر المدمج
-    # أو
-    ('date_field_names', DropdownFilter),  # استخدام الفلتر المنسق
+    ('date', DateFieldListFilter),  # استخدام الفلتر المدمج
+
 )
+    
     search_fields = ('description', 'account__name')
     autocomplete_fields = ('account', 'category')
     date_hierarchy = 'date'
