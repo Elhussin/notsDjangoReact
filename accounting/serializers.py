@@ -12,7 +12,7 @@ class AccountSerializer(serializers.ModelSerializer):
         decimal_places=2,
         read_only=True
     )
-    currency = serializers.ChoiceField(choices=Account.CURRENCIES)
+    currency = 'USD'
     class Meta:
         model = Account
         fields = ['id', 'user', 'name', 'currency', 'balance', 'created_at', 'updated_at']

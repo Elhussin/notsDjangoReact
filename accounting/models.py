@@ -4,11 +4,12 @@ from django.db import models
 from django.contrib.auth import get_user_model
 from djmoney.models.fields import MoneyField
 from djmoney.money import Money
+from django.utils.functional import lazy
 
 User = get_user_model()
 
-from django.utils.functional import lazy
 
+CURRENCY_CHOICES = [('USD', 'USD'), ('EUR', 'EUR'), ('SAR', 'SAR')]
 
 
 class Currency(models.Model):
@@ -16,11 +17,17 @@ class Currency(models.Model):
     name = models.CharField(max_length=50)
     exchange_rate = models.DecimalField(max_digits=10, decimal_places=4, default=1.0)
     is_active = models.BooleanField(default=True)
+    
+    class Meta:
+        unique_together = ('code', 'name')
 
     def __str__(self):
         return f"{self.code} ({self.name})"
 def get_currency_choices():
-    from .models import Currency  # استيراد داخل الدالة لتجنب الاستيراد الدائري
+    from django.db import connection
+    if "accounting_currency" not in connection.introspection.table_names():
+        return CURRENCY_CHOICES  # قيمة افتراضية مؤقتة أثناء التهيئة
+    from .models import Currency  
     return [(c.code, c.code) for c in Currency.objects.filter(is_active=True)]
 
 
@@ -44,26 +51,37 @@ class Account(models.Model):
         default_currency='USD',
         currency_choices=lazy(get_currency_choices, list)()  # استخدام lazy
     )
+    
+    def get_default_currency():
+        return Currency.objects.get(code='USD').id
+
     base_currency = models.ForeignKey(
         Currency,
         on_delete=models.PROTECT,
         related_name='base_accounts',
-        default=Currency.objects.get(code='USD').id
+        default=get_default_currency
     )
+
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+
     def update_balance(self):
-        from .models import Transaction  # تجنب الاستيراد الدائري
-        total = self.transactions.aggregate(
+        from .models import Transaction  
+        total_amount = self.transactions.aggregate(
             total=models.Sum('amount')
-        )['total'] or Money(0, self.balance.currency)
-        self.balance = total
+        )['total']
+        self.balance = Money(total_amount or 0, self.balance.currency)
         self.save()
+
 
     def __str__(self):
         return f"{self.name} ({self.balance.currency})"
     
+
+
+
 
 class Tax(models.Model):
     name = models.CharField(max_length=100)
@@ -105,6 +123,9 @@ class Transaction(models.Model):
     description = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    currency = models.CharField(max_length=3, default='USD')
+
+
 
     def save(self, *args, **kwargs):
         if not self.currency:
@@ -113,5 +134,5 @@ class Transaction(models.Model):
         self.account.update_balance()
 
     def __str__(self):
-        return f"{self.date} - {self.amount} {self.account.balance.currency}"
-    
+        return f"{self.date} - {self.amount.amount} {self.amount.currency}"
+

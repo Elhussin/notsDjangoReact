@@ -51,8 +51,10 @@
     
 from django.contrib import admin
 from django.db.models import F
-from django_admin_listfilter_dropdown.filters import DateRangeFilter
+# from django_admin_listfilter_dropdown.filters import DateRangeFilter
 from .models import Currency, FinancialPeriod, Account, Tax, Category, Transaction
+from django_admin_listfilter_dropdown.filters import DropdownFilter
+from django.contrib.admin import DateFieldListFilter
 
 @admin.register(Currency)
 class CurrencyAdmin(admin.ModelAdmin):
@@ -108,12 +110,17 @@ class CategoryAdmin(admin.ModelAdmin):
 @admin.register(Transaction)
 class TransactionAdmin(admin.ModelAdmin):
     list_display = ('date', 'account', 'amount_display', 'transaction_type', 'period', 'category')
+    # list_filter = (
+    #     'transaction_type',
+    #     ('date', DateRangeFilter),
+    #     'period',
+    #     'category'
+    # )
     list_filter = (
-        'transaction_type',
-        ('date', DateRangeFilter),
-        'period',
-        'category'
-    )
+    ('date_field_name', DateFieldListFilter),  # استخدام الفلتر المدمج
+    # أو
+    ('date_field_names', DropdownFilter),  # استخدام الفلتر المنسق
+)
     search_fields = ('description', 'account__name')
     autocomplete_fields = ('account', 'category')
     date_hierarchy = 'date'
