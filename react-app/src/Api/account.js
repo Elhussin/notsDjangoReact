@@ -1,9 +1,10 @@
-import {SecureRequest} from './AxiosConfig';
+import {SecureRequest} from './axiosConfig';
 
 const EXE_URL = 'accounting/accounts/';
 const TAXES_URL = 'accounting/taxes/';
 const categories = 'accounting/categories/';
 const TRANSACTIONS_URL = 'accounting/transactions/';
+
 // الحصول على حساب واحد باستخدام ID
 export const getAccount = (id) => SecureRequest('get', `${EXE_URL}${id}/`);
 

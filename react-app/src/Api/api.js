@@ -1,6 +1,5 @@
 // Import custom API configuration and secure request helper functions
-import { API } from './AxiosConfig';
-import { SecureRequest } from './AxiosConfig';
+import { API, SecureRequest } from './axiosConfig';
 
 /**
  * Authenticates a user and retrieves an access token.

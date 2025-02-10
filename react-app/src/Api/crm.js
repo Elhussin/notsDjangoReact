@@ -1,5 +1,5 @@
 // src/api/transactionApi.js
-import { SecureRequest } from './AxiosConfig';
+import { SecureRequest } from './axiosConfig';
 
 const COUSTOMERS_URL = 'crm/customers/';
 const INTERACTIONS_URL = 'crm/interactions/';
