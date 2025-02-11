@@ -1,5 +1,6 @@
 // Import custom API configuration and secure request helper functions
 import { API, SecureRequest } from './axiosConfig';
+import axios from "axios";
 
 /**
  * Authenticates a user and retrieves an access token.
@@ -8,13 +9,48 @@ import { API, SecureRequest } from './axiosConfig';
  * @throws Will throw an error if the request fails.
  */
 export const login = async (credentials) => {
+  const { username, password } = credentials;
   try {
-    const response = await API.post('users/auth/', credentials);
-    return response.data;
+    const response = await API.post('users/auth/login/', { username, password }, 
+    { headers: 
+      {  "Content-Type": "application/json",
+          "Accept": "application/json", }});
+
+    console.log("Login successful:", response);
+        return response.data;
+
   } catch (error) {
     throw error.response ? error.response.data : new Error('An error occurred');
   }
 };
+
+// export const login = async (credentials) => {
+//   console.log("Logging in...",credentials);
+//   const { username, password } = credentials;
+//   try {
+//     const response = await API.post( "users/auth/login/",{ username, password });
+
+
+//     console.log("Login successful:", response);
+//   localStorage.setItem("accessToken", response.data.access);
+//   localStorage.setItem("refreshToken", response.data.refresh);
+//   return response.data;
+// } catch (error) {
+//     console.error("Login error:", error);
+// }
+
+// };
+
+
+export const getProtectedData = async () => {
+  const token = localStorage.getItem("accessToken");
+  const response = await axios.get("http://127.0.0.1:8000/api/protected/", {
+      headers: { Authorization: `Bearer ${token}` }
+  });
+  console.log(response.data);
+};
+
+
 
 /**
  * Adds a new user.

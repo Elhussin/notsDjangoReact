@@ -1,7 +1,6 @@
 from django.contrib import admin
 from .models import Branch, BranchManager, Order ,Company, Factory, Brand
 
-from django.contrib.auth.models import User
 from django.contrib import admin
 from .models import Product, Category, Brand, ProductImage, Discount, Review, Color, Size, TechnicalSpecification
 
