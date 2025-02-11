@@ -2,8 +2,9 @@ from rest_framework import serializers
 from .models import (
     Customer, Interaction, Complaint, Opportunity, Task, Campaign, Team, Document
 )
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 
+User = get_user_model()
 # Serializer لنموذج User
 class UserSerializer(serializers.ModelSerializer):
     class Meta:

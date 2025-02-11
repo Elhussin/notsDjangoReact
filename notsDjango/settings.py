@@ -32,12 +32,20 @@ INSTALLED_APPS = [
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
+    "django.contrib.sites",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+     "django_admin_listfilter_dropdown",
     "rest_framework",
     "rest_framework_simplejwt",
     "rest_framework_simplejwt.token_blacklist",
-    "django_admin_listfilter_dropdown",
+    "rest_framework.authtoken",
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",  # 
+    
+    "dj_rest_auth",
+    "dj_rest_auth.registration",
     "simple_history",
     "corsheaders",
     'djmoney',
@@ -48,12 +56,24 @@ INSTALLED_APPS = [
     "hrm",
     "reporting",
     "product",
+    "users", 
 ]
+SITE_ID = 1  # مطلوب لـ django-allauth
+# AUTH_USER_MODEL = "users.CustomUser"
+
+REST_USE_JWT = True  # تفعيل استخدام JWT مع dj-rest-auth
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ),
+}
 
 
 
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
+    "allauth.account.middleware.AccountMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -139,9 +159,10 @@ SIMPLE_JWT = {
     "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": True,
     "AUTH_HEADER_TYPES": ("Bearer",),
-    "AUTH_COOKIE_SECURE": True,
-    "AUTH_COOKIE_HTTP_ONLY": True,
+    # "AUTH_COOKIE_SECURE": True,
+    # "AUTH_COOKIE_HTTP_ONLY": True,
 }
+
 
 # Email Settings
 EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")

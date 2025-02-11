@@ -53,7 +53,7 @@ export const RefreshToken = async () => {
     }
     try {
         const response = await API.post(
-            "token/refresh/",
+            "users/auth/token/refresh/",
             { refresh },
             {
                 headers: {
