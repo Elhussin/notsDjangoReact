@@ -11,13 +11,7 @@ import axios from "axios";
 export const login = async (credentials) => {
   const { username, password } = credentials;
   try {
-    const response = await API.post('users/auth/logins/', { username, password }, 
-    // { headers: 
-    //   {  "Content-Type": "application/json",
-    //       "Accept": "application/json", }}
-    );
-
-    // console.log("Login successful:", response)
+    const response = await API.post('users/auth/logins/', { username, password },);
         return response.data;
 
   } catch (error) {
@@ -25,24 +19,10 @@ export const login = async (credentials) => {
   }
 };
 
+
 export const logOut = () => SecureRequest('post', 'users/auth/logout/');
 
-// export const login = async (credentials) => {
-//   console.log("Logging in...",credentials);
-//   const { username, password } = credentials;
-//   try {
-//     const response = await API.post( "users/auth/login/",{ username, password });
 
-
-//     console.log("Login successful:", response);
-//   localStorage.setItem("accessToken", response.data.access);
-//   localStorage.setItem("refreshToken", response.data.refresh);
-//   return response.data;
-// } catch (error) {
-//     console.error("Login error:", error);
-// }
-
-// };
 
 
 export const getProtectedData = async () => {
@@ -67,8 +47,10 @@ export const addUser  = async (data) => {
     return response.data;
   } catch (error) {
     if (error.response) {
+        
         console.error("Registration failed:", error.response.data);
         throw error.response.data;
+        // return error.response.data;
     } else {
         console.error("Network error:", error.message);
         throw error.message;

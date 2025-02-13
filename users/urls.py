@@ -8,5 +8,5 @@ urlpatterns = [
     path("auth/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),  # Token refresh
 
     # JWT token obtain (login)
-    path('/auth/logins/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('auth/logins/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
 ]

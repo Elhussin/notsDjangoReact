@@ -18,7 +18,7 @@ urlpatterns = [
     path('api/crm/', include('crm.urls')),  
     path('api/hrm/', include('hrm.urls')),  
     path('api/waseel/', include('waseel.urls')), 
-    path("api/users", include("users.urls")), 
+    path("api/users/", include("users.urls")), 
     path('product/', include('product.urls')),
 
     path('', lambda request: render(request, 'index.html')),

@@ -9,7 +9,8 @@ const AdminUserManagement = () => {
   const [newUser, setNewUser] = useState({
     username: '',
     email: '',
-    password: '',
+    password1: '',
+    password2: '',
     first_name: '',
     last_name: '',
     is_staff: false,
@@ -19,7 +20,7 @@ const AdminUserManagement = () => {
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [sortConfig, setSortConfig] = useState({ key: '', direction: 'asc' });
   const [filteredData, setFilteredData] = useState([]);
-
+  const [errors, setErrors] = useState({});
   useEffect(() => {
     fetchUsers();
   }, []);
@@ -34,15 +35,21 @@ const AdminUserManagement = () => {
     }
   };
 
-  const handleAddUser = async () => {
+  const handleAddUser = async (e) => {
+    e.preventDefault();
+    setErrors({});
+    setMessage("");
     try {
       await addUser(newUser);
       setMessage('User added successfully');
       fetchUsers();
-      setNewUser({ username: '', email: '', password: '', first_name: '', last_name: '', is_staff: false, is_active: true });
+      setNewUser({ username: '', email: '',  first_name: '',password2: '', last_name: '', is_staff: false, is_active: true });
     } catch (error) {
-      console.error('Error adding user:', error);
-      setMessage('Failed to add user');
+      if (error) {
+        setErrors(error);
+      } else {
+        setErrors({ general: "Failed to add use" });
+      }
     }
     setOpenSnackbar(true);
   };
@@ -64,13 +71,9 @@ const AdminUserManagement = () => {
   };
 
   const handleUpdateUser = async () => {
-    const updatedUser = { ...selectedUser };
-    if (!updatedUser.password) {
-      updatedUser.password = selectedUser.password;
-    }
-console.log(updatedUser)
+    const { password, ...updatedUserData } = selectedUser; // استبعاد كلمة المرور
     try {
-      await updateUser(selectedUser.id, updatedUser);
+      await updateUser(selectedUser.id, updatedUserData);
       setMessage('User updated successfully');
       fetchUsers();
       setSelectedUser(null);
@@ -102,8 +105,8 @@ console.log(updatedUser)
     setSortConfig({ key, direction });
 
     const sortedUsers = [...users].sort((a, b) => {
-      if (a[key] < b[key]) return direction === 'asc' ? -1 : 1;
-      if (a[key] > b[key]) return direction === 'asc' ? 1 : -1;
+      if (a[key] < b[key]) return sortConfig.direction === 'asc' ? -1 : 1;
+      if (a[key] > b[key]) return sortConfig.direction === 'asc' ? 1 : -1;
       return 0;
     });
     setUsers(sortedUsers);
@@ -133,6 +136,10 @@ console.log(updatedUser)
           value={selectedUser ? selectedUser.username : newUser.username}
           onChange={(e) => handleInputChange(e, !!selectedUser)}
         />
+        {errors.username && errors.username.map((msg, index) => (
+          <Alert key={index} severity="error">{msg}</Alert>
+        ))}
+
         <TextField
           label="Email"
           type="email"
@@ -144,17 +151,37 @@ console.log(updatedUser)
           value={selectedUser ? selectedUser.email : newUser.email}
           onChange={(e) => handleInputChange(e, !!selectedUser)}
         />
+        {errors.email && errors.email.map((msg, index) => (
+          <Alert key={index} severity="error">{msg}</Alert>
+        ))}
         <TextField
           label="Password"
           type="password"
           variant="outlined"
           fullWidth
           margin="normal"
-          name="password"
+          name="password1"
           required
-          value={selectedUser ? selectedUser.password : newUser.password}
+          value={selectedUser ? selectedUser.password : newUser.password1}
           onChange={(e) => handleInputChange(e, !!selectedUser)}
         />
+        {errors.password1 && errors.password1.map((msg, index) => (
+          <Alert key={index} severity="error">{msg}</Alert>
+        ))}
+        <TextField
+          label="Re Enter Password"
+          type="password"
+          variant="outlined"
+          fullWidth
+          margin="normal"
+          name="password2"
+          required
+          value={selectedUser ? selectedUser.password : newUser.password2}
+          onChange={(e) => handleInputChange(e, !!selectedUser)}
+        />
+        {errors.password2 && errors.password2.map((msg, index) => (
+          <Alert key={index} severity="error">{msg}</Alert>
+        ))}
         <TextField
           label="First Name"
           variant="outlined"
@@ -182,6 +209,10 @@ console.log(updatedUser)
           control={<Checkbox checked={selectedUser ? selectedUser.is_active : newUser.is_active} onChange={(e) => handleInputChange({ target: { name: 'is_active', value: e.target.checked } }, !!selectedUser)} />}
           label="Is Active"
         />
+
+        {errors.non_field_errors && errors.non_field_errors.map((msg, index) => (
+          <Alert key={index} severity="error">{msg}</Alert>
+        ))}
 
         <Button
           variant="contained"
@@ -248,5 +279,5 @@ console.log(updatedUser)
     </Container>
   );
 };
-
+                                                                                                                                                                                                
 export default AdminUserManagement;

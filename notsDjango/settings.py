@@ -73,7 +73,11 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
 }
-
+# REST_AUTH = {
+#     'USE_JWT': True,  # استخدام JWT بدلاً من الجلسات
+#     'JWT_AUTH_COOKIE': None,  # تعطيل ملفات تعريف الارتباط
+#     'JWT_AUTH_REFRESH_COOKIE': None,
+# }
 
 
 REST_AUTH_SERIALIZERS = {

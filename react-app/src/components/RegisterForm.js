@@ -10,53 +10,42 @@ import {
   Alert,
 } from "@mui/material";
 
-/**
- * RegisterForm Component
- * Handles user registration with input validation and feedback.
- */
 const RegisterForm = () => {
   const [formData, setFormData] = useState({
     username: "",
     email: "",
-    password: "",
+    password1: "",
+    password2: "",
   });
   const [message, setMessage] = useState("");
-  const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false); // Loading state
+  const [errors, setErrors] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  /**
-   * Handle input changes.
-   * @param {object} e - Event object from input fields.
-   */
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  /**
-   * Handle form submission.
-   * Sends user data to the backend for registration.
-   * @param {object} e - Event object from form submission.
-   */
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
+    setErrors({});
     setMessage("");
     setIsLoading(true);
-
     try {
-      // API call to register the user
       const response = await addUser(formData);
-      if(response){
+      if (response) {
         setMessage("User registered successfully!");
+        setTimeout(() => {
+          navigate("/login");
+        }, 3000);
       }
-
-      setTimeout(() => {
-        navigate("/login"); // Redirect to login page
-      }, 3000); // 3-second delay
-    } catch (err) {
-      setError(err?.response?.data?.detail || "Registration failed. Please try again.");
+    } catch (error) {
+      if (error) {
+        setErrors(error);
+      } else {
+        setErrors({ general: "Registration failed. Please try again." });
+      }
     } finally {
       setIsLoading(false);
     }
@@ -76,13 +65,8 @@ const RegisterForm = () => {
       <Typography variant="h4" gutterBottom>
         Register
       </Typography>
-
-      {/* Success Message */}
       {message && <Alert severity="success">{message}</Alert>}
-
-      {/* Error Message */}
-      {error && <Alert severity="error">{error}</Alert>}
-
+      {errors.general && <Alert severity="error">{errors.general}</Alert>}
       <form onSubmit={handleSubmit}>
         <TextField
           label="Username"
@@ -93,6 +77,9 @@ const RegisterForm = () => {
           margin="normal"
           required
         />
+        {errors.username && errors.username.map((msg, index) => (
+          <Alert key={index} severity="error">{msg}</Alert>
+        ))}
         <TextField
           label="Email"
           name="email"
@@ -103,17 +90,35 @@ const RegisterForm = () => {
           margin="normal"
           required
         />
+        {errors.email && errors.email.map((msg, index) => (
+          <Alert key={index} severity="error">{msg}</Alert>
+        ))}
         <TextField
           label="Password"
-          name="password"
+          name="password1"
           type="password"
-          value={formData.password}
+          value={formData.password1}
           onChange={handleChange}
           fullWidth
           margin="normal"
           required
         />
-
+        {errors.password1 && errors.password1.map((msg, index) => (
+          <Alert key={index} severity="error">{msg}</Alert>
+        ))}
+        <TextField
+          label="Re Enter Password"
+          name="password2"
+          type="password"
+          value={formData.password2}
+          onChange={handleChange}
+          fullWidth
+          margin="normal"
+          required
+        />
+        {errors.password2 && errors.password2.map((msg, index) => (
+          <Alert key={index} severity="error">{msg}</Alert>
+        ))}
         <Box sx={{ position: "relative", marginTop: 2 }}>
           <Button
             type="submit"
