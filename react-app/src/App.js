@@ -2,6 +2,7 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+
 // const LazyComponent = React.lazy(() => import('./LazyComponent'));
 
 // MAin components
@@ -26,7 +27,7 @@ import { useUser } from "./components/UserContext"; // استخدام الـ Con
 import Elgipelty from "./components/Elgipelty";
 import CchiBeneficiary from "./components/CchiBeneficiary";
 import FormElgipelty from "./components/FormElgipelty";
-
+import PasswordReset from "./components/PasswordReset";
 import CustomerList from './components/crm/CustomerList';
 import InteractionList from './components/crm/InteractionList';
 import ComplaintList from './components/crm/ComplaintList';
@@ -43,6 +44,7 @@ import CategoryList from './components/account/CategoryList';
 import CreateCategory from './components/account/CreateCategory';
 import TransactionList from './components/account/TransactionList';
 import CreateTransaction from './components/account/CreateTransaction';
+
 
 
 
@@ -126,6 +128,7 @@ const App = () => {
             <Route path="CampaignList" element={<CampaignList />} />
             <Route path="TeamList" element={<TeamList />} />
             <Route path="DocumentList" element={<DocumentList />} />
+            <Route path="PasswordReset" element={<PasswordReset />} />
 
 
           </Route>

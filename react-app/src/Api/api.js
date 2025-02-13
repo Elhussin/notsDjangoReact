@@ -11,18 +11,21 @@ import axios from "axios";
 export const login = async (credentials) => {
   const { username, password } = credentials;
   try {
-    const response = await API.post('users/auth/login/', { username, password }, 
-    { headers: 
-      {  "Content-Type": "application/json",
-          "Accept": "application/json", }});
+    const response = await API.post('users/auth/logins/', { username, password }, 
+    // { headers: 
+    //   {  "Content-Type": "application/json",
+    //       "Accept": "application/json", }}
+    );
 
-    console.log("Login successful:", response);
+    // console.log("Login successful:", response)
         return response.data;
 
   } catch (error) {
     throw error.response ? error.response.data : new Error('An error occurred');
   }
 };
+
+export const logOut = () => SecureRequest('post', 'users/auth/logout/');
 
 // export const login = async (credentials) => {
 //   console.log("Logging in...",credentials);
