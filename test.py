@@ -1,39 +1,90 @@
 import requests
+from datetime import datetime
 
 url = "http://127.0.0.1:8000/api/"
 data = {"username": "me", "password": "1"}
 
 # print(response.json()) # {'non_field_errors': ['Unable to log in with provided credentials.']}
 
-try:
-    response = requests.post(f'{url}users/auth/logins/', json=data)
-    print("Login",response.json())
-    response.raise_for_status()
 
-except requests.exceptions.HTTPError as err:
-    print(err)
+def login():
+    try:
+        response = requests.post(f'{url}users/auth/logins/', json=data)
+        token=response.json().get('access')
+        refresh = {"refresh":response.json().get('refresh')}
+        response.raise_for_status()
+    except requests.exceptions.HTTPError as err:
+        print(err)
+    return token,refresh
+
+#  caal login function
+# log= login()
+# token=log[0]
+# refresh=log[1]
+# print("Token",token)
+# print("Refresh",refresh)
+
+def get_active_user():
+    try:
+        response = requests.get(f'{url}users/auth/user/', headers={"Authorization": f"Bearer {token}"})
+        response.raise_for_status()
+        print("User",response.json())
+    except requests.exceptions.HTTPError as err:
+        print(err)
+
+# print("Active User:",get_active_user())       
+        
+def get_all_users():
+    try:
+        response = requests.get(f'{url}users/auth/users/', headers={"Authorization": f"Bearer {token}"})    
+        response.raise_for_status()
+        
+        print("All Users",response.json())
+    except requests.exceptions.HTTPError as err:
+        print(err)
+         
+def refresh():
+    try:
+        response = requests.post(f'{url}users/auth/token/refresh/', json=refresh)
+        print("Refresh",response.json())
+        response.raise_for_status()
+    except requests.exceptions.HTTPError as err:
+        print(err)
 
 
-
-
-data='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc0MDA2OTEzNSwiaWF0IjoxNzM5NDY0MzM1LCJqdGkiOiI3ZGY1YThkY2FkNzE0MjZjYTdiYTIyZTcyNmUxYTVlMCIsInVzZXJfaWQiOjF9.lOiNI0u5ZXD99u_Bln9zK7wKgh8t6S0hDmZ_LOTajGw'
-try:
-    response = requests.post(f'{url}users/auth/token/refresh/', json=data)
-    print("Refresh",response.json())
-    response.raise_for_status()
-
-except requests.exceptions.HTTPError as err:
-    print(err)
+def logout():
+    try:
+        response = requests.post(f'{url}users/auth/logout/', json=token)
+        print("Log Out ",response.json())
+        response.raise_for_status()
+    except requests.exceptions.HTTPError as err:
+        print(err)
+        
     
     
-    
-try:
-    response = requests.post(f'{url}users/users/auth/logout/', json=data)
-    print("Log Out ",response.json())
-    response.raise_for_status()
 
-except requests.exceptions.HTTPError as err:
-    print(err)
     
-    
-    
+
+timestamp = 1739555382
+
+def convert_time_stamp_to_date(timestamp):
+    date_object = datetime.fromtimestamp(timestamp)
+    return date_object, date_object.strftime("%Y%m%d")
+
+
+date_object, date_as_numbers = convert_time_stamp_to_date(timestamp)
+# print("Date Object", date_object)
+# print("Date As Numbers", date_as_numbers)
+
+
+def convert_date_to_timestamp(date):
+    # تحويل السلسلة النصية إلى كائن datetime
+    date_object = datetime.strptime(date, "%Y-%m-%d %H:%M:%S")
+    return int(date_object.timestamp())
+
+# التاريخ والوقت كسلسلة نصية
+date_string = '2025-02-14 22:11:30'
+gettimstemb = convert_date_to_timestamp(date_string)
+print("الطابع الزمني:", gettimstemb)
+
+

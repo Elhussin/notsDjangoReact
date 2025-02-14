@@ -85,7 +85,6 @@ REST_AUTH_SERIALIZERS = {
 }
 
 ACCOUNT_EMAIL_VERIFICATION = "none" # تعطيل تأكيد البريد الإلكتروني
-ACCOUNT_AUTHENTICATION_METHOD = "email" # تسجيل الدخول بالبريد الإلكتروني فقط
 ACCOUNT_EMAIL_REQUIRED = True # البريد الإلكتروني مطلوب
 ACCOUNT_LOGIN_METHODS = {'email', 'username'} # تسجيل الدخول بالبريد الإلكتروني فقط
 

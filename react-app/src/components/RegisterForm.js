@@ -119,6 +119,9 @@ const RegisterForm = () => {
         {errors.password2 && errors.password2.map((msg, index) => (
           <Alert key={index} severity="error">{msg}</Alert>
         ))}
+        {errors.non_field_errors && errors.non_field_errors.map((msg, index) => (
+          <Alert key={index} severity="error">{msg}</Alert>
+        ))}
         <Box sx={{ position: "relative", marginTop: 2 }}>
           <Button
             type="submit"
