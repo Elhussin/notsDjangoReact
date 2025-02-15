@@ -40,3 +40,25 @@ def clear_cache():
             print(f"Error clearing cache: {e}")
     else:
         print(f"Cache directory does not exist: {cache_dir}")
+        
+        
+
+# utils.py
+from rest_framework.response import Response
+
+def custom_response(data, status_code):
+    return Response({
+        "status": "success" if status_code < 400 else "error",
+        "data": data,
+    }, status=status_code)
+    
+    
+      # لتوحيد استجابات الطلبات في جميع الـ Views
+# # users/views.py
+# from rest_framework.views import APIView
+# from core.utils import custom_response
+
+# class UserView(APIView):
+#     def get(self, request):
+#         data = {"message": "User data"}
+#         return custom_response(data, status_code=200)

@@ -2,40 +2,52 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView 
-from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
-    TokenRefreshView,
-)
 from django.shortcuts import render
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
+from notes.views import handler404, handler500, handler403, handler400
+# المسارات الخاصة بـ API
 
+from django.contrib.sitemaps.views import sitemap
+from .sitemaps import ArticleSitemap
+
+sitemaps = {
+    'articles': ArticleSitemap,
+}
+
+api_patterns = [
+    path('', include('notes.urls')),
+    path('accounting/', include('accounting.urls')),
+    path('crm/', include('crm.urls')),
+    path('hrm/', include('hrm.urls')),
+    path('waseel/', include('waseel.urls')),
+    path('users/', include('users.urls')),
+    path('product/', include('product.urls')),
+    path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
+    path('schema/', SpectacularAPIView.as_view(), name='schema'),
+    path('docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+]
+
+# المسارات العامة
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    # path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('api/', include('notes.urls')),
-    path('api/accounting/', include('accounting.urls')),
-    path('api/crm/', include('crm.urls')),  
-    path('api/hrm/', include('hrm.urls')),  
-    path('api/waseel/', include('waseel.urls')), 
-    path("api/users/", include("users.urls")), 
-    path('product/', include('product.urls')),
-
+    path('api/', include(api_patterns)),
+    
 
     # واجهة Swagger UI
-    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
-    path('api/docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
-    
-       # وثائق خاصة بتطبيق معين
-  # وثائق خاصة بتطبيق معين
-    # path('api/crm/schema/', SpectacularAPIView.as_view(api_version='crm'), name='crm-schema'),
-    # path('api/crm/docs/', SpectacularSwaggerView.as_view(url_name='crm-schema'), name='crm-swagger-ui'),
+
+
+    # المسار الافتراضي
     path('', lambda request: render(request, 'index.html')),
     path('<path:path>', lambda request, path: render(request, 'index.html')),
-        # تنزيل ملف OpenAPI JSON
+]
 
-# المسار الافتراضي
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
-
+# إضافة مسارات الوسائط (Media) في حالة التطوير
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    
+    
+# تحديد معالجات الأخطاء
+handler404 = handler404
+handler500 = handler500
+handler403 = handler403
+handler400 = handler400

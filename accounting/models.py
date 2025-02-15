@@ -134,7 +134,7 @@ class JournalEntry(models.Model):
 class RecurringTransaction(models.Model):
     account = models.ForeignKey(Account, on_delete=models.CASCADE)
     amount = MoneyField(max_digits=10, decimal_places=2, default_currency='USD')
-    transaction_type = models.CharField(max_length=7, choices=[ ('income', 'Income'),('expense', 'Expense'),])
+    transaction_types = models.CharField(max_length=7, choices=[ ('income', 'Income'),('expense', 'Expense'),])
     interval = models.CharField(max_length=10, choices=[('monthly', 'Monthly'), ('yearly', 'Yearly')])
     next_execution = models.DateField()
 
@@ -143,7 +143,7 @@ class RecurringTransaction(models.Model):
             Transaction.objects.create(
                 account=self.account,
                 amount=self.amount,
-                transaction_type=self.transaction_type,
+                transaction_types=self.transaction_types,
                 date=timezone.now().date(),
             )
             self.next_execution = self.calculate_next_date()
