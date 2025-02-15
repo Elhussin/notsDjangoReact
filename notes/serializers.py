@@ -1,47 +1,18 @@
 from rest_framework import serializers
-from .models import  Branch, BranchManager, Order, Company, Factory, Product, Category, Brand, ProductImage, Discount, Review, TechnicalSpecification
+from .models import  Branch, BranchManager, Order, Company, Factory, Product, Category, Brand, ProductImage, Discount, Review, TechnicalSpecification, AdditionalDetail, Rating, Review
+from django.contrib.auth import get_user_model
+from users.serializers import CoustmUserSerializer
 
-from django.contrib.auth.models import User
 
-from django.contrib.auth.models import User
-from rest_framework import serializers
+User = get_user_model()
 
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ['id', 'username', 'email', 'password', 'is_superuser', 'last_name', 'first_name', 'is_staff', 'is_active']
-        extra_kwargs = {'password': {'write_only': True}}  # Ensure password is write-only
-
-    def create(self, validated_data):
-        """
-        Handle user creation. Hash the password when creating the user.
-        """
-        user = User.objects.create_user(**validated_data)
-        return user
-
-    def update(self, instance, validated_data):
-        """
-        Handle user update. If password is provided, hash it.
-        """
-        password = validated_data.pop('password', None)  # Pop password if it exists
-        for attr, value in validated_data.items():
-            setattr(instance, attr, value)
-
-        if password:  # If password is provided, hash it
-            instance.set_password(password)
-
-        instance.save()
-        return instance
-
-    
-    
 class BranchSerializer(serializers.ModelSerializer):
     class Meta:
         model = Branch
         fields = '__all__'  # أو تحديد الحقول المحددة: ['id', 'name', 'location', 'manager']
 
 class BranchManagerSerializer(serializers.ModelSerializer):
-    user = UserSerializer(read_only=True)  # قراءة تفاصيل المستخدم فقط
+    user = CoustmUserSerializer(read_only=True)  # قراءة تفاصيل المستخدم فقط
     branch = BranchSerializer(read_only=True)  # قراءة تفاصيل الفرع فقط
 
     user_id = serializers.PrimaryKeyRelatedField(

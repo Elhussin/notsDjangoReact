@@ -8,7 +8,7 @@ from .models import (
 class DepartmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Department
-        fields = ['id', 'name', 'manager', 'description', 'location']
+        fields = ['id', 'name','description', 'location']
 
 # Serializer for Employee
 class EmployeeSerializer(serializers.ModelSerializer):

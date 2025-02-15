@@ -3,7 +3,6 @@ from rest_framework.routers import DefaultRouter
 
 from .views import (
     index,
-    UserViewSet,
     BranchViewSet,
     BranchManagerViewSet,
     OrderViewSet,
@@ -11,13 +10,12 @@ from .views import (
     FactoryViewSet,
     ProductViewSet, CategoryViewSet, BrandViewSet,
     TechnicalSpecificationViewSet,
-    ProductViewSet, AdditionalDetailViewSet, RatingViewSet, ReviewViewSet,UserDetailView
+    ProductViewSet, AdditionalDetailViewSet, RatingViewSet, ReviewViewSet
 )
 
 
 # إنشاء الراوتر لتسجيل الـ ViewSets
 router = DefaultRouter()
-router.register(r'users', UserViewSet, basename='users')  # إدارة المستخدمين
 router.register(r'branches', BranchViewSet, basename='branches')  # إدارة الفروع
 router.register(r'branch_managers', BranchManagerViewSet, basename='branch-managers')  # إدارة مديري الفروع
 router.register(r'orders', OrderViewSet, basename='orders')  # إدارة الطلبات
@@ -30,9 +28,10 @@ router.register(r'technical-specifications', TechnicalSpecificationViewSet, base
 router.register(r'additional-details', AdditionalDetailViewSet,basename='additional-details')
 router.register(r'ratings', RatingViewSet , basename='ratings')
 router.register(r'reviews', ReviewViewSet , basename='reviews')
-router.register(r'user', UserDetailView, basename='user')  # تحديد basename
+
 
 urlpatterns = [
     path('', include(router.urls)),  # تسجيل المسارات الخاصة بـ ViewSets في الراوتر
 
 ]
+

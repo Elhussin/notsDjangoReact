@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     "simple_history",
     "corsheaders",
     'djmoney',
+    'drf_spectacular', # OpenAPI 3.0 schema generator for Django REST framework 
     "notes",
     "waseel",
     "accounting",
@@ -72,6 +73,8 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+
 }
 # REST_AUTH = {
 #     'USE_JWT': True,  # استخدام JWT بدلاً من الجلسات
@@ -179,7 +182,7 @@ SIMPLE_JWT = {
     "REFRESH_TOKEN_LIFETIME": timedelta(days=int(os.getenv("REFRESH_TOKEN_LIFETIME_DAYS", 7))),
     "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": True,
-    "AUTH_HEADER_TYPES": ("Bearer", "JWT"), 
+    "AUTH_HEADER_TYPES": ("Bearer"), #can add  "JWT"
 }
 
 
@@ -216,3 +219,26 @@ CSRF_COOKIE_HTTPONLY = False  # تأكد من إمكانية الوصول إلي
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",  # إذا كنت تعمل محليًا
 ]
+
+# corsheaders settings to allow all origins in development 
+
+# SPECTACULAR_SETTINGS = {
+
+#     'SERVE_INCLUDE_SCHEMA': False,
+#     'APIS': {
+#         'hrm': 'api/crm',
+#         'crm': 'api/hrm',
+#     },
+# }
+
+
+# settings.py
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Main API Documentation',
+    'DESCRIPTION': 'API documentation for the entire project.',
+    'VERSION': '1.0.0',
+    'ENUM_NAME_OVERRIDES': {
+        'RatingValueEnum': 'CustomRatingValueEnum',
+        'TransactionTypeEnum': 'CustomTransactionTypeEnum',
+    },
+}

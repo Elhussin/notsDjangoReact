@@ -8,6 +8,7 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 from django.shortcuts import render
+from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -21,8 +22,19 @@ urlpatterns = [
     path("api/users/", include("users.urls")), 
     path('product/', include('product.urls')),
 
+
+    # واجهة Swagger UI
+    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
+    path('api/docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+    
+       # وثائق خاصة بتطبيق معين
+  # وثائق خاصة بتطبيق معين
+    # path('api/crm/schema/', SpectacularAPIView.as_view(api_version='crm'), name='crm-schema'),
+    # path('api/crm/docs/', SpectacularSwaggerView.as_view(url_name='crm-schema'), name='crm-swagger-ui'),
     path('', lambda request: render(request, 'index.html')),
     path('<path:path>', lambda request, path: render(request, 'index.html')),
+        # تنزيل ملف OpenAPI JSON
+
 # المسار الافتراضي
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
