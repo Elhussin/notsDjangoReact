@@ -2,7 +2,8 @@ from rest_framework import serializers
 from .models import  Branch, BranchManager, Order, Company, Factory, Product, Category, Brand, ProductImage, Discount, Review, TechnicalSpecification, AdditionalDetail, Rating, Review
 from django.contrib.auth import get_user_model
 from users.serializers import CoustmUserSerializer
-
+from .models import Product, AdditionalDetail, Rating, Review
+from drf_spectacular.utils import extend_schema_field
 
 User = get_user_model()
 
@@ -102,10 +103,11 @@ class ProductSerializer(serializers.ModelSerializer):
             'sku', 'barcode', 'product_condition', 'category', 'brand',
             'images', 'discounts', 'created_at', 'updated_at'
         ]
-
+    @extend_schema_field(serializers.ListField(child=serializers.URLField()))
     def get_images(self, obj):
         return [image.image_url for image in obj.images.all()]  # جلب جميع روابط الصور
-
+    
+    @extend_schema_field(serializers.DecimalField(max_digits=10, decimal_places=2))
     def get_discounts(self, obj):
         return [
             {
@@ -124,6 +126,7 @@ class CategorySerializer(serializers.ModelSerializer):
         model = Category
         fields = ['id', 'name', 'parent', 'subcategories']
 
+        ref_name = 'NotesCategory'  # اسم جديد للمكون
 
 
 class DiscountSerializer(serializers.ModelSerializer):
@@ -145,7 +148,7 @@ class TechnicalSpecificationSerializer(serializers.ModelSerializer):
         fields = ['id', 'product', 'specification_name', 'specification_value']
         
         
-from .models import Product, AdditionalDetail, Rating, Review
+
 
 class AdditionalDetailSerializer(serializers.ModelSerializer):
     class Meta:

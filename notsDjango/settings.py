@@ -36,7 +36,7 @@ INSTALLED_APPS = [
     "django.contrib.sites",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-     "django_admin_listfilter_dropdown",
+    "django_admin_listfilter_dropdown",
     "rest_framework",
     "rest_framework_simplejwt",
     "rest_framework_simplejwt.token_blacklist",
@@ -182,7 +182,7 @@ SIMPLE_JWT = {
     "REFRESH_TOKEN_LIFETIME": timedelta(days=int(os.getenv("REFRESH_TOKEN_LIFETIME_DAYS", 7))),
     "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": True,
-    "AUTH_HEADER_TYPES": ("Bearer"), #can add  "JWT"
+    # "AUTH_HEADER_TYPES": ("Bearer"), #can add  "JWT"
 }
 
 
@@ -221,24 +221,24 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 # corsheaders settings to allow all origins in development 
-
-# SPECTACULAR_SETTINGS = {
-
-#     'SERVE_INCLUDE_SCHEMA': False,
-#     'APIS': {
-#         'hrm': 'api/crm',
-#         'crm': 'api/hrm',
-#     },
-# }
-
-
-# settings.py
 SPECTACULAR_SETTINGS = {
-    'TITLE': 'Main API Documentation',
-    'DESCRIPTION': 'API documentation for the entire project.',
+    'TITLE': 'API Documentation',
+    'DESCRIPTION': 'API for your project',
     'VERSION': '1.0.0',
-    'ENUM_NAME_OVERRIDES': {
-        'RatingValueEnum': 'CustomRatingValueEnum',
-        'TransactionTypeEnum': 'CustomTransactionTypeEnum',
+    'SERVE_INCLUDE_SCHEMA': False,
+    'AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+    'SECURITY_DEFINITIONS': {
+        'Bearer': {
+            'type': 'http',
+            'scheme': 'bearer',
+        },
+    
+
     },
+    'ENUM_NAME_OVERRIDES': {
+        'notes.models.RatingChoices': 'CustomRatingValueEnum',
+        'accounting.models.TransactionChoices': 'CustomTransactionTypeEnum',
+    }
 }

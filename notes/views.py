@@ -1,13 +1,13 @@
-# views.py
-# from rest_framework.views import APIView
-# from rest_framework.response import Response
-# from rest_framework_simplejwt.tokens import RefreshToken
-# from .utils import set_auth_cookies
-# from django.contrib.auth import authenticate
 from django.shortcuts import render
 from .models import *
 from .serializers import *
 import logging
+from celery import shared_task
+import os
+import shutil
+from django.conf import settings
+
+
 from notsDjango.utulities import DynamicModelViewSet
 logger = logging.getLogger(__name__)
 
@@ -66,3 +66,6 @@ class RatingViewSet(DynamicModelViewSet):
 class ReviewViewSet(DynamicModelViewSet):
     model = Review
     serializer_class = ReviewSerializer
+    
+    
+

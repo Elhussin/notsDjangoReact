@@ -75,6 +75,7 @@ class TaskSerializer(serializers.ModelSerializer):
             'id', 'employee', 'employee_name', 'title',
             'description', 'due_date', 'status'
         ]
+        ref_name = 'HRMTask'  # اسم جديد للمكون
 
 # Serializer for Notification
 class NotificationSerializer(serializers.ModelSerializer):

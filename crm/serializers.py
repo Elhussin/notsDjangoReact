@@ -3,17 +3,14 @@ from .models import (
     Customer, Interaction, Complaint, Opportunity, Task, Campaign, Team, Document
 )
 from django.contrib.auth import get_user_model
-
+from users.serializers import CoustmUserSerializer
 User = get_user_model()
 # Serializer لنموذج User
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ['id', 'username', 'email', 'first_name', 'last_name']
+
 
 # Serializer لنموذج Customer
 class CustomerSerializer(serializers.ModelSerializer):
-    user = UserSerializer(read_only=True)
+    user = CoustmUserSerializer(read_only=True)
 
     class Meta:
         model = Customer
@@ -51,7 +48,7 @@ class TaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = Task
         fields = ['id', 'customer', 'opportunity', 'title', 'description', 'priority', 'due_date', 'completed', 'created_at', 'updated_at']
-
+        ref_name = 'CRMTask'  # اسم جديد للمكون
 # Serializer لنموذج Campaign
 class CampaignSerializer(serializers.ModelSerializer):
     customers = serializers.PrimaryKeyRelatedField(queryset=Customer.objects.all(), many=True)

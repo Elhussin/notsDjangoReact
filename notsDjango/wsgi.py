@@ -10,3 +10,10 @@ application = get_wsgi_application()
 
 # WSGI_APPLICATION	يحدد نقطة الدخول لتشغيل التطبيق عبر WSGI
 # wsgi.py	يجهز Django للعمل مع خادم WSGI
+
+from django.core.cache import cache
+# 📌 النتيجة: سيتم مسح الكاش كل مرة يتم فيها إعادة تشغيل السيرفر.
+
+# 
+cache.clear()
+print("✅ All cache files have been cleared successfully!")

@@ -5,10 +5,10 @@ from djmoney.money import Money
 
 
 User = get_user_model()
-TRANSACTION_TYPES = [
-        ('income', 'Income'),
-        ('expense', 'Expense'),
-    ]
+# TRANSACTION_TYPES = [
+#         ('income', 'Income'),
+#         ('expense', 'Expense'),
+#     ]
 
 class FinancialPeriod(models.Model):
     """ Represents a financial period (e.g., fiscal year). """
@@ -103,7 +103,7 @@ class Transaction(models.Model):
     period = models.ForeignKey(FinancialPeriod, on_delete=models.PROTECT)
     date = models.DateField()
     amount = MoneyField(max_digits=10, decimal_places=2, default_currency='USD', currency_field_name='amount_currency')
-    transaction_type = models.CharField(max_length=7, choices=TRANSACTION_TYPES)
+    transaction_type = models.CharField(max_length=7, choices=[ ('income', 'Income'),('expense', 'Expense'),])
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
     tax_rate = models.ForeignKey(Tax, on_delete=models.SET_NULL, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
@@ -134,7 +134,7 @@ class JournalEntry(models.Model):
 class RecurringTransaction(models.Model):
     account = models.ForeignKey(Account, on_delete=models.CASCADE)
     amount = MoneyField(max_digits=10, decimal_places=2, default_currency='USD')
-    transaction_type = models.CharField(max_length=7, choices=TRANSACTION_TYPES)
+    transaction_type = models.CharField(max_length=7, choices=[ ('income', 'Income'),('expense', 'Expense'),])
     interval = models.CharField(max_length=10, choices=[('monthly', 'Monthly'), ('yearly', 'Yearly')])
     next_execution = models.DateField()
 

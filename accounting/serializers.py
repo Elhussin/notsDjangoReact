@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import FinancialPeriod, Account, Tax, Category, Transaction, JournalEntry, RecurringTransaction
 from djmoney.money import Money
+from drf_spectacular.utils import extend_schema_field
 
 # ==============================
 #  Financial Period Serializer
@@ -17,13 +18,13 @@ class FinancialPeriodSerializer(serializers.ModelSerializer):
 # ==============================
 class AccountSerializer(serializers.ModelSerializer):
     """Serializer for user accounts with balance calculation."""
-    
+   
     balance = serializers.SerializerMethodField()  # Read-only calculated field
 
     class Meta:
         model = Account
         fields = ['id', 'user', 'name', 'currency', 'created_at', 'updated_at', 'balance']
-    
+    @extend_schema_field(serializers.DecimalField(max_digits=10, decimal_places=2))
     def get_balance(self, obj):
         """Calculates account balance dynamically."""
         return str(obj.balance)  # Converts Money object to string for API response
@@ -49,7 +50,7 @@ class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = ['id', 'name', 'category_type', 'parent', 'parent_name', 'description']
-
+        ref_name = 'AccountingCategory'  # اسم جديد للمكون
 # ==============================
 #  Transaction Serializer
 # ==============================
