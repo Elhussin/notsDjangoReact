@@ -9,8 +9,7 @@ const AdminUserManagement = () => {
   const [newUser, setNewUser] = useState({
     username: '',
     email: '',
-    password1: '',
-    password2: '',
+    password: '',
     first_name: '',
     last_name: '',
     is_staff: false,
@@ -43,7 +42,7 @@ const AdminUserManagement = () => {
       await addUserByAdmin(newUser);
       setMessage('User added successfully');
       fetchUsers();
-      setNewUser({ username: '', email: '',  first_name: '',password2: '', last_name: '', is_staff: false, is_active: true });
+      setNewUser({ username: '', email: '',  first_name: '',password: '', last_name: '', is_staff: false, is_active: true });
     } catch (error) {
       if (error) {
         setErrors(error);
@@ -160,28 +159,15 @@ const AdminUserManagement = () => {
           variant="outlined"
           fullWidth
           margin="normal"
-          name="password1"
+          name="password"
           required
-          value={selectedUser ? selectedUser.password : newUser.password1}
+          value={selectedUser ? selectedUser.password : newUser.password}
           onChange={(e) => handleInputChange(e, !!selectedUser)}
         />
-        {errors.password1 && errors.password1.map((msg, index) => (
+        {errors.password && errors.password.map((msg, index) => (
           <Alert key={index} severity="error">{msg}</Alert>
         ))}
-        <TextField
-          label="Re Enter Password"
-          type="password"
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          name="password2"
-          required
-          value={selectedUser ? selectedUser.password : newUser.password2}
-          onChange={(e) => handleInputChange(e, !!selectedUser)}
-        />
-        {errors.password2 && errors.password2.map((msg, index) => (
-          <Alert key={index} severity="error">{msg}</Alert>
-        ))}
+
         <TextField
           label="First Name"
           variant="outlined"

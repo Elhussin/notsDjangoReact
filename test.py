@@ -4,9 +4,16 @@ from datetime import datetime
 url = "http://127.0.0.1:8000/api/"
 data = {"username": "me", "password": "1"}
 
-# print(response.json()) # {'non_field_errors': ['Unable to log in with provided credentials.']}
-
-
+user={
+    "username": "mejjj",
+    "email": "mejjj@mail.com",
+    "password1": "Ah123456",
+    "password2": "Ah123456",
+    "first_name": "hus",
+    "last_name": "taha",
+    "is_staff": True,
+    "is_active": True
+}
 def login():
     try:
         response = requests.post(f'{url}users/auth/logins/', json=data)
@@ -63,9 +70,18 @@ def logout():
         print(err)
         
     
-    
+def regiserUser():
+    try:
+        response = requests.post(f'{url}users/user/', json=data)
+        print(response)
+        response.raise_for_status()
+    except requests.exceptions.HTTPError as err:
+        print(err)
+    return token,refresh
+   
 
-    
+print("regiserUser",regiserUser())   
+
 
 timestamp = 1739555382
 

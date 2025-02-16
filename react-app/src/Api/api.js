@@ -36,23 +36,6 @@ export const addUser  = async (data) => {
   }
 };
 
-// Add User By Admin
-// export const addUserByAdmin  = async (data) => {
-  // try {
-  //   const response = await API.post('users/user/', data);
-  //   return response.data;
-  // } catch (error) {
-  //   if (error.response) {
-        
-  //       console.error("Registration failed:", error.response.data);
-  //       throw error.response.data;
-  //       // return error.response.data;
-  //   } else {
-  //       console.error("Network error:", error.message);
-  //       throw error.message;
-  //   }
-  // }
-// };
 export const addUserByAdmin = (userData) => SecureRequest('post', 'users/user/', userData);
 
 //  Retrieves the list of all users.
@@ -61,33 +44,16 @@ export const getUsers = () => SecureRequest('get', 'users/users/');
 //  Get  active User
 export const getUsersByToken = () => SecureRequest('get', 'users/user/');
 
-
-
 // Get specific user.
 export const getUser = (userId) => SecureRequest('get', `users/user/${userId}/`);
 
-/**
- * Adds a new user.
- * @param {Object} userData - The data for the new user.
- * @returns {Promise<Object>} - The created user data.
- */
-// export const addUser = (userData) => SecureRequest('post', 'users/', userData);
-
-/**
- * Updates an existing user.
- * @param {number|string} userId - The ID of the user.
- * @param {Object} userData - The updated user data.
- * @returns {Promise<Object>} - The updated user data.
- */
+// Updte User Detials 
 export const updateUser = (userId, userData) =>
-  SecureRequest('put', `users/${userId}/`, userData);
+  SecureRequest('patch', `users/users/${userId}/`, userData);
 
-/**
- * Deletes a user by ID.
- * @param {number|string} userId - The ID of the user.
- * @returns {Promise<void>} - A promise indicating the success of the operation.
- */
-export const deleteUser = (userId) => SecureRequest('delete', `users/${userId}/`);
+
+// Deletes a user by ID.
+export const deleteUser = (userId) => SecureRequest('delete', `users/users/${userId}/`);
 
 /**
  * Retrieves the list of all branches.

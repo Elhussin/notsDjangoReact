@@ -118,8 +118,8 @@ ACCOUNT_EMAIL_VERIFICATION = "none" if DEBUG else 'optional'
 ACCOUNT_EMAIL_REQUIRED = True  # Email is required for registration.
 
 # Allow login using either email or username.
-# ACCOUNT_LOGIN_METHODS = {'email', 'username'}  # Login can be done using email or username.
-ACCOUNT_AUTHENTICATION_METHOD = "username_email"  # Login can be done using email or username.
+ACCOUNT_LOGIN_METHODS = {'email', 'username'}  # Login can be done using email or username.
+# ACCOUNT_AUTHENTICATION_METHOD = "username_email"  # Login can be done using email or username.
 # "Middleware helps add advanced features to enhance the security 
 # and performance of the application,
 #such as session management, protection against attacks,
@@ -251,7 +251,7 @@ if not DEBUG:
     SECURE_HSTS_SECONDS =  86400           # Purpose: Enables HTTP Strict Transport Security (HSTS). For one Year =31536000
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True   # Purpose: Applies HSTS to all subdomains.
     # SECURE_HSTS_PRELOAD = True              # Purpose: Enables HSTS preloading. need register in hstspreload.org.
-    SECURE_SSL_REDIRECT = True              # Purpose: Redirects all HTTP traffic to HTTPS.
+    # SECURE_SSL_REDIRECT = False              # Purpose: Redirects all HTTP traffic to HTTPS.
     SESSION_COOKIE_SECURE = True            # Purpose: Ensures that session cookies are only sent over HTTPS.
     CSRF_COOKIE_SECURE = True               # Purpose: Ensures that the CSRF token cookie is only transmitted over HTTPS.
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https') # Purpose: Helps Django detect that it is behind a reverse proxy (e.g., Nginx, AWS ELB).
@@ -267,11 +267,11 @@ SESSION_COOKIE_NAME = "sessionid"
 CSRF_COOKIE_HTTPONLY = True #False
  
 # CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS", "").split(",")
+# CORS Settings allow frontend to access the API  by using django-cors-headers 
+CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS", "http://localhost:3000").split(",")
+# Remove empty strings from the list of origins 
+CSRF_TRUSTED_ORIGINS = [origin.strip() for origin in CORS_ALLOWED_ORIGINS if origin.strip()]
 
-CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
-]
 # drf-spectacular settings  this optinat setting
 SPECTACULAR_SETTINGS = {
     'TITLE': 'API Documentation',

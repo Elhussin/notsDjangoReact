@@ -3,6 +3,7 @@
 from django.test import TestCase
 from django.urls import reverse
 
+
 class UserAPITests(TestCase):
     def test_register(self):
         url = reverse('users:register')
