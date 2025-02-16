@@ -116,61 +116,100 @@ ACCOUNT_EMAIL_REQUIRED = True  # Email is required for registration.
 # Allow login using either email or username.
 ACCOUNT_LOGIN_METHODS = {'email', 'username'}  # Login can be done using email or username.
 
+# "Middleware helps add advanced features to enhance the security 
+# and performance of the application,
+#such as session management, protection against attacks,
+#CORS support, and account management."
 MIDDLEWARE = [
-    "corsheaders.middleware.CorsMiddleware",
-    "allauth.account.middleware.AccountMiddleware",
-    "django.middleware.security.SecurityMiddleware",
-    "django.contrib.sessions.middleware.SessionMiddleware",
-    # "django.middleware.csrf.CsrfViewMiddleware",
-    "django.contrib.auth.middleware.AuthenticationMiddleware",
-    "django.contrib.messages.middleware.MessageMiddleware",
-    "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "whitenoise.middleware.WhiteNoiseMiddleware",
-    "django.middleware.common.CommonMiddleware",
-    "simple_history.middleware.HistoryRequestMiddleware",
+    "corsheaders.middleware.CorsMiddleware",                    # Handles Cross-Origin Resource Sharing (CORS) for API requests
+    "django.middleware.security.SecurityMiddleware",            # Provides security enhancements such as HTTPS redirection
+    "whitenoise.middleware.WhiteNoiseMiddleware",               # Serves static files efficiently in production
+    "django.contrib.sessions.middleware.SessionMiddleware",     # Manages user sessions 
+    "django.middleware.common.CommonMiddleware",                # Provides common utilities like URL normalization
+    # "django.middleware.csrf.CsrfViewMiddleware",              # Protects against Cross-Site Request Forgery (CSRF) attacks
+    "django.contrib.auth.middleware.AuthenticationMiddleware",  # Handles user authentication
+    "django.contrib.messages.middleware.MessageMiddleware",     # Enables message framework for temporary notifications
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",   # Prevents clickjacking attacks by setting X-Frame-Options (iframes)
+    "allauth.account.middleware.AccountMiddleware",             # Manages user accounts and authentication with django-allauth
+    "simple_history.middleware.HistoryRequestMiddleware",       # Tracks model changes with django-simple-history
 ]
 
 
 
+
+# Set default main URLS  location 
 ROOT_URLCONF = "notsDjango.urls"
 
+# good when use admin UI Or Django TEMPLATES
 TEMPLATES = [
     {
+        # Specifies the template engine to be used (Django's built-in template engine)
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [os.path.join(BASE_DIR, "static")],
+
+        # Defines directories where Django should look for templates
+        "DIRS": [os.path.join(BASE_DIR, "static")],  # Recommended to use "templates" instead of "static"
+
+        # Enables automatic template loading from each installed app’s "templates/" directory
         "APP_DIRS": True,
+
         "OPTIONS": {
             "context_processors": [
+                # Adds debugging context if DEBUG=True
                 "django.template.context_processors.debug",
+                
+                # Makes the request object available in templates
                 "django.template.context_processors.request",
+                
+                # Adds the authenticated user to the template context
                 "django.contrib.auth.context_processors.auth",
+                
+                # Enables Django's messages framework in templates
                 "django.contrib.messages.context_processors.messages",
             ],
         },
     },
 ]
 
+#  good for use react inside Django
+# TEMPLATES = [
+#     {
+#         "BACKEND": "django.template.backends.django.DjangoTemplates",
+#         "DIRS": [os.path.join(BASE_DIR, "frontend", "build")],  # Pointing to React's build directory
+#         "APP_DIRS": False,  # No need to search for templates in apps
+#         "OPTIONS": {
+#             "context_processors": [
+#                 "django.template.context_processors.request",
+#                 "django.contrib.auth.context_processors.auth",
+#             ],
+#         },
+#     },
+# ]
+
+# Reqiermant for production env : Gunicorn , uWSGI , Apache mod_wsgi.
 WSGI_APPLICATION = "notsDjango.wsgi.application"
+# To use asgi for WebSocket  
+# ASGI_APPLICATION = "notsDjango.asgi.application"
 
 # Database
-DATABASES = {
+if not DEBUG:
+    DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.getenv("DB_NAME"),
+        "USER": os.getenv("DB_USER"),
+        "PASSWORD": os.getenv("DB_PASSWORD"),
+        "HOST": os.getenv("DB_HOST"),
+        "PORT": os.getenv("DB_PORT"),
+        }
     }
-}
-
-# Database
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.postgresql",
-#         "NAME": os.getenv("DB_NAME"),
-#         "USER": os.getenv("DB_USER"),
-#         "PASSWORD": os.getenv("DB_PASSWORD"),
-#         "HOST": os.getenv("DB_HOST"),
-#         "PORT": os.getenv("DB_PORT"),
-#     }
-# }
+else:  
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
+    }
+    
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
@@ -181,11 +220,11 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # Internationalization
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = "en-us" # "ar-sa"
 # TIME_ZONE = timezone.get_current_timezone()
-TIME_ZONE = "Asia/Riyadh" 
-USE_I18N = True
-USE_TZ = True
+TIME_ZONE = "Asia/Riyadh"  
+USE_I18N = True     # Allows you to support translation and localization of text and dates.
+USE_TZ = True       # (Coordinated Universal Time)Ensures that dates and times are stored in UTC format and converted to the local time zone when displayed.
 
 # Static files
 STATIC_URL = "/static/"
@@ -206,32 +245,33 @@ SIMPLE_JWT = {
     "REFRESH_TOKEN_LIFETIME": timedelta(days=int(os.getenv("REFRESH_TOKEN_LIFETIME_DAYS", 7))),
     "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": True,
-    # "AUTH_HEADER_TYPES": ("Bearer"), #can add  "JWT"
+    "AUTH_HEADER_TYPES": ("Bearer"), #can add  "JWT"
 }
 
-
 # Email Settings
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST =os.getenv("SMTP_HOST")
-EMAIL_PORT = os.getenv("SMTP_PORT")
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+if DEBUG:
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+else:
+    EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+    EMAIL_HOST =os.getenv("SMTP_HOST")
+    EMAIL_PORT = os.getenv("SMTP_PORT")
+    EMAIL_USE_TLS = True
+    EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+    EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
+    DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
-# إعدادات العملات
-CURRENCY_CHOICES = [('USD', 'USD'), ('EUR', 'EUR'), ('SAR', 'SAR')]
 
-
+# Security settings for production
 if not DEBUG:
-    SESSION_COOKIE_SECURE = True
-    CSRF_COOKIE_SECURE = True
-    SECURE_SSL_REDIRECT = True
-    SECURE_HSTS_SECONDS = 31536000  # سنة كاملة
+    SECURE_HSTS_SECONDS = 31536000 #one Year
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
-# Security Settings
+
 SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 
@@ -250,6 +290,8 @@ SPECTACULAR_SETTINGS = {
     'DESCRIPTION': 'API for your project',
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
+    'COMPONENT_SPLIT_REQUEST': True,
+    'SCHEMA_PATH_PREFIX': '/api/',
     'AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
@@ -258,18 +300,6 @@ SPECTACULAR_SETTINGS = {
             'type': 'http',
             'scheme': 'bearer',
         },
-    
-
     },
-    # 'ENUM_NAME_OVERRIDES': {
-    #     'notes.models.RatingChoices': 'CustomRatingValueEnum',
-    #     'accounting.models.TransactionChoices': 'CustomTransactionTypeEnum',
-    # }
+
 }
-# settings.py
-# CACHES = {
-#     'default': {
-#         'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
-#         'LOCATION': '127.0.0.1:11211',
-#     }
-# }
