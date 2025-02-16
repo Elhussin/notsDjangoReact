@@ -167,8 +167,8 @@ class JournalEntryAdmin(admin.ModelAdmin):
 @admin.register(RecurringTransaction)
 class RecurringTransactionAdmin(admin.ModelAdmin):
     """Admin configuration for recurring transactions."""
-    list_display = ('account','amount', 'transaction_type', 'interval','next_execution' )
-    list_filter = ('transaction_type', 'interval')
+    list_display = ('account','amount', 'transaction_types', 'interval','next_execution' )
+    list_filter = ('transaction_types', 'interval')
     search_fields = ('account',)
     date_hierarchy = 'next_execution'
     
