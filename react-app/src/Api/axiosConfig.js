@@ -17,7 +17,8 @@ const manageTokens = {
 
 // Create an Axios instance with a predefined API base URL
 export const API = axios.create({
-  baseURL: "http://127.0.0.1:8000/api/",
+  baseURL: "api/",
+//   withCredentials: true,  // مهم عند استخدام CORS_ALLOW_CREDENTIALS
 });
 
 // Request Interceptor: Attach the access token to each request
@@ -124,8 +125,10 @@ export const ensureTokenValidity = async () => {
 
 export const SecureRequest = async (method, url, data = null) => {
   try {
+     console.log('method:', method ,"Url",url,data)
       await ensureTokenValidity();
       const response = await API[method](url, data);
+      console.log(response)
       return response.data;
   } catch (error) {
       if (error.response) {

@@ -18,21 +18,21 @@ def login():
     return token,refresh
 
 #  caal login function
-# log= login()
-# token=log[0]
-# refresh=log[1]
-# print("Token",token)
-# print("Refresh",refresh)
+log= login()
+token=log[0]
+refresh=log[1]
+print("Token",token)
+print("Refresh",refresh)
 
 def get_active_user():
     try:
-        response = requests.get(f'{url}users/auth/user/', headers={"Authorization": f"Bearer {token}"})
+        response = requests.get(f'{url}users/user/', headers={"Authorization": f"Bearer {token}"})
         response.raise_for_status()
         print("User",response.json())
     except requests.exceptions.HTTPError as err:
         print(err)
 
-# print("Active User:",get_active_user())       
+print("Active User:",get_active_user())       
         
 def get_all_users():
     try:
@@ -42,6 +42,8 @@ def get_all_users():
         print("All Users",response.json())
     except requests.exceptions.HTTPError as err:
         print(err)
+        
+# print(get_all_users)
          
 def refresh():
     try:

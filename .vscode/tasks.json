@@ -54,6 +54,12 @@
             "type": "shell",
             "command": "uvicorn notsDjango.asgi:application --host 127.0.0.1 --port 8000 --reload",
             "problemMatcher": []
+        },
+        {
+            "label": "Run Django Collect Static",
+            "type": "shell",
+            "command": "python manage.py collectstatic",
+            "problemMatcher": []
         }
     ]
 }

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getUsers, addUser, deleteUser, updateUser } from '../Api/api';
+import { getUsers, addUserByAdmin, deleteUser, updateUser } from '../Api/api';
 import { TextField, Button, Checkbox, FormControlLabel, Snackbar, Alert, Box, Typography, Container, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TableSortLabel, Paper } from '@mui/material';
 import SearchFilter from './SearchFilter';
 
@@ -40,7 +40,7 @@ const AdminUserManagement = () => {
     setErrors({});
     setMessage("");
     try {
-      await addUser(newUser);
+      await addUserByAdmin(newUser);
       setMessage('User added successfully');
       fetchUsers();
       setNewUser({ username: '', email: '',  first_name: '',password2: '', last_name: '', is_staff: false, is_active: true });

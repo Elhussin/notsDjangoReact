@@ -2,12 +2,8 @@
 import { API, SecureRequest } from './axiosConfig';
 import axios from "axios";
 
-/**
- * Authenticates a user and retrieves an access token.
- * @param {Object} credentials - The user's login credentials (e.g., username and password).
- * @returns {Promise<Object>} - The response data containing the access token.
- * @throws Will throw an error if the request fails.
- */
+// Login Api
+
 export const login = async (credentials) => {
   const { username, password } = credentials;
   try {
@@ -19,28 +15,10 @@ export const login = async (credentials) => {
   }
 };
 
-
+// Log Out Api
 export const logOut = () => SecureRequest('post', 'users/auth/logout/');
 
-
-
-
-export const getProtectedData = async () => {
-  const token = localStorage.getItem("accessToken");
-  const response = await axios.get("http://127.0.0.1:8000/api/protected/", {
-      headers: { Authorization: `Bearer ${token}` }
-  });
-  console.log(response.data);
-};
-
-
-
-/**
- * Adds a new user.
- * @param {Object} userData - The data for the new user.
- * @returns {Promise<Object>} - The created user data.
- *  * @throws Will throw an error if the request fails.
- */
+//  Add user by user 
 export const addUser  = async (data) => {
   try {
     const response = await API.post('users/auth/registration/', data);
@@ -58,28 +36,35 @@ export const addUser  = async (data) => {
   }
 };
 
+// Add User By Admin
+// export const addUserByAdmin  = async (data) => {
+  // try {
+  //   const response = await API.post('users/user/', data);
+  //   return response.data;
+  // } catch (error) {
+  //   if (error.response) {
+        
+  //       console.error("Registration failed:", error.response.data);
+  //       throw error.response.data;
+  //       // return error.response.data;
+  //   } else {
+  //       console.error("Network error:", error.message);
+  //       throw error.message;
+  //   }
+  // }
+// };
+export const addUserByAdmin = (userData) => SecureRequest('post', 'users/user/', userData);
 
-/**
- * Retrieves the list of all users.
- * @returns {Promise<Object[]>} - The list of users.
- */
-export const getUsers = () => SecureRequest('get', 'users/');
+//  Retrieves the list of all users.
+export const getUsers = () => SecureRequest('get', 'users/users/');
 
-
-/**
- * Retrieves details of a specific user. He has active session
- * @returns {Promise<Object[]>} - The list of users.
- */
-export const getUsersByToken = () => SecureRequest('get', 'user/');
+//  Get  active User
+export const getUsersByToken = () => SecureRequest('get', 'users/user/');
 
 
 
-/**
- * Retrieves details of a specific user.
- * @param {number|string} userId - The ID of the user.
- * @returns {Promise<Object>} - The user details.
- */
-export const getUser = (userId) => SecureRequest('get', `users/${userId}/`);
+// Get specific user.
+export const getUser = (userId) => SecureRequest('get', `users/user/${userId}/`);
 
 /**
  * Adds a new user.
@@ -353,3 +338,13 @@ export const deleteProduct = (id) =>
   SecureRequest('delete', `products/${id}/`);
 
 
+
+  export const getProtectedData = async () => {
+    const token = localStorage.getItem("accessToken");
+    const response = await axios.get("http://127.0.0.1:8000/api/protected/", {
+        headers: { Authorization: `Bearer ${token}` }
+    });
+    console.log(response.data);
+  };
+  
+  
