@@ -12,46 +12,48 @@ load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Security
-SECRET_KEY = os.getenv("SECRET_KEY", "django-insecure-*wwb$%_&f)issslt1+19j2z+)8e%^c006s3m^-h+h4$w&r^j79")
+SECRET_KEY = os.getenv("SECRET_KEY")
 DEBUG = os.getenv("DEBUG", "False").lower() == "true"
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
 
-# CORS Settings
-# CORS_ALLOW_ALL_ORIGINS = DEBUG  # السماح لجميع النطاقات فقط عند `DEBUG=True`
+# CORS Settings allow frontend to access the API  by using django-cors-headers 
 CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS", "http://localhost:3000").split(",")
-
-CORS_ALLOW_CREDENTIALS = True
+# Remove empty strings from the list of origins 
+CORS_ALLOWED_ORIGINS = [origin.strip() for origin in CORS_ALLOWED_ORIGINS if origin.strip()]
+CORS_ALLOW_CREDENTIALS = True           # Allow cookies to be sent with the requests
 CORS_ALLOW_HEADERS = [
-    "content-type",
-    "authorization",
-    "x-csrftoken",
+    "content-type",                     # Allow JSON requests
+    "authorization",                    # Allow JWT tokens 
+    "x-csrftoken",                      # Allow CSRF tokens for CSRF protection
 ]
 
 # Application definition
 INSTALLED_APPS = [
-    "django.contrib.admin",
-    "django.contrib.auth",
-    "django.contrib.contenttypes",
-    "django.contrib.sessions",
-    "django.contrib.sites",
-    "django.contrib.messages",
-    "django.contrib.staticfiles",
-    "django_admin_listfilter_dropdown",
-    "rest_framework",
-    "rest_framework_simplejwt",
-    "rest_framework_simplejwt.token_blacklist",
-    "rest_framework.authtoken",
-    "allauth",
-    "allauth.account",
-    "allauth.socialaccount",  # 
-    
-    "dj_rest_auth",
-    "dj_rest_auth.registration",
-    "simple_history",
-    "corsheaders",
-    'djmoney',
-    'drf_spectacular', # OpenAPI 3.0 schema generator for Django REST framework 
-    "notes",
+    "django.contrib.admin",             # Admin panel
+    "django.contrib.auth",              # User authentication 
+    "django.contrib.contenttypes",      #  Generic Model relations and content types 'GenericForeignKey'
+    "django.contrib.sessions",          # Session framework 
+    "django.contrib.sites",             # Multiple sites in one Django project
+    "django.contrib.messages",          # Allow view functions to display messages
+    "django.contrib.staticfiles",       # Serve static files 'collectstatic' command 
+    # Third-party apps
+    "django_admin_listfilter_dropdown", # Dropdown filter for Django admin good  with big data
+    "rest_framework",                   # RESTful  API            
+    "rest_framework_simplejwt",         # JSON Web Token authentication, create access and refresh tokens
+    "rest_framework_simplejwt.token_blacklist", # Token blacklist for logout 
+    "rest_framework.authtoken",         # Token-based authentication
+    "allauth",                          # User authentication & registration 
+    "allauth.account",                  # User registration & email verification & password reset
+    "allauth.socialaccount",            # Social authentication OAuth 2.0
+    "dj_rest_auth",                     # Allowing to use Django REST Framework with allauth 
+    "dj_rest_auth.registration",        # REST API endpoints for Django allauth registration
+    "simple_history",                   # Store model history and view history changes
+    "corsheaders",                      # Allow frontend to access the API
+    "djmoney",                          # MoneyField for Django models
+    "drf_spectacular",                  # OpenAPI 3.0 schema generator for Django REST framework 
+    "drf_spectacular_sidecar",          # OpenAPI 3.0 UI 'Swagger UI' for Django REST framework 
+    # Local apps
+    "notes",                            
     "waseel",
     "accounting",
     "crm",
@@ -60,37 +62,59 @@ INSTALLED_APPS = [
     "product",
     "users", 
 ]
-SITE_ID = 1  # مطلوب لـ django-allauth
-# AUTH_USER_MODEL = "users.CustomUser"
 
-REST_USE_JWT = True  # تفعيل استخدام JWT مع dj-rest-auth
-
-
+#  REST_FRAMEWORK settings
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': [
-        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.JSONRenderer',                    # Default JSON renderer
     ],
-    'DEFAULT_AUTHENTICATION_CLASSES': (
+    'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ),
-    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+   
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',               # Default permission for all views
+    ],
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',   # Use drf_spectacular for schema generation 
 
 }
+# REST_FRAMEWORK settings for development 
+if DEBUG:
+    # development only, Default browsable API(UI)
+    REST_FRAMEWORK['DEFAULT_RENDERER_CLASSES'].append('rest_framework.renderers.BrowsableAPIRenderer')
+    
+    # development & manage, Allow session authentication
+    REST_FRAMEWORK['DEFAULT_AUTHENTICATION_CLASSES'].append('rest_framework.authentication.SessionAuthentication')
+
+
+SITE_ID = 1     # allauth needs to it select the current site & Default site ID for Django sites framework  
+
+REST_USE_JWT = True  # Use JWT for authentication with Django REST framework
+
+
 # REST_AUTH = {
-#     'USE_JWT': True,  # استخدام JWT بدلاً من الجلسات
-#     'JWT_AUTH_COOKIE': None,  # تعطيل ملفات تعريف الارتباط
-#     'JWT_AUTH_REFRESH_COOKIE': None,
+#     'USE_JWT': True,                    # Use JWT for authentication with Django REST framework
+#     'JWT_AUTH_COOKIE': None,            # Disable JWT cookie
+#     'JWT_AUTH_REFRESH_COOKIE': None,    # Disable JWT refresh cookie
 # }
 
+# use dj_rest_auth for registration and authentication 
+# the default is 'dj_rest_auth.registration.serializers.RegisterSerializer'
+#  can change it to CustomLoginSerializer
+# REST_AUTH_SERIALIZERS = {
+#     'LOGIN_SERIALIZER': 'dj_rest_auth.serializers.LoginSerializer',
+# }
 
-REST_AUTH_SERIALIZERS = {
-    'LOGIN_SERIALIZER': 'dj_rest_auth.serializers.LoginSerializer',
-}
+# Set email verification method: 
+# In development (DEBUG=True), no email verification is required.
+# In production (DEBUG=False), email verification is optional.
+ACCOUNT_EMAIL_VERIFICATION = "none" if DEBUG else 'optional'
 
-ACCOUNT_EMAIL_VERIFICATION = "none" # تعطيل تأكيد البريد الإلكتروني
-ACCOUNT_EMAIL_REQUIRED = True # البريد الإلكتروني مطلوب
-ACCOUNT_LOGIN_METHODS = {'email', 'username'} # تسجيل الدخول بالبريد الإلكتروني فقط
+# Enforce email requirement during registration.
+ACCOUNT_EMAIL_REQUIRED = True  # Email is required for registration.
 
+# Allow login using either email or username.
+ACCOUNT_LOGIN_METHODS = {'email', 'username'}  # Login can be done using email or username.
 
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
