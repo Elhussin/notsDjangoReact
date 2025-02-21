@@ -60,6 +60,17 @@
             "type": "shell",
             "command": "python manage.py collectstatic",
             "problemMatcher": []
+        },{
+            "label": "Run Django Server with Uvicorn on Online",
+            "type": "shell",
+            "command": "python -m uvicorn notsDjango.asgi:application --host 0.0.0.0 --port 8000 --reload",
         }
+
     ]
 }
+
+// ./venv/Scripts/activate
+// online server run
+// python -m uvicorn notsDjango.asgi:application --host 0.0.0.0 --port 8000 --reload
+
+// ipconfig in cmd
