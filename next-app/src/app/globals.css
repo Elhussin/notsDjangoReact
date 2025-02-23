@@ -13,7 +13,10 @@
     --foreground: #ededed;
   }
 }
-
+/* تخصيص ألوان الوضع الداكن */
+.dark {
+  @apply bg-gray-900 text-white;
+}
 body {
   color: var(--foreground);
   background: var(--background);
