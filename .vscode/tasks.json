@@ -64,7 +64,12 @@
             "label": "Run Django Server with Uvicorn on Online",
             "type": "shell",
             "command": "python -m uvicorn notsDjango.asgi:application --host 0.0.0.0 --port 8000 --reload",
+        },{
+            "label": "Create Next App",
+            "type": "shell",
+            "command": "npx create-next-app@latest app_nam",
         }
+
 
     ]
 }
