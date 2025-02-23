@@ -68,7 +68,16 @@
             "label": "Create Next App",
             "type": "shell",
             "command": "npx create-next-app@latest app_nam",
+        },{
+            "label": "Run Next App",
+            "type": "shell",
+            "command": "npm run dev",
+        },{
+            "label": "Install Next",
+            "type": "shell",
+            "command": "npm install next react react-dom",
         }
+
 
 
     ]
