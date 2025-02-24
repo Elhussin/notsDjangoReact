@@ -1,6 +1,6 @@
 export default function About() {
     return (
-    <div className="bg-gray-100 dark:bg-gray-900 text-black dark:text-white p-4">
+    <div className="">
       <h1 className="text-xl">ِAbout US!</h1>
       <p></p>
     </div>

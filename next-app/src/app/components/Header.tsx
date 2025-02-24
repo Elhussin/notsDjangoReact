@@ -1,39 +1,46 @@
 "use client";
-
+import clsx from "clsx"; 
 import Link from "next/link";
 import ThemeToggle from "./ThemeToggle";
+const styles = {
+  header: "sticky top-0 text-gray-100 shadow-md bg-sky-500 dark:bg-gray-900 dark:text-gray-100",
+  container: "container flex items-center justify-between px-6 py-4 mx-auto",
+  nav: "hidden space-x-6 md:flex",
+  action: "flex space-x-4",
+};
 const Header: React.FC = () => {
   return (
-    <header className="sticky top-0 bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 shadow-md p-4">
-      <div className="container mx-auto flex items-center justify-between py-4 px-6">
+
+    <header className={`${styles.header}`}>
+      <div className="container flex items-center justify-between px-6 py-4 mx-auto">
         {/* Logo */}
         <h1 className="text-lg font-bold">Solo Vizion</h1>
 
         {/* Navigation Links */}
-        <nav className="hidden md:flex space-x-6">
-          <Link href="/home" className=" transition hover:text-blue-500 dark:hover:text-blue-400 ">
+        <nav className="hidden space-x-6 md:flex">
+          <Link href="/home" className="transition hover:text-gray-300">
             Home
           </Link>
-
-          <Link href="/shop" className="hover:text-gray-300 transition">
+          <Link href="/shop" className="transition hover:text-gray-300">
             Shop
           </Link>
-          <Link href="/about" className="hover:text-gray-300 transition">
+          <Link href="/about" className="transition hover:text-gray-300">
             About
           </Link>
-          <Link href="/contact" className="hover:text-gray-300 transition">
+          <Link href="/contact" className="transition hover:text-gray-300">
             Contact
           </Link>
         </nav>
 
         {/* Action Buttons */}
         <div className="flex space-x-4">
-          <Link href="/login" className="px-4 py-2 bg-gray-700 rounded-md hover:bg-gray-600 transition">
-            Login
-          </Link>
-          <Link href="/cart" className="px-4 py-2 bg-gray-700 rounded-md hover:bg-gray-600 transition">
+          <Link href="/cart" className={clsx("px-4 py-2 transition text-white-900 rounded-md bg-sky-600 tran-sition hover:bg-sky-800")}>
             Cart
           </Link>
+          <Link href="/login" className="px-4 py-2 transition bg-gray-200 rounded-md hover:bg-gray-600">
+            Login
+          </Link>
+
           <ThemeToggle />
         </div>
       </div>
