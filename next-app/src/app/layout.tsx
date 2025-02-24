@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { Providers } from "./providers";
 
+import { ThemeProvider } from "next-themes";
 
-import "./globals.css"
-import Layout from "./components/Layout";
-const geistSans = Geist({
+import "./styles/globals.css"; 
+import Layout from "./components/Layout";const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
 });
@@ -32,24 +31,14 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Providers>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+
          <Layout>{children}</Layout>
-         </Providers>
+         </ThemeProvider>
+
       </body>
       
     </html>
  
   );
 }
-// import Layout from "@/components/Layout";
-// import "@/styles/globals.css"; // إذا كنت تستخدم ملفات CSS
-
-// export default function RootLayout({ children }: { children: React.ReactNode }) {
-//   return (
-//     <html lang="ar">
-//       <body>
-//         <Layout>{children}</Layout>
-//       </body>
-//     </html>
-//   );
-// }

@@ -6,7 +6,9 @@ import { FaFacebook, FaInstagram, FaTwitter } from "react-icons/fa"; // استي
 const pages = ["Home", "Shop", "About", "Contact"];
 const Footer = () => {
   return (
-    <footer className="py-6 font-sans text-white bg-gray-900">
+    // <div className="bg-gray-100 dark:bg-gray-900 text-black dark:text-white p-4">
+
+    <footer className="py-6 font-sans  text-black bg-gray-100 dark:bg-gray-900 dark:text-white">
       <div className="container px-6 mx-auto md:px-12 lg:px-16">
         <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
           {/* About Us Section */}
