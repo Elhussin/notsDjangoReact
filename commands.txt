@@ -1,8 +1,0 @@
-
-لحذف الملفات الكاش من CMD
-find . -name "__pycache__" -type d -exec rm -r {} +  # (Linux/macOS)
-Get-ChildItem -Path . -Recurse -Directory -Filter "__pycache__" | Remove-Item -Recurse -Force  # (Windows PowerShell)
-
-
-// اعادن تحديث بنلء وثيقات apiت
-python manage.py spectacular --color
