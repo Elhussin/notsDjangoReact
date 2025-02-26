@@ -7,7 +7,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "notsDjango.settings") # تحد�
 
 application = get_wsgi_application()
 
-
+# gunicorn notsDjango.wsgi:application
 # WSGI_APPLICATION	يحدد نقطة الدخول لتشغيل التطبيق عبر WSGI
 # wsgi.py	يجهز Django للعمل مع خادم WSGI
 
